@@ -1,0 +1,49 @@
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+
+    <context:component-scan base-package="org.nazymko"/>
+
+    <bean id="jsInclude" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="/WEB-INF/jsp/js.jsp"/>
+    </bean>
+    <bean id="cssInclude" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="/WEB-INF/jsp/css.jsp"/>
+    </bean>
+    <bean id="siteName" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="The HL Parser"/>
+    </bean>
+
+    <bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--Yes, it is duplication of variables. I'm so sorry about it, but I need it!-->
+    <bean id="prefix" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="/WEB-INF/jsp/"/>
+    </bean>
+    <bean id="suffix" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value=".jsp"/>
+    </bean>
+
+    <bean id="favicon" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="favicon-32x32.png"/>
+    </bean>
+
+
+    <!--This code will broke your autocompletion feature-->
+    <!--<bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" ref="prefix"/>
+        <property name="suffix" ref="suffix"/>
+    </bean>-->
+    <mvc:default-servlet-handler />
+    <mvc:resources mapping="/resources/styles/**" location="/resources/styles/" order="1" cache-period="31556926"/>
+    <mvc:resources mapping="/favicon.ico" location="/resources/images/favicon.ico" order="2" cache-period="31556926"/>
+    <mvc:resources mapping="/resources/images/**" location="/resources/images/" order="3"
+                   cache-period="31556926"/>
+    <mvc:annotation-driven/>
+    <mvc:interceptors>
+        <bean class="org.nazymko.controller.interceptor.TemplateInterceptor"/>
+    </mvc:interceptors>
+</beans>

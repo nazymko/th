@@ -1,0 +1,1 @@
+<jsp:include page="parts/rule-item-table.jsp"/>
