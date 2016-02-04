@@ -1,0 +1,148 @@
+package org.nazymko.thehomeland.parser.topology;
+
+import lombok.extern.log4j.Log4j2;
+import org.nazymko.thehomeland.parser.db.dao.RuleDao;
+import org.nazymko.thehomeland.parser.rule.JsonRule;
+import org.nazymko.thehomeland.parser.rule.PageItem;
+import org.nazymko.thehomeland.parser.rule.RuleMeta;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+import java.util.*;
+
+/**
+ * Created by nazymko
+ */
+
+@Log4j2
+public class RuleResolver implements ProcessorRegister {
+    @Resource
+    private RuleDao ruleDao;
+    private HashMap<String, HashMap<String, PageItem>> catalogue = new HashMap<>();
+    private HashMap<String, RuleMeta> meta = new HashMap<>();
+
+
+    public void setRuleDao(RuleDao ruleDao) {
+        this.ruleDao = ruleDao;
+    }
+
+    @Override
+    public Optional<HashMap<String, PageItem>> resolveBySite(String site) {
+        return Optional.ofNullable(catalogue.get(site));
+    }
+
+    @PostConstruct
+    public void init() {
+
+        List<JsonRule> all = ruleDao.getAll();
+        catalogue.clear();
+
+        for (JsonRule jsonRule : all) {
+            HashMap<String, PageItem> stringPageItemHashMap = catalogue.get(jsonRule.getUrl());
+            if (stringPageItemHashMap == null) {
+                stringPageItemHashMap = new HashMap<>();
+                catalogue.put(jsonRule.getUrl(), stringPageItemHashMap);
+            }
+
+            List<PageItem> page = jsonRule.getPage();
+            for (PageItem item : page) {
+                stringPageItemHashMap.put(item.getType(), item);
+            }
+        }
+
+    }
+
+    @Override
+    public Optional<PageItem> resolveByTypeForSite(String site, String type) {
+        log.info("site = {}, type = {}",site,type);
+
+        return Optional.ofNullable(catalogue.get(site).get(type));
+    }
+
+    @Override
+    public Optional<PageItem> resolveByAttr(String site, String attr) {
+        PageItem item;
+        HashMap<String, PageItem> stringPageItemHashMap = catalogue.get(site);
+        if (stringPageItemHashMap.containsKey(attr)) {
+
+            item = stringPageItemHashMap.get(attr);
+        } else {
+            item = null;
+        }
+        return Optional.ofNullable(item);
+    }
+
+
+    @Override
+    public boolean register(String site, JsonRule rule) {
+        try {
+
+            if (!catalogue.containsKey(site)) {
+                catalogue.put(site, new LinkedHashMap<>(1));
+            }
+
+            HashMap<String, PageItem> pageItemHashMap = catalogue.get(site);
+            for (PageItem pageItem : rule.getPage()) {
+                pageItemHashMap.put(pageItem.getType(), pageItem);
+            }
+
+            RuleMeta ruleMeta = new RuleMeta();
+            ruleMeta.setName(rule.getName());
+            ruleMeta.setPathProvider(rule.getPath_provider());
+            ruleMeta.setUrl(rule.getUrl());
+            meta.put(site, ruleMeta);
+
+        } catch (Exception ex) {
+            System.err.println(String.format("Exception occur, catalogue will be cleaned: %s", ex));
+
+            catalogue.remove(site);
+
+            for (PageItem item : rule.getPage()) {
+                meta.remove(item.getType());
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public Optional<Set<String>> availableTypes(String site) {
+
+        Optional<JsonRule> jsonRuleOptional = ruleDao.get(site);
+        if (((Optional<JsonRule>) jsonRuleOptional).isPresent()) {
+            HashSet<String> types = getTypes(jsonRuleOptional);
+
+            return Optional.of(types);
+        }
+        return Optional.empty();
+    }
+
+
+    @Override
+    public Optional<Set<String>> availableTypes(Integer site) {
+
+        Optional<JsonRule> jsonRuleOptional = ruleDao.getById(site);
+        if (((Optional<JsonRule>) jsonRuleOptional).isPresent()) {
+            HashSet<String> types = getTypes(jsonRuleOptional);
+
+            return Optional.of(types);
+        }
+        return Optional.empty();
+    }
+
+    private HashSet<String> getTypes(Optional<JsonRule> jsonRuleOptional) {
+        HashSet<String> types = new HashSet<>();
+        JsonRule rule = jsonRuleOptional.get();
+
+        for (PageItem item : rule.getPage()) {
+            types.add(item.getType());
+        }
+        return types;
+    }
+
+    public void refresh() {
+        init();
+    }
+}

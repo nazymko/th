@@ -1,0 +1,64 @@
+{
+  "name": "ScienceDaily",
+  "url": "http://www.sciencedaily.com/",
+  "root": "front_page",
+  "path_provider": "css",
+  "page": [
+    {
+      "type": "front_page",
+      "url": "http://www.sciencedaily.com/",
+      "attrs": [
+        {
+          "path": ".menu-item .menu-topics li a",
+          "attr": "href",
+          "type": "category_list"
+        },
+        {
+          "path": ".menu-item .menu-topics li a",
+          "attr": "text",
+          "type": "category_name"
+        }
+      ]
+    },
+    {
+      "type": "category_list",
+      "attrs": [
+        {
+          "path": "#heroes .hero a",
+          "attr": "href",
+          "type": "article"
+        },
+        {
+          "path": ".latest-head a",
+          "attr": "href",
+          "type": "article"
+        }
+      ]
+    },
+    {
+      "type": "article",
+      "attrs": [
+        {
+          "path": "#headline",
+          "attr": "text",
+          "type": "title"
+        },
+        {
+          "path": "#subtitle",
+          "attr": "text",
+          "type": "subtitle"
+        },
+        {
+          "path": "#date_posted",
+          "attr": "text",
+          "type": "post_date"
+        },
+        {
+          "path": "#story_text",
+          "attr": "text",
+          "type": "body"
+        }
+      ]
+    }
+  ]
+}

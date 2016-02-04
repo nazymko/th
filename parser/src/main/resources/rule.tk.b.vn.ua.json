@@ -1,0 +1,58 @@
+{
+  "name": "][akep",
+  "path_provider": "css",
+  "page": [
+    {
+      "type": "front_page",
+      "url": "http://tcb.vn.ua",
+      "attrs": [
+        {
+          "path": ".travels_meny .myul li a",
+          "attr": "href",
+          "type": "category_list"
+        }
+      ]
+    },
+    {
+      "type": "category_list",
+      "attrs": [
+        {
+          "path": ".tripak a",
+          "attr": "href",
+          "type": "article"
+        }
+      ]
+    },
+    {
+      "type": "article",
+      "attrs": [
+        {
+          "path": ".entry td h3",
+          "attr": "text",
+          "type": "article-title"
+        },
+        {
+          "path": ".newcontent a[href^=https://tcb.vn.ua]",
+          "attr": "href",
+          "type": "slave_page"
+        },
+        {
+          "path": ".inforr",
+          "attr": "text",
+          "type": "parser#info-block"
+        }
+      ]
+    },
+    {
+      "type": "slave_page",
+      "attrs": [
+        {
+          "path": ".tripak a",
+          "attr": "href",
+          "type": "article"
+        }
+      ]
+    }
+  ],
+  "url": "http://tcb.vn.ua"
+}
