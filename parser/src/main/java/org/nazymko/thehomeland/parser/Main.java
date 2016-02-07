@@ -58,7 +58,7 @@ public class Gen {
         parser.init();
 
         parser.setPageDao(pageDao);
-        parser.schedule("][akep", "https://xakep.ru/");
+        parser.create("][akep", "https://xakep.ru/");
 
     }
 }

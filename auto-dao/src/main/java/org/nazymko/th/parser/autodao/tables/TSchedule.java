@@ -34,7 +34,7 @@ import org.nazymko.th.parser.autodao.tables.records.TScheduleRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TSchedule extends TableImpl<TScheduleRecord> {
 
-	private static final long serialVersionUID = 468656166;
+	private static final long serialVersionUID = 1419494891;
 
 	/**
 	 * The reference instance of <code>thehomeland.t_schedule</code>
@@ -75,9 +75,14 @@ public class TSchedule extends TableImpl<TScheduleRecord> {
 	public final TableField<TScheduleRecord, Timestamp> START_DATE = createField("start_date", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
 
 	/**
-	 * The column <code>thehomeland.t_schedule.period</code>.
+	 * The column <code>thehomeland.t_schedule.cron</code>.
 	 */
-	public final TableField<TScheduleRecord, String> PERIOD = createField("period", org.jooq.impl.SQLDataType.VARCHAR.length(64), this, "");
+	public final TableField<TScheduleRecord, String> CRON = createField("cron", org.jooq.impl.SQLDataType.VARCHAR.length(64), this, "");
+
+	/**
+	 * The column <code>thehomeland.t_schedule.is_enabled</code>.
+	 */
+	public final TableField<TScheduleRecord, Boolean> IS_ENABLED = createField("is_enabled", org.jooq.impl.SQLDataType.BOOLEAN, this, "");
 
 	/**
 	 * Create a <code>thehomeland.t_schedule</code> table reference

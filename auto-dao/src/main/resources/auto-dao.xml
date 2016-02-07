@@ -34,6 +34,16 @@
                  (A Java regular expression. Use the pipe to separate several expressions).
                  Excludes match before includes -->
             <excludes></excludes>
+
+
+            <!-- Associate data type rewrites with database columns -->
+            <forcedTypes>
+                <forcedType>
+                    <name>BOOLEAN</name>
+                    <expression>.*\.is_enabled</expression>
+                    <types>.*</types>
+                </forcedType>
+            </forcedTypes>
         </database>
 
         <target>
@@ -41,7 +51,7 @@
             <packageName>org.nazymko.th.parser.autodao</packageName>
 
             <!-- The destination directory of your generated classes -->
-            <directory>C:\Users\user\IdeaProjects\auto-dao\src\main\java\</directory>
+            <directory>C:\Users\user\IdeaProjects\th\auto-dao\src\main\java\</directory>
         </target>
     </generator>
 </configuration>

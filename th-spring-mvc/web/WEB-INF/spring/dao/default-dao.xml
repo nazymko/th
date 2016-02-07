@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="ruleDao" class="org.nazymko.thehomeland.parser.db.dao.RuleDao"/>
+    <bean id="pageDao" class="org.nazymko.thehomeland.parser.db.dao.PageDao"/>
+    <bean id="attributeDao" class="org.nazymko.thehomeland.parser.db.dao.AttributeDao"/>
+    <bean id="siteDao" class="org.nazymko.thehomeland.parser.db.dao.SiteDao"/>
+    <bean id="historyHolder" class="org.nazymko.thehomeland.parser.topology.HistoryHolder"/>
+    <bean id="scheduleDao" class="org.nazymko.thehomeland.parser.db.dao.ScheduleDao"/>
+
+</beans>

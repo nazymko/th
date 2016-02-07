@@ -14,7 +14,6 @@ import org.nazymko.thehomeland.parser.topology.History;
 import org.nazymko.thehomeland.parser.topology.RuleResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.sql.Date;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -69,11 +68,11 @@ public class THLParser {
         resolver.init();
     }
 
-    public boolean schedule(String site, String page) {
-        return schedule(site, page, "front_page", -1);
+    public Runnable create(String site, String page) {
+        return create(site, page, "front_page", -1);
     }
 
-    public boolean schedule(String site, String page, String type, Integer sourcePage) {
+    public Runnable create(String site, String page, String type, Integer sourcePage) {
 
         if (isActive()) {
             if (!historyDao.visited(page) || needToRefresh(page)) {
@@ -88,17 +87,17 @@ public class THLParser {
                 task.setSiteDao(siteDao);
                 task.setAttributeDao(attributeDao);
 
-                threadPool.submit(task);
+                submit(task);
 
-                return true;
-            } else {
-                log.warn("Rejected schedule to add {}. time to live check return false", page);
-                return false;
+                return task;
             }
-        } else {
-            log.warn("Rejected schedule to add {}. Parser is not active", page);
-            return false;
         }
+
+        return null;
+    }
+
+    private void submit(Runnable task) {
+        threadPool.submit(task);
     }
 
     private boolean needToRefresh(String page) {

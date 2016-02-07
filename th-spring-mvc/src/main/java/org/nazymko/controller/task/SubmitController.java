@@ -32,7 +32,7 @@ public class SubmitController {
 
         Site site = siteDao.get(id).get();
 
-        parser.schedule(site.getName(), site.getUrl());
+        parser.create(site.getName(), site.getUrl());
 
         model.addAttribute("site", site);
 

@@ -49,7 +49,7 @@ public class LinkProcessorListener implements AttrListener {
 
         try {
             String newPage = makeUrl(site, link);
-            instance.schedule(site, newPage, attrMeaning, sourcePage);
+            instance.create(site, newPage, attrMeaning, sourcePage);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

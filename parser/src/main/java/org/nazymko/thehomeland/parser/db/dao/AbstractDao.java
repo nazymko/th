@@ -10,6 +10,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
+import java.sql.Timestamp;
 import java.util.Optional;
 
 /**
@@ -38,4 +39,7 @@ public abstract class AbstractDao<K, T> implements Dao<K, T> {
         return DSL.using(getSource(), SQLDialect.MYSQL);
     }
 
+    protected Timestamp currentTimeStamp() {
+        return new Timestamp(System.currentTimeMillis());
+    }
 }

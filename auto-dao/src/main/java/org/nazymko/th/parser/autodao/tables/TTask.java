@@ -11,6 +11,7 @@ import java.util.List;
 import javax.annotation.Generated;
 
 import org.jooq.Field;
+import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -34,7 +35,7 @@ import org.nazymko.th.parser.autodao.tables.records.TTaskRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TTask extends TableImpl<TTaskRecord> {
 
-	private static final long serialVersionUID = -983044422;
+	private static final long serialVersionUID = -1154205374;
 
 	/**
 	 * The reference instance of <code>thehomeland.t_task</code>
@@ -80,6 +81,11 @@ public class TTask extends TableImpl<TTaskRecord> {
 	public final TableField<TTaskRecord, String> MESSAGE = createField("message", org.jooq.impl.SQLDataType.CLOB, this, "");
 
 	/**
+	 * The column <code>thehomeland.t_task.canseled</code>.
+	 */
+	public final TableField<TTaskRecord, Byte> CANSELED = createField("canseled", org.jooq.impl.SQLDataType.TINYINT.nullable(false).defaulted(true), this, "");
+
+	/**
 	 * Create a <code>thehomeland.t_task</code> table reference
 	 */
 	public TTask() {
@@ -123,6 +129,14 @@ public class TTask extends TableImpl<TTaskRecord> {
 	@Override
 	public List<UniqueKey<TTaskRecord>> getKeys() {
 		return Arrays.<UniqueKey<TTaskRecord>>asList(Keys.KEY_T_TASK_PRIMARY);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<ForeignKey<TTaskRecord, ?>> getReferences() {
+		return Arrays.<ForeignKey<TTaskRecord, ?>>asList(Keys.T_TASK_T_SCHEDULE_ID_FK);
 	}
 
 	/**
