@@ -18,6 +18,8 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.*;
 
 /**
@@ -25,6 +27,12 @@ import java.util.concurrent.*;
  */
 @Log4j2(topic = THLParser.THL_PARSER_MARKER)
 public class THLParser {
+
+    public static final String signature;
+
+    static {
+        signature = UUID.randomUUID().toString();
+    }
 
     @Getter
     @Setter
@@ -68,35 +76,39 @@ public class THLParser {
         resolver.init();
     }
 
-    public Runnable create(String site, String page) {
+    public Optional<Runnable> create(String site, String page) {
         return create(site, page, "front_page", -1);
     }
 
-    public Runnable create(String site, String page, String type, Integer sourcePage) {
 
-        if (isActive()) {
-            if (!historyDao.visited(page) || needToRefresh(page)) {
-
-                pageDao.save(new Page(site, page, type, sourcePage));
-
-                CssPageTask task = new CssPageTask(page, listeners, historyDao);
-
-                task.setRuleResolver(resolver);
-                task.setPageDao(pageDao);
-                task.setRuleDao(ruleDao);
-                task.setSiteDao(siteDao);
-                task.setAttributeDao(attributeDao);
-
-                submit(task);
-
-                return task;
-            }
-        }
-
-        return null;
+    public Optional<Runnable> getRunnableWithoutCheck(String site, String page) {
+        return getRunnableWithoutCheck(site, page, "front_page", -1);
     }
 
-    private void submit(Runnable task) {
+    public Optional<Runnable> create(String site, String page, String type, Integer sourcePage) {
+
+        if (!historyDao.visited(page) || needToRefresh(page)) {
+            return getRunnableWithoutCheck(site, page, type, sourcePage);
+        }
+
+        return Optional.empty();
+    }
+
+    public Optional<Runnable> getRunnableWithoutCheck(String site, String page, String type, Integer sourcePage) {
+        pageDao.save(new Page(site, page, type, sourcePage));
+
+        CssPageTask task = new CssPageTask(page, listeners, historyDao);
+
+        task.setRuleResolver(resolver);
+        task.setPageDao(pageDao);
+        task.setRuleDao(ruleDao);
+        task.setSiteDao(siteDao);
+        task.setAttributeDao(attributeDao);
+
+        return Optional.of(task);
+    }
+
+    public void submit(Runnable task) {
         threadPool.submit(task);
     }
 
@@ -116,5 +128,9 @@ public class THLParser {
         return infoList;
 
 
+    }
+
+    public Optional<Runnable> getRunnableWithoutCheck(String url, String startPage, String pageType) {
+        return getRunnableWithoutCheck(url, startPage, pageType, -1);
     }
 }

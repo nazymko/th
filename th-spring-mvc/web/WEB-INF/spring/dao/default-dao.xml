@@ -9,5 +9,6 @@
     <bean id="siteDao" class="org.nazymko.thehomeland.parser.db.dao.SiteDao"/>
     <bean id="historyHolder" class="org.nazymko.thehomeland.parser.topology.HistoryHolder"/>
     <bean id="scheduleDao" class="org.nazymko.thehomeland.parser.db.dao.ScheduleDao"/>
+    <bean id="taskDao" class="org.nazymko.thehomeland.parser.db.dao.TaskDao"/>
 
 </beans>

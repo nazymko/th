@@ -66,7 +66,7 @@ public class Keys {
 
 	public static final ForeignKey<AttributeDataRecord, RuleRecord> ATTRIBUTE_DATA_IBFK_1 = ForeignKeys0.ATTRIBUTE_DATA_IBFK_1;
 	public static final ForeignKey<PageRecord, SiteRecord> PAGE_IBFK_1 = ForeignKeys0.PAGE_IBFK_1;
-	public static final ForeignKey<TTaskRecord, TScheduleRecord> T_TASK_T_SCHEDULE_ID_FK = ForeignKeys0.T_TASK_T_SCHEDULE_ID_FK;
+	public static final ForeignKey<TTaskRecord, TScheduleRecord> T_TASK_IBFK_1 = ForeignKeys0.T_TASK_IBFK_1;
 
 	// -------------------------------------------------------------------------
 	// [#1459] distribute members to avoid static initialisers > 64kb
@@ -93,6 +93,6 @@ public class Keys {
 	private static class ForeignKeys0 extends AbstractKeys {
 		public static final ForeignKey<AttributeDataRecord, RuleRecord> ATTRIBUTE_DATA_IBFK_1 = createForeignKey(org.nazymko.th.parser.autodao.Keys.KEY_RULE_PRIMARY, AttributeData.ATTRIBUTE_DATA, AttributeData.ATTRIBUTE_DATA.RULE_ID);
 		public static final ForeignKey<PageRecord, SiteRecord> PAGE_IBFK_1 = createForeignKey(org.nazymko.th.parser.autodao.Keys.KEY_SITE_PRIMARY, Page.PAGE, Page.PAGE.SITE_ID);
-		public static final ForeignKey<TTaskRecord, TScheduleRecord> T_TASK_T_SCHEDULE_ID_FK = createForeignKey(org.nazymko.th.parser.autodao.Keys.KEY_T_SCHEDULE_PRIMARY, TTask.T_TASK, TTask.T_TASK.SCHEDULE_SOURCE_ID);
+		public static final ForeignKey<TTaskRecord, TScheduleRecord> T_TASK_IBFK_1 = createForeignKey(org.nazymko.th.parser.autodao.Keys.KEY_T_SCHEDULE_PRIMARY, TTask.T_TASK, TTask.T_TASK.SCHEDULE_SOURCE_ID);
 	}
 }

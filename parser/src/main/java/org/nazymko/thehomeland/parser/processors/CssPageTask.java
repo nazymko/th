@@ -6,6 +6,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.nazymko.thehomeland.parser.THLParser;
 import org.nazymko.thehomeland.parser.db.dao.AttributeDao;
 import org.nazymko.thehomeland.parser.db.dao.PageDao;
 import org.nazymko.thehomeland.parser.db.dao.RuleDao;
@@ -61,6 +62,7 @@ public class CssPageTask implements Runnable, InfoSource {
     private String page;
     private String type;
     private String site;
+
 
     public static final int timeout = 10_000;
 

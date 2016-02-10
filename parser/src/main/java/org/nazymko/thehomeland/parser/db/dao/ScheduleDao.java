@@ -29,11 +29,17 @@ public class ScheduleDao extends AbstractDao<Integer, TScheduleRecord> {
 
     @Override
     public Integer save(TScheduleRecord obj) {
+        getDslContext().attach(obj);
         return obj.store();
     }
 
     public List<TScheduleRecord> getSchedules(Integer siteId) {
         return getDslContext().selectFrom(T_SCHEDULE).where(T_SCHEDULE.SITEID.eq(siteId)).fetch();
+
+    }
+
+    public List<TScheduleRecord> getAll() {
+        return getDslContext().selectFrom(T_SCHEDULE).fetch();
 
     }
 
@@ -47,9 +53,9 @@ public class ScheduleDao extends AbstractDao<Integer, TScheduleRecord> {
 
         Result<TTaskRecord> tTaskRecords = getDslContext()
                 .selectFrom(T_TASK)
-                .where(T_TASK.FINISH_AT.isNull())
-                .and(T_TASK.START_AT.lessOrEqual(currentTimeStamp()))
-                .groupBy(T_TASK.SCHEDULE_SOURCE_ID)
+//                .where(T_TASK.FINISH_AT.isNull())
+//                .where(T_TASK.START_AT.lessOrEqual(currentTimeStamp()))
+//                .groupBy(T_TASK.SCHEDULE_SOURCE_ID)
                 .fetch();
 
         Map<TScheduleRecord, TTaskRecord> recordMap = new HashMap<>();
@@ -71,6 +77,8 @@ public class ScheduleDao extends AbstractDao<Integer, TScheduleRecord> {
 
         return recordMap;
     }
+
+
 
 
 }

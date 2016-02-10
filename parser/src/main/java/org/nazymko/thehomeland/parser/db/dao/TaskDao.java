@@ -28,6 +28,7 @@ public class TaskDao extends AbstractDao<Integer, TTaskRecord> {
 
     @Override
     public Integer save(TTaskRecord obj) {
+        getDslContext().attach(obj);
         if (obj.store() == 0) {
             log.error("Object didn't was saved {}", obj);
         }

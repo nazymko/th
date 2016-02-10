@@ -35,7 +35,7 @@ import org.nazymko.th.parser.autodao.tables.records.TTaskRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TTask extends TableImpl<TTaskRecord> {
 
-	private static final long serialVersionUID = -1154205374;
+	private static final long serialVersionUID = -1566602826;
 
 	/**
 	 * The reference instance of <code>thehomeland.t_task</code>
@@ -56,19 +56,14 @@ public class TTask extends TableImpl<TTaskRecord> {
 	public final TableField<TTaskRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
 	/**
+	 * The column <code>thehomeland.t_task.start_at</code>.
+	 */
+	public final TableField<TTaskRecord, Timestamp> START_AT = createField("start_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
+
+	/**
 	 * The column <code>thehomeland.t_task.schedule_source_id</code>.
 	 */
 	public final TableField<TTaskRecord, Integer> SCHEDULE_SOURCE_ID = createField("schedule_source_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
-
-	/**
-	 * The column <code>thehomeland.t_task.start_at</code>.
-	 */
-	public final TableField<TTaskRecord, Timestamp> START_AT = createField("start_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaulted(true), this, "");
-
-	/**
-	 * The column <code>thehomeland.t_task.finish_at</code>.
-	 */
-	public final TableField<TTaskRecord, Timestamp> FINISH_AT = createField("finish_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaulted(true), this, "");
 
 	/**
 	 * The column <code>thehomeland.t_task.status</code>.
@@ -81,9 +76,14 @@ public class TTask extends TableImpl<TTaskRecord> {
 	public final TableField<TTaskRecord, String> MESSAGE = createField("message", org.jooq.impl.SQLDataType.CLOB, this, "");
 
 	/**
-	 * The column <code>thehomeland.t_task.canseled</code>.
+	 * The column <code>thehomeland.t_task.is_enabled</code>.
 	 */
-	public final TableField<TTaskRecord, Byte> CANSELED = createField("canseled", org.jooq.impl.SQLDataType.TINYINT.nullable(false).defaulted(true), this, "");
+	public final TableField<TTaskRecord, Boolean> IS_ENABLED = createField("is_enabled", org.jooq.impl.SQLDataType.BOOLEAN, this, "");
+
+	/**
+	 * The column <code>thehomeland.t_task.finish_at</code>.
+	 */
+	public final TableField<TTaskRecord, Timestamp> FINISH_AT = createField("finish_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
 
 	/**
 	 * Create a <code>thehomeland.t_task</code> table reference
@@ -136,7 +136,7 @@ public class TTask extends TableImpl<TTaskRecord> {
 	 */
 	@Override
 	public List<ForeignKey<TTaskRecord, ?>> getReferences() {
-		return Arrays.<ForeignKey<TTaskRecord, ?>>asList(Keys.T_TASK_T_SCHEDULE_ID_FK);
+		return Arrays.<ForeignKey<TTaskRecord, ?>>asList(Keys.T_TASK_IBFK_1);
 	}
 
 	/**

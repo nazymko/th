@@ -36,7 +36,7 @@ public class THParser {
         model.addAttribute("page", page);
         model.addAttribute("size", size);
 
-        return "parser/activity";
+        return "task/activity";
     }
 
 

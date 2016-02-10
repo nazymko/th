@@ -29,7 +29,7 @@ import org.nazymko.th.parser.autodao.tables.TSchedule;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TScheduleRecord extends UpdatableRecordImpl<TScheduleRecord> implements Record7<Integer, Integer, String, String, Timestamp, String, Boolean> {
 
-	private static final long serialVersionUID = 1984206665;
+	private static final long serialVersionUID = 153310180;
 
 	/**
 	 * Setter for <code>thehomeland.t_schedule.id</code>.
@@ -88,16 +88,16 @@ public class TScheduleRecord extends UpdatableRecordImpl<TScheduleRecord> implem
 	}
 
 	/**
-	 * Setter for <code>thehomeland.t_schedule.start_date</code>.
+	 * Setter for <code>thehomeland.t_schedule.start_at</code>.
 	 */
-	public void setStartDate(Timestamp value) {
+	public void setStartAt(Timestamp value) {
 		setValue(4, value);
 	}
 
 	/**
-	 * Getter for <code>thehomeland.t_schedule.start_date</code>.
+	 * Getter for <code>thehomeland.t_schedule.start_at</code>.
 	 */
-	public Timestamp getStartDate() {
+	public Timestamp getStartAt() {
 		return (Timestamp) getValue(4);
 	}
 
@@ -198,7 +198,7 @@ public class TScheduleRecord extends UpdatableRecordImpl<TScheduleRecord> implem
 	 */
 	@Override
 	public Field<Timestamp> field5() {
-		return TSchedule.T_SCHEDULE.START_DATE;
+		return TSchedule.T_SCHEDULE.START_AT;
 	}
 
 	/**
@@ -254,7 +254,7 @@ public class TScheduleRecord extends UpdatableRecordImpl<TScheduleRecord> implem
 	 */
 	@Override
 	public Timestamp value5() {
-		return getStartDate();
+		return getStartAt();
 	}
 
 	/**
@@ -314,7 +314,7 @@ public class TScheduleRecord extends UpdatableRecordImpl<TScheduleRecord> implem
 	 */
 	@Override
 	public TScheduleRecord value5(Timestamp value) {
-		setStartDate(value);
+		setStartAt(value);
 		return this;
 	}
 
@@ -365,14 +365,14 @@ public class TScheduleRecord extends UpdatableRecordImpl<TScheduleRecord> implem
 	/**
 	 * Create a detached, initialised TScheduleRecord
 	 */
-	public TScheduleRecord(Integer id, Integer siteid, String startPage, String pageType, Timestamp startDate, String cron, Boolean isEnabled) {
+	public TScheduleRecord(Integer id, Integer siteid, String startPage, String pageType, Timestamp startAt, String cron, Boolean isEnabled) {
 		super(TSchedule.T_SCHEDULE);
 
 		setValue(0, id);
 		setValue(1, siteid);
 		setValue(2, startPage);
 		setValue(3, pageType);
-		setValue(4, startDate);
+		setValue(4, startAt);
 		setValue(5, cron);
 		setValue(6, isEnabled);
 	}
