@@ -35,7 +35,7 @@ import org.nazymko.th.parser.autodao.tables.records.PageRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Page extends TableImpl<PageRecord> {
 
-	private static final long serialVersionUID = -1391431738;
+	private static final long serialVersionUID = 358247328;
 
 	/**
 	 * The reference instance of <code>thehomeland.page</code>
@@ -89,6 +89,11 @@ public class Page extends TableImpl<PageRecord> {
 	 * The column <code>thehomeland.page.sourcePage</code>.
 	 */
 	public final TableField<PageRecord, Integer> SOURCEPAGE = createField("sourcePage", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaulted(true), this, "");
+
+	/**
+	 * The column <code>thehomeland.page.task_run_id</code>.
+	 */
+	public final TableField<PageRecord, Integer> TASK_RUN_ID = createField("task_run_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaulted(true), this, "");
 
 	/**
 	 * Create a <code>thehomeland.page</code> table reference

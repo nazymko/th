@@ -1,5 +1,8 @@
 package org.nazymko.thehomeland.parser.db.dao;
 
+import lombok.extern.log4j.Log4j2;
+import org.jooq.util.derby.sys.Sys;
+import org.nazymko.th.parser.autodao.tables.records.PageRecord;
 import org.nazymko.thehomeland.parser.db.model.Page;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -12,10 +15,13 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
+import static org.nazymko.th.parser.autodao.tables.Page.PAGE;
+
 
 /**
  * Created by nazymko
  */
+@Log4j2
 public class PageDao extends AbstractDao<String, Page> {
     public static final String PAGE_BY_ID = "SELECT url,(SELECT url FROM site s WHERE s.id=p.site_id) AS site_url,id,type,registered_at,visited_at FROM page p WHERE p.id=:id";
     public static final String NEWEST_PAGE_BY_URL = "SELECT url,(SELECT url FROM site s WHERE s.id=p.site_id) AS site_url,id,type,version,visited_at,registered_at FROM page p WHERE p.url=:url AND version = (SELECT MAX(version) FROM page WHERE url = :url)";
@@ -53,6 +59,7 @@ public class PageDao extends AbstractDao<String, Page> {
 
     @Override
     public String save(Page obj) {
+
         MapSqlParameterSource source = new MapSqlParameterSource();
         int version = getVersion(obj.getPage());
 
@@ -119,5 +126,10 @@ public class PageDao extends AbstractDao<String, Page> {
                         return readPage(resultSet);
                     }
                 });
+    }
+
+    public PageRecord getPageByUrlAndSession(String link, Integer sessionKey) {
+        PageRecord pageRecord = getDslContext().selectFrom(PAGE).where(PAGE.URL.eq(link)).and(PAGE.TASK_RUN_ID.eq(sessionKey)).fetchOne();
+        return pageRecord;
     }
 }

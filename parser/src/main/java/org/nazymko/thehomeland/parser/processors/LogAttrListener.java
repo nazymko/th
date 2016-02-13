@@ -15,7 +15,7 @@ public class LogAttrListener implements AttrListener {
     }
 
     @Override
-    public void process(Integer pageId, Attribute attribute) {
+    public void process(Integer pageId, Attribute attribute, Integer runId) {
         log.info("{} listener: {}: " + "current page '{}', attr '{}', value '{}'", threadName(), identifier(), attribute.getPageId(), attribute.getAttrMeaning(), attribute.getAttrValue().substring(0, Math.min(20, attribute.getAttrValue().length())));
     }
 

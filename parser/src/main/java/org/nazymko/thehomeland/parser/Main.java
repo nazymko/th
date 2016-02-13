@@ -48,7 +48,7 @@ public class Gen {
         ruleDao.setSiteDao(siteDao);
         ruleDao.save(jsonRule);
 
-        THLParser parser = THLParser.getInstance();
+        THLParserRunner parser = THLParserRunner.getInstance();
 
         parser.setSiteDao(siteDao);
         parser.setRuleDao(ruleDao);

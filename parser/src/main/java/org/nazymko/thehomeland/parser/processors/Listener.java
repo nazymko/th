@@ -8,7 +8,6 @@ import org.nazymko.thehomeland.parser.db.model.Attribute;
 public interface Listener {
     boolean support(String type);
 
-    void process(Integer pageId, Attribute attribute);
-
+    void process(Integer pageId, Attribute attribute, Integer runId);
 
 }

@@ -1,10 +1,9 @@
 package org.nazymko.controller;
 
-import org.nazymko.thehomeland.parser.THLParser;
+import org.nazymko.thehomeland.parser.THLParserRunner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -16,7 +15,7 @@ import java.util.List;
 @RequestMapping("/")
 public class Index {
     @Resource
-    THLParser parser;
+    THLParserRunner parser;
 
     @RequestMapping
     public String statusPage(Model model) {

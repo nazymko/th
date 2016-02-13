@@ -2,7 +2,7 @@ package org.nazymko.thehomeland.parser.processors;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
-import org.nazymko.thehomeland.parser.THLParser;
+import org.nazymko.thehomeland.parser.THLParserRunner;
 import org.nazymko.thehomeland.parser.db.dao.SiteDao;
 import org.nazymko.thehomeland.parser.db.model.Attribute;
 
@@ -26,7 +26,7 @@ public class LinkProcessorListener implements AttrListener {
     @Resource
     private SiteDao siteDao;
     @Resource
-    THLParser instance;
+    THLParserRunner instance;
 
     @Override
     public boolean support(String type) {
@@ -41,21 +41,20 @@ public class LinkProcessorListener implements AttrListener {
     }
 
     @Override
-    public void process(Integer sourcePage, Attribute attribute) {
+    public void process(Integer sourcePage, Attribute attribute, Integer runId) {
 
-        String site = siteDao.get(attribute.getSiteId()).get().getUrl();
-        String link = attribute.getAttrValue();
-        String attrMeaning = attribute.getAttrMeaning();
+        String pageType = attribute.getAttrMeaning();
 
         try {
-            String newPage = makeUrl(site, link);
-            instance.create(site, newPage, attrMeaning, sourcePage);
+            String site = siteDao.get(attribute.getSiteId()).get().getUrl();
+            String page = fixUrlfNeed(site, attribute.getAttrValue());
+            instance.schedule(site, page, pageType, sourcePage, runId);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
     }
 
-    private String makeUrl(String site, String page) throws MalformedURLException {
+    private String fixUrlfNeed(String site, String page) throws MalformedURLException {
         String result = page;
         if (page != null
                 && !page.startsWith("http://")

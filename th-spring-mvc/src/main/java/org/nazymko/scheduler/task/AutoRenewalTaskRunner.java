@@ -2,10 +2,8 @@ package org.nazymko.scheduler.task;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
-import org.nazymko.th.parser.autodao.tables.TTask;
 import org.nazymko.th.parser.autodao.tables.records.TScheduleRecord;
 import org.nazymko.th.parser.autodao.tables.records.TTaskRecord;
-import org.nazymko.thehomeland.parser.THLParser;
 import org.nazymko.thehomeland.parser.db.dao.ScheduleDao;
 import org.nazymko.thehomeland.parser.db.dao.TaskDao;
 import org.springframework.scheduling.support.CronTrigger;
@@ -13,7 +11,6 @@ import org.springframework.scheduling.support.SimpleTriggerContext;
 
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.Optional;
 
 /**
  * Created by nazymko

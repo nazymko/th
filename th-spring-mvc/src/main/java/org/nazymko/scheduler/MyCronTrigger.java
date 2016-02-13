@@ -1,11 +1,11 @@
 package org.nazymko.scheduler;
 
 import lombok.extern.log4j.Log4j2;
-import org.nazymko.scheduler.task.AutoRenewalTaskRunner;
 import org.nazymko.th.parser.autodao.tables.TSchedule;
 import org.nazymko.th.parser.autodao.tables.records.TScheduleRecord;
 import org.nazymko.th.parser.autodao.tables.records.TTaskRecord;
-import org.nazymko.thehomeland.parser.THLParser;
+import org.nazymko.thehomeland.parser.THLParserRunner;
+import org.nazymko.thehomeland.parser.TaskFactory;
 import org.nazymko.thehomeland.parser.db.dao.ScheduleDao;
 import org.nazymko.thehomeland.parser.db.dao.SiteDao;
 import org.nazymko.thehomeland.parser.db.dao.TaskDao;
@@ -20,13 +20,18 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.nazymko.utils.TimeStampHelper.*;
+
 /**
  * Created by nazymko
  */
 @Log4j2
 public class MyCronTrigger {
+
     @Resource
-    THLParser thlParser;
+    private TaskFactory taskFac;
+    @Resource
+    THLParserRunner runner;
     @Resource
     TSchedule tSchedule;
     @Resource
@@ -39,56 +44,41 @@ public class MyCronTrigger {
     // * */1 * * * *  - every minute
     @Scheduled(cron = "0 */1 * * * *")
     public void run() {
-        log.debug("Cron trigger started");
+        log.info("Cron trigger started");
 
         Map<TScheduleRecord, TTaskRecord> activeTasks = scheduleDao.getActiveTasks();
 
         log.info("Found {} schedule records", activeTasks.size());
-        for (TScheduleRecord tScheduleRecord : activeTasks.keySet()) {
-            TTaskRecord tTaskRecord = activeTasks.get(tScheduleRecord);
-            if (tTaskRecord != null) {
-                Optional<Site> site = siteDao.get(tScheduleRecord.getSiteid());
-                if (site.isPresent()) {
-                    Optional<Runnable> task;
+        for (TScheduleRecord scheduleRecord : activeTasks.keySet()) {
+            TTaskRecord tTaskRecord = activeTasks.get(scheduleRecord);
+            if (tTaskRecord == null) {
 
-                    if (tScheduleRecord.getPageType() == null) {
-                        task = thlParser.getRunnableWithoutCheck(site.get().getUrl(), tScheduleRecord.getStartPage(), tScheduleRecord.getPageType());
-                    } else {
-                        task = thlParser.getRunnableWithoutCheck(site.get().getUrl(), tScheduleRecord.getStartPage(), tScheduleRecord.getPageType(), -1);
-                    }
-
-                    if (!task.isPresent()) {
-                        log.info("Page {} should not be visited.", site.get().getUrl());
-                        return;
-                    }
-
-                    AutoRenewalTaskRunner taskRunner = new AutoRenewalTaskRunner();
-                    taskRunner.set_task(task.get());
-                    taskRunner.setSource(tTaskRecord);
-                    taskRunner.setTaskDao(taskDao);
-
-                    thlParser.submit(taskRunner);
-
-                } else {
-                    log.error("Site with id {} doesn't exist ! Task starting interrupted", tScheduleRecord.getSiteid());
-                }
-            } else {
-
-                log.info("Run task missing for {}", tScheduleRecord);
-                Date date = new CronTrigger(tScheduleRecord.getCron()).nextExecutionTime(new SimpleTriggerContext());
+                log.info("Run task missing for {}", scheduleRecord);
+                Date date = new CronTrigger(scheduleRecord.getCron()).nextExecutionTime(new SimpleTriggerContext());
+                log.info("Next run scheduled for {}", date);
                 Timestamp timestamp = new Timestamp(date.getTime());
 
 
                 //schedule next run
                 TTaskRecord newRecord = new TTaskRecord();
-                newRecord.setScheduleSourceId(tScheduleRecord.getId());
+                newRecord.setScheduleSourceId(scheduleRecord.getId());
                 newRecord.setStartAt(timestamp);
-//                newRecord.setInstanceId(THLParser.signature);
                 newRecord.setIsEnabled(true);
 
                 taskDao.save(newRecord);
+                continue;
+            } else if (tTaskRecord.getStartAt().before(now())) {
+                Optional<Site> site = siteDao.get(scheduleRecord.getSiteid());
+                if (site.isPresent()) {
+                    Optional<Runnable> task;//Ok, lets start the job
+                    Runnable runnable = taskFac.makeScheduletTastk(scheduleRecord.getStartPage(), scheduleRecord.getPageType(), -1, tTaskRecord.getId());
+                    runner.submit(runnable);
 
+                } else {
+                    log.error("Site with id {} doesn't exist ! Task starting interrupted", scheduleRecord.getSiteid());
+                }
             }
+
         }
     }
 

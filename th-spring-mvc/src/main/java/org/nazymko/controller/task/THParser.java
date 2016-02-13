@@ -1,6 +1,6 @@
 package org.nazymko.controller.task;
 
-import org.nazymko.thehomeland.parser.THLParser;
+import org.nazymko.thehomeland.parser.THLParserRunner;
 import org.nazymko.thehomeland.parser.db.dao.PageDao;
 import org.nazymko.thehomeland.parser.db.model.Page;
 import org.springframework.stereotype.Controller;
@@ -20,7 +20,7 @@ import java.util.List;
 public class THParser {
 
     @Resource
-    THLParser parser;
+    THLParserRunner parser;
     @Resource
     PageDao pageDao;
 

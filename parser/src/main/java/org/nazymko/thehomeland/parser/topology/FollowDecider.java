@@ -1,6 +1,7 @@
 package org.nazymko.thehomeland.parser.topology;
 
 import lombok.extern.log4j.Log4j2;
+import org.nazymko.th.parser.autodao.tables.records.PageRecord;
 import org.nazymko.thehomeland.parser.db.dao.PageDao;
 import org.nazymko.thehomeland.parser.db.model.Page;
 
@@ -16,7 +17,7 @@ import java.util.Optional;
  * In memory implementation
  */
 @Log4j2
-public class HistoryHolder implements History {
+public class FollowDecider implements History {
     @Resource
     PageDao pageDao;
 
@@ -48,5 +49,23 @@ public class HistoryHolder implements History {
 
         pageDao.visit(link);
 
+    }
+
+    @Override
+    public void visitBySession(String link, Integer sessionKey) {
+        PageRecord pageRecord = pageDao.getPageByUrlAndSession(link, sessionKey);
+
+        if (pageRecord != null) {
+            pageRecord.setVisitedAt(new Timestamp(System.currentTimeMillis()));
+            pageRecord.store();
+        } else {
+            log.info("Page {} with session {} was not found.", link, sessionKey);
+        }
+    }
+
+    @Override
+    public boolean isVisitedInSession(String link, Integer sessionKey) {
+        PageRecord pageByUrlAndSession = pageDao.getPageByUrlAndSession(link, sessionKey);
+        return pageByUrlAndSession != null && pageByUrlAndSession.getVisitedAt() == null;
     }
 }

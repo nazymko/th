@@ -6,7 +6,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.nazymko.thehomeland.parser.THLParser;
 import org.nazymko.thehomeland.parser.db.dao.AttributeDao;
 import org.nazymko.thehomeland.parser.db.dao.PageDao;
 import org.nazymko.thehomeland.parser.db.dao.RuleDao;
@@ -22,7 +21,6 @@ import org.nazymko.thehomeland.parser.topology.RuleResolver;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -34,9 +32,10 @@ import java.util.function.Consumer;
  * Created by nazymko
  */
 @Log4j2
-public class CssPageTask implements Runnable, InfoSource {
-
+public class ParserTask implements Runnable, InfoSource {
+    @Setter
     List<AttrListener> listeners = new ArrayList<>();
+    @Setter
     private History historyDao;
 
     @Setter
@@ -45,10 +44,6 @@ public class CssPageTask implements Runnable, InfoSource {
     @Setter
     @Resource
     private SiteDao siteDao;
-    private JsonRule rule;
-    private Integer siteId = -1;
-    private Integer pageId = -1;
-    private Integer ruleId = -1;
     @Setter
     @Resource
     private PageDao pageDao;
@@ -57,29 +52,55 @@ public class CssPageTask implements Runnable, InfoSource {
     private RuleDao ruleDao;
     @Setter
     @Resource
+
+    private JsonRule rule;
+    private Integer siteId = -1;
+    private Integer pageId = -1;
+    private Integer ruleId = -1;
+
+    @Setter
     private AttributeDao attributeDao;
     private Document document;
     private String page;
     private String type;
+    private Integer sourcePage;
+    private Integer sessionKey;
+
     private String site;
 
 
     public static final int timeout = 10_000;
 
-    public CssPageTask(String page, List<AttrListener> listeners) {
-        this.listeners = new ArrayList<>(listeners);
+    public ParserTask(String site, String page, String pageType, Integer sourcePage, Integer sessionKey) {
+
+        this.site = site;
+        this.page = page;
+        type = pageType;
+        this.sourcePage = sourcePage;
+        this.sessionKey = sessionKey;
+    }
+
+    public ParserTask(String page, History history) {
+        this.page = page;
+        this.historyDao = history;
+    }
+
+    public ParserTask(String page, String type, Integer sourcePage, Integer sessionKey) {
+        this.page = page;
+        this.type = type;
+        this.sourcePage = sourcePage;
+        this.sessionKey = sessionKey;
+    }
+
+    public ParserTask(String page) {
         this.page = page;
     }
 
-    public CssPageTask(String page) {
-        this.page = page;
-    }
-
-    public CssPageTask(int pageId) {
+    public ParserTask(int pageId) {
         this.pageId = pageId;
     }
 
-    public CssPageTask(String page, List<AttrListener> listeners, History historyDao) {
+    public ParserTask(String page, List<AttrListener> listeners, History historyDao) {
 
         this.page = page;
         this.listeners = listeners;
@@ -98,7 +119,7 @@ public class CssPageTask implements Runnable, InfoSource {
                 return;
             }
             log.info("After init...");
-            Thread.currentThread().setName("CssPageTask");
+            Thread.currentThread().setName("ParserTask");
 
             String name = "[" + Thread.currentThread().getName() + "] : threadId " + Thread.currentThread().getId();
             log.info(name + ": " + "Starting process :" + page);
@@ -138,7 +159,7 @@ public class CssPageTask implements Runnable, InfoSource {
 
                             for (AttrListener listener : listeners) {
                                 if (listener.support(attr.getType())) {
-                                    listener.process(pageId, attribute);
+                                    listener.process(pageId, attribute, );
                                 }
                             }
 

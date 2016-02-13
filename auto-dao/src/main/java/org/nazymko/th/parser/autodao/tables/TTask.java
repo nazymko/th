@@ -35,7 +35,7 @@ import org.nazymko.th.parser.autodao.tables.records.TTaskRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TTask extends TableImpl<TTaskRecord> {
 
-	private static final long serialVersionUID = -1566602826;
+	private static final long serialVersionUID = -331659275;
 
 	/**
 	 * The reference instance of <code>thehomeland.t_task</code>
@@ -83,7 +83,7 @@ public class TTask extends TableImpl<TTaskRecord> {
 	/**
 	 * The column <code>thehomeland.t_task.finish_at</code>.
 	 */
-	public final TableField<TTaskRecord, Timestamp> FINISH_AT = createField("finish_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
+	public final TableField<TTaskRecord, Timestamp> FINISH_AT = createField("finish_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
 
 	/**
 	 * Create a <code>thehomeland.t_task</code> table reference

@@ -5,10 +5,15 @@
 
     <bean id="ruleResolver" class="org.nazymko.thehomeland.parser.topology.RuleResolver"/>
 
-    <bean class="org.nazymko.thehomeland.parser.THLParser">
-        <property name="active" value="true"/>
-        <property name="listeners" ref="thl.listeners"/>
+    <bean class="org.nazymko.thehomeland.parser.THLParserRunner">
         <property name="threadPool" ref="th.main.threadpool"/>
+    </bean>
+
+    <bean id="config" class="org.nazymko.thehomeland.parser.THLParserRunner$Config">
+        <property name="active" value="true"/>
+    </bean>
+    <bean class="org.nazymko.thehomeland.parser.TaskFactory">
+        <property name="listeners" ref="thl.listeners"/>
     </bean>
 
 
@@ -21,7 +26,6 @@
         <constructor-arg index="3" value="SECONDS"/>
         <constructor-arg index="4" ref="linkedBlockingDeque"/>
     </bean>
-
 
 
     <bean id="gson" class="com.google.gson.Gson"/>

@@ -53,9 +53,8 @@ public class ScheduleDao extends AbstractDao<Integer, TScheduleRecord> {
 
         Result<TTaskRecord> tTaskRecords = getDslContext()
                 .selectFrom(T_TASK)
-//                .where(T_TASK.FINISH_AT.isNull())
-//                .where(T_TASK.START_AT.lessOrEqual(currentTimeStamp()))
-//                .groupBy(T_TASK.SCHEDULE_SOURCE_ID)
+                .where(T_TASK.FINISH_AT.isNull())
+                .groupBy(T_TASK.SCHEDULE_SOURCE_ID)
                 .fetch();
 
         Map<TScheduleRecord, TTaskRecord> recordMap = new HashMap<>();
@@ -77,8 +76,6 @@ public class ScheduleDao extends AbstractDao<Integer, TScheduleRecord> {
 
         return recordMap;
     }
-
-
 
 
 }

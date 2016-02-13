@@ -7,7 +7,7 @@
     <bean id="pageDao" class="org.nazymko.thehomeland.parser.db.dao.PageDao"/>
     <bean id="attributeDao" class="org.nazymko.thehomeland.parser.db.dao.AttributeDao"/>
     <bean id="siteDao" class="org.nazymko.thehomeland.parser.db.dao.SiteDao"/>
-    <bean id="historyHolder" class="org.nazymko.thehomeland.parser.topology.HistoryHolder"/>
+    <bean id="historyHolder" class="org.nazymko.thehomeland.parser.topology.FollowDecider"/>
     <bean id="scheduleDao" class="org.nazymko.thehomeland.parser.db.dao.ScheduleDao"/>
     <bean id="taskDao" class="org.nazymko.thehomeland.parser.db.dao.TaskDao"/>
 

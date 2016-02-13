@@ -1,7 +1,7 @@
 package org.nazymko.controller.task;
 
 import lombok.extern.log4j.Log4j2;
-import org.nazymko.thehomeland.parser.THLParser;
+import org.nazymko.thehomeland.parser.THLParserRunner;
 import org.nazymko.thehomeland.parser.db.dao.SiteDao;
 import org.nazymko.thehomeland.parser.db.model.Site;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import java.util.HashMap;
 @Log4j2
 public class SubmitController {
     @Autowired
-    THLParser parser;
+    THLParserRunner parser;
     @Autowired
     SiteDao siteDao;
 

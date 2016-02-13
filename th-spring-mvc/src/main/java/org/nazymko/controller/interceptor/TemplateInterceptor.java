@@ -4,8 +4,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.nazymko.controller.task.THParser;
-import org.nazymko.thehomeland.parser.THLParser;
+import org.nazymko.thehomeland.parser.THLParserRunner;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -18,7 +17,7 @@ public class TemplateInterceptor implements HandlerInterceptor {
     @Resource
     private String prefix, suffix, siteName, jsInclude, cssInclude;
     @Resource
-    THLParser parser;
+    THLParserRunner parser;
 
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         return true;

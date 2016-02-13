@@ -12,4 +12,8 @@ public interface History {
 
     void visit(String link);
 
+    void visitBySession(String link, Integer sessionKey);
+
+    boolean isVisitedInSession(String link, Integer sessionKey);
+
 }

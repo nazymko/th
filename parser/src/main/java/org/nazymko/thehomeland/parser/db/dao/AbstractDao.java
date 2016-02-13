@@ -42,4 +42,7 @@ public abstract class AbstractDao<K, T> implements Dao<K, T> {
     protected Timestamp currentTimeStamp() {
         return new Timestamp(System.currentTimeMillis());
     }
+
+
+
 }
