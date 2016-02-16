@@ -40,7 +40,7 @@ public class TemplateInterceptor implements HandlerInterceptor {
         setTitle(model);
         model.put("js", jsInclude);
         model.put("css", cssInclude);
-        model.put("status", parser.isActive());
+        model.put("status", parser.getConfig().isActive());
 
     }
 

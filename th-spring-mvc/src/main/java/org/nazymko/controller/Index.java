@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * Created by user
+ * Created by nazymko
  */
 @Controller()
 @RequestMapping("/")
@@ -24,7 +24,7 @@ public class Index {
         model.addAttribute("message", queUrls.get(0));
 
 
-        boolean active = parser.isActive();
+        boolean active = parser.getConfig().isActive();
         model.addAttribute("isActive", active);
 
 

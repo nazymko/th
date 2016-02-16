@@ -46,6 +46,7 @@
     <util:set id="supportedTypes">
         <value>article</value>
         <value>category_list</value>
+        <value>question_page</value>
     </util:set>
 
 </beans>

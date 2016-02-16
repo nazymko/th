@@ -44,11 +44,12 @@ public class LinkProcessorListener implements AttrListener {
     public void process(Integer sourcePage, Attribute attribute, Integer runId) {
 
         String pageType = attribute.getAttrMeaning();
+        String site = siteDao.get(attribute.getSiteId()).get().getUrl();
 
         try {
-            String site = siteDao.get(attribute.getSiteId()).get().getUrl();
             String page = fixUrlfNeed(site, attribute.getAttrValue());
-            instance.schedule(site, page, pageType, sourcePage, runId);
+
+            instance.schedule(page, pageType, sourcePage, runId);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

@@ -66,6 +66,6 @@ public class FollowDecider implements History {
     @Override
     public boolean isVisitedInSession(String link, Integer sessionKey) {
         PageRecord pageByUrlAndSession = pageDao.getPageByUrlAndSession(link, sessionKey);
-        return pageByUrlAndSession != null && pageByUrlAndSession.getVisitedAt() == null;
+        return pageByUrlAndSession != null && pageByUrlAndSession.getVisitedAt() != null;
     }
 }

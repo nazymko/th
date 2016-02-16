@@ -1,23 +1,25 @@
 package org.nazymko.thehomeland.parser;
 
-import lombok.Getter;
 import lombok.Setter;
-import org.nazymko.thehomeland.parser.db.dao.AttributeDao;
-import org.nazymko.thehomeland.parser.db.dao.PageDao;
-import org.nazymko.thehomeland.parser.db.dao.RuleDao;
-import org.nazymko.thehomeland.parser.db.dao.SiteDao;
+import lombok.extern.log4j.Log4j2;
+import org.nazymko.th.parser.autodao.tables.records.TTaskRecord;
+import org.nazymko.thehomeland.parser.db.dao.*;
 import org.nazymko.thehomeland.parser.processors.AttrListener;
 import org.nazymko.thehomeland.parser.processors.ParserTask;
 import org.nazymko.thehomeland.parser.topology.History;
 import org.nazymko.thehomeland.parser.topology.RuleResolver;
 import org.springframework.beans.factory.annotation.Autowired;
+import utils.TimeStampHelper;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ThreadPoolExecutor;
 
+@Log4j2
 public class TaskFactory {
 
+    @Resource
+    TaskDao taskDao;
     @Autowired
     History historyDao;
     @Autowired
@@ -36,27 +38,40 @@ public class TaskFactory {
     @Setter
     private List<AttrListener> listeners;
 
-    public Runnable makeScheduletTastk(String page, String type, Integer sourcePage, Integer sessionKey) {
+    public Runnable makeScheduledTask(String page, String type, Integer sourcePage, Integer sessionKey) {
 //        pageDao.save(new Page(site, page, type, sourcePage));
 
         ParserTask task = new ParserTask(page);
 
-        task.setHistoryDao(historyDao);
         task.setListeners(listeners);
-        task.setRuleResolver(resolver);
-        task.setPageDao(pageDao);
-        task.setRuleDao(ruleDao);
-        task.setSiteDao(siteDao);
-        task.setAttributeDao(attributeDao);
+        task.setSessionKey(sessionKey);
+        task.setType(type);
+        task.setSourcePage(sourcePage);
 
         return task;
     }
 
-    public void schedulePacing(String site, String page, String pageType, Integer sourcePage, Integer runId) {
+    public Optional<Runnable> scheduleParsing(String page, String pageType, Integer sourcePage, Integer runId) {
         boolean visitedInSession = historyDao.isVisitedInSession(page, runId);
         if (!visitedInSession) {
-            new ParserTask(s)
-
+            return Optional.of(makeScheduledTask(page, pageType, sourcePage, runId));
+        } else {
+            log.warn("page {} rejected, because it was visited", page);
         }
+
+        return Optional.empty();
+    }
+
+    public TTaskRecord nextRecord() {
+        TTaskRecord tTaskRecord = new TTaskRecord();
+        taskDao.attach(tTaskRecord);
+
+        tTaskRecord.setStartAt(TimeStampHelper.now());
+        tTaskRecord.setIsEnabled(true);
+        tTaskRecord.setMessage("Manual start");
+        tTaskRecord.setScheduleSourceId(null);
+        tTaskRecord.store();
+
+        return tTaskRecord;
     }
 }

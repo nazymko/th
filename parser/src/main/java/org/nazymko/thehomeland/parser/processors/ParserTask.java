@@ -1,19 +1,18 @@
 package org.nazymko.thehomeland.parser.processors;
 
+import lombok.Data;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.nazymko.thehomeland.parser.db.dao.AttributeDao;
 import org.nazymko.thehomeland.parser.db.dao.PageDao;
 import org.nazymko.thehomeland.parser.db.dao.RuleDao;
 import org.nazymko.thehomeland.parser.db.dao.SiteDao;
 import org.nazymko.thehomeland.parser.db.model.Attribute;
 import org.nazymko.thehomeland.parser.db.model.Page;
 import org.nazymko.thehomeland.parser.rule.AttrsItem;
-import org.nazymko.thehomeland.parser.rule.JsonRule;
 import org.nazymko.thehomeland.parser.rule.PageItem;
 import org.nazymko.thehomeland.parser.topology.History;
 import org.nazymko.thehomeland.parser.topology.RuleResolver;
@@ -23,9 +22,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
@@ -33,103 +30,48 @@ import java.util.function.Consumer;
  */
 @Log4j2
 public class ParserTask implements Runnable, InfoSource {
+    public static String userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36";
+    Config config = new Config();
     @Setter
     List<AttrListener> listeners = new ArrayList<>();
-    @Setter
-    private History historyDao;
-
-    @Setter
     @Resource
     RuleResolver ruleResolver;
     @Setter
+    private String page, type;
+    @Setter
+    private Integer sourcePage, sessionKey;
+    @Resource
+    private History historyDao;
     @Resource
     private SiteDao siteDao;
-    @Setter
     @Resource
     private PageDao pageDao;
-    @Setter
     @Resource
     private RuleDao ruleDao;
-    @Setter
-    @Resource
-
-    private JsonRule rule;
-    private Integer siteId = -1;
-    private Integer pageId = -1;
-    private Integer ruleId = -1;
-
-    @Setter
-    private AttributeDao attributeDao;
     private Document document;
-    private String page;
-    private String type;
-    private Integer sourcePage;
-    private Integer sessionKey;
-
-    private String site;
 
 
-    public static final int timeout = 10_000;
-
-    public ParserTask(String site, String page, String pageType, Integer sourcePage, Integer sessionKey) {
-
-        this.site = site;
-        this.page = page;
-        type = pageType;
-        this.sourcePage = sourcePage;
-        this.sessionKey = sessionKey;
-    }
-
-    public ParserTask(String page, History history) {
-        this.page = page;
-        this.historyDao = history;
-    }
-
-    public ParserTask(String page, String type, Integer sourcePage, Integer sessionKey) {
-        this.page = page;
-        this.type = type;
-        this.sourcePage = sourcePage;
-        this.sessionKey = sessionKey;
-    }
+    private PageItem thisPageRule;
 
     public ParserTask(String page) {
         this.page = page;
-    }
-
-    public ParserTask(int pageId) {
-        this.pageId = pageId;
-    }
-
-    public ParserTask(String page, List<AttrListener> listeners, History historyDao) {
-
-        this.page = page;
-        this.listeners = listeners;
-        this.historyDao = historyDao;
     }
 
 
     @Override
     public void run() {
         try {
-            log.info("Started..{}.", page);
-            init();
+            log.info("Start load..{}.", page);
+            document = load();
 
             if (document == null) {
                 log.error("Page reading error '{}' : Reason 'Document is null'; ", page);
                 return;
             }
-            log.info("After init...");
-            Thread.currentThread().setName("ParserTask");
-
+            log.info("After load...");
             String name = "[" + Thread.currentThread().getName() + "] : threadId " + Thread.currentThread().getId();
-            log.info(name + ": " + "Starting process :" + page);
-            log.info(name + ": " + "Page rule:" + rule);
 
-            PageItem thisPageDescription = ruleResolver.resolveByTypeForSite(site, type).get();
-
-            List<Attribute> data = new LinkedList<>();
-
-            for (AttrsItem attr : thisPageDescription.getAttrs()) {
+            for (AttrsItem attr : thisPageRule.getAttrs()) {
                 Elements select = document.select(attr.getPath());
                 log.debug(String.format(name + ": " + "Processing '%s'", attr.getPath()));
 
@@ -147,19 +89,19 @@ public class ParserTask implements Runnable, InfoSource {
 
                             Attribute attribute = new Attribute();
 
-                            String value = getValue(item, attr);
+                            String value = getElementValue(item, attr);
 
                             attribute.setAttrIndex(index);
                             attribute.setAttrType(valueAttribute);
                             attribute.setAttrMeaning(attr.getType());
                             attribute.setAttrValue(value);
-                            attribute.setSiteId(siteId);
-                            attribute.setPageId(pageId);
-                            attribute.setRuleId(ruleId);
+                            attribute.setSiteId(config.getSiteId());
+                            attribute.setPageId(config.getPageId());
+                            attribute.setRuleId(config.getRuleId());
 
                             for (AttrListener listener : listeners) {
                                 if (listener.support(attr.getType())) {
-                                    listener.process(pageId, attribute, );
+                                    listener.process(config.getPageId(), attribute, sessionKey);
                                 }
                             }
 
@@ -175,7 +117,7 @@ public class ParserTask implements Runnable, InfoSource {
 
     }
 
-    private String getValue(Element item, AttrsItem attr) {
+    private String getElementValue(Element item, AttrsItem attr) {
         String value;
         if ("text".equals(attr.getAttr())) {
             value = item.text();
@@ -185,31 +127,29 @@ public class ParserTask implements Runnable, InfoSource {
         return value;
     }
 
-    public static String userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36";
+    private Document load() throws MalformedURLException {
+        log.info("Init {}", page);
 
-    private void init() {
-        log.info("Init");
-        Page page;
-        if (this.page != null) {
-            Optional<Page> page1 = pageDao.get(this.page);
-            page = page1.get();
-        } else {
-            page = pageDao.getById(pageId).get();
-        }
+        URL url = new URL(this.page);
+        String siteUrl = url.getProtocol() + "://" + url.getAuthority();
 
-        this.site = page.getSite();
-        this.siteId = siteDao.getIdByUrl(site);
-        this.pageId = page.getId();
-        this.type = page.getType();
-        this.rule = ruleDao.get(site).get();
-        this.ruleId = rule.getId();
+        this.config.setSiteId(siteDao.getIdByUrl(siteUrl));
 
+        Page pageModel = new Page(siteUrl, this.page, type, sourcePage);
+        pageDao.save(pageModel);
+        config.setPageId(pageModel.getId());
+
+        config.setRuleId(ruleDao.get(siteUrl).get().getId());
+
+        thisPageRule = ruleResolver.resolveByTypeForSite(siteUrl, type).get();
+
+        Document document = null;
         try {
             log.info("Connect");
-            String link = makeUrl(page.getSite(), page.getPage());
-            this.document = Jsoup.connect(link)
+            String link = makeUrl(siteUrl, page);
+            document = Jsoup.connect(link)
                     .userAgent(userAgent)
-                    .timeout(timeout)
+                    .timeout(config.getTimeout())
                     .execute()
                     .parse();
 
@@ -220,7 +160,7 @@ public class ParserTask implements Runnable, InfoSource {
             e.printStackTrace();
         }
 
-
+        return document;
     }
 
     private String makeUrl(String site, String page) throws MalformedURLException {
@@ -239,5 +179,11 @@ public class ParserTask implements Runnable, InfoSource {
     @Override
     public String info() {
         return null;
+    }
+
+    @Data
+    class Config {
+        Integer siteId, pageId, ruleId;
+        int timeout = 10_000;
     }
 }

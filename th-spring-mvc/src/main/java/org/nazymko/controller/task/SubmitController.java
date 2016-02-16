@@ -1,6 +1,7 @@
 package org.nazymko.controller.task;
 
 import lombok.extern.log4j.Log4j2;
+import org.nazymko.th.parser.autodao.tables.records.TTaskRecord;
 import org.nazymko.thehomeland.parser.THLParserRunner;
 import org.nazymko.thehomeland.parser.db.dao.SiteDao;
 import org.nazymko.thehomeland.parser.db.model.Site;
@@ -11,11 +12,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.HashMap;
 
 /**
- * Created by user on 15.01.2016.
+ * Created by nazymko on 15.01.2016.
  */
 @Controller
 @RequestMapping(value = "task")
@@ -29,23 +31,27 @@ public class SubmitController {
     @RequestMapping(value = "submit/{site}", method = RequestMethod.GET)
     public String submitTask(Model model, @PathVariable("site") Integer id) {
 
-
-        Site site = siteDao.get(id).get();
-
-        parser.create(site.getName(), site.getUrl());
-
-        model.addAttribute("site", site);
-
-
-        log.info("SCHEDULED: {}:{}", site.getName(), site.getUrl());
-
-        return "/submit/info";
+        throw new NotImplementedException();
+//
+//
+//        Site site = siteDao.get(id).get();
+//
+//        TTaskRecord tTaskRecord = parser.getTaskFac().nextRecord();
+//
+//        parser.schedule(site.getUrl(), "front_page", -1, tTaskRecord.getId());
+//
+//        model.addAttribute("site", site);
+//
+//
+//        log.info("SCHEDULED: {}:{}", site.getName(), site.getUrl());
+//
+//        return "/submit/info";
     }
 
     @RequestMapping(value = "submit}", method = RequestMethod.POST)
     public String submitPost(@RequestParam HashMap<String, String> params) {
 
-        log.info("params = {}",params);
+        log.info("params = {}", params);
 
 
         return "redirect:/task/submit";

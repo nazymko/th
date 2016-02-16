@@ -34,4 +34,8 @@ public class TaskDao extends AbstractDao<Integer, TTaskRecord> {
         }
         return obj.getId();
     }
+
+    public void attach(TTaskRecord tTaskRecord) {
+        getDslContext().attach(tTaskRecord);
+    }
 }

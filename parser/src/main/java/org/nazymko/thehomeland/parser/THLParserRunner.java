@@ -1,12 +1,14 @@
 package org.nazymko.thehomeland.parser;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.*;
 
@@ -16,6 +18,7 @@ import java.util.concurrent.*;
 @Log4j2(topic = THLParserRunner.THL_PARSER_MARKER)
 public class THLParserRunner {
     @Resource
+    @Getter
     Config config;
 
     @Getter
@@ -28,6 +31,7 @@ public class THLParserRunner {
     }
 
     @Resource
+    @Getter
     private TaskFactory taskFac;
 
     public static final String THL_PARSER_MARKER = "THL_PARSER";
@@ -49,11 +53,17 @@ public class THLParserRunner {
 
     }
 
-    public void schedule(String site, String page, String pageType, Integer sourcePage, Integer runId) {
-        taskFac.schedulePacing(site, page, pageType, sourcePage, runId);
+    public void schedule(String page, String pageType, Integer sourcePage, Integer runId) {
+        Optional<Runnable> runnable = taskFac.scheduleParsing(page, pageType, sourcePage, runId);
+        if (runnable.isPresent()) {
+            Runnable task = runnable.get();
+            threadPool.submit(task);
+        }
     }
 
-    static class Config {
+    @NoArgsConstructor
+    public static class Config {
+
         @Getter
         @Setter
         private boolean active = false;

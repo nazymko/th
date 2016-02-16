@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.nazymko.utils.TimeStampHelper.*;
+import static utils.TimeStampHelper.*;
 
 /**
  * Created by nazymko
@@ -71,7 +71,7 @@ public class MyCronTrigger {
                 Optional<Site> site = siteDao.get(scheduleRecord.getSiteid());
                 if (site.isPresent()) {
                     Optional<Runnable> task;//Ok, lets start the job
-                    Runnable runnable = taskFac.makeScheduletTastk(scheduleRecord.getStartPage(), scheduleRecord.getPageType(), -1, tTaskRecord.getId());
+                    Runnable runnable = taskFac.makeScheduledTask(scheduleRecord.getStartPage(), scheduleRecord.getPageType(), -1, tTaskRecord.getId());
                     runner.submit(runnable);
 
                 } else {

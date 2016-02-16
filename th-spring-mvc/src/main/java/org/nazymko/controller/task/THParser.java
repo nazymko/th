@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by user on 15.01.2016.
+ * Created by nazymko on 15.01.2016.
  */
 @Controller
 @RequestMapping(value = "task")

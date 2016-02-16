@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * Created by user on 10.02.2016.
+ * Created by nazymko on 10.02.2016.
  */
 @Controller
 @RequestMapping("task")

@@ -47,7 +47,7 @@
                 <div class="cron-val-${site.id}"></div>
             </td>
             <td>
-                <form id="form-${site.id}" action="/site/schedule" method="post">
+                <form id="form-${site.id}" action="/task/schedule" method="post">
                     <input type="hidden" name="site_id" value="${site.id}">
                     <input type="hidden" name="cron" class="cron-val-form-${site.id}">
                     <input class="btn bgm-blue waves-effect" value="submit" type="submit">

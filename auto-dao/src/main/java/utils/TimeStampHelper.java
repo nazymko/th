@@ -1,4 +1,4 @@
-package org.nazymko.utils;
+package utils;
 
 import org.jooq.util.derby.sys.Sys;
 
