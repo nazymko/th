@@ -5,6 +5,7 @@
     <textarea name="rule" id="rule-candidate" cols="60" rows="30" placeholder="insert rule there"></textarea>
 
     <p/>
-    <input type="submit" name="submit"/>
+    <br>
+    <input class="btn bgm-bluegray waves-effect" type="submit" name="submit"/>
 </form>
 

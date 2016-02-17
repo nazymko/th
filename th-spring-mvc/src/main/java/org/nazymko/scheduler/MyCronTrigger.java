@@ -23,7 +23,7 @@ import java.util.Optional;
 import static utils.TimeStampHelper.*;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 @Log4j2
 public class MyCronTrigger {

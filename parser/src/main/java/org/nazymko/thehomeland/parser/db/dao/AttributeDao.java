@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 public class AttributeDao extends AbstractDao<Integer, Attribute> {
     public Optional<Attribute> get(Integer key) {

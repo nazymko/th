@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  * <p>
  * <code>
  * int siteId;<br>

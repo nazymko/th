@@ -8,7 +8,7 @@ import org.nazymko.thehomeland.parser.db.model.Attribute;
 import javax.annotation.Resource;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 @Log4j2
 public class PersistenceAttrListener implements AttrListener {

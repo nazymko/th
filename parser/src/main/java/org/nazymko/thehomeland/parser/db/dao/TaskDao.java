@@ -9,7 +9,7 @@ import java.util.Optional;
 import static org.nazymko.th.parser.autodao.tables.TTask.T_TASK;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 @Log4j2
 public class TaskDao extends AbstractDao<Integer, TTaskRecord> {

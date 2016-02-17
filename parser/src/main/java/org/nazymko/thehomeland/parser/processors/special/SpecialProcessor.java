@@ -1,7 +1,7 @@
 package org.nazymko.thehomeland.parser.processors.special;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 public interface SpecialProcessor {
 

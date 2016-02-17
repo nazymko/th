@@ -3,7 +3,7 @@ package org.nazymko.thehomeland.parser.processors;
 import org.nazymko.thehomeland.parser.db.model.Attribute;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 public interface AttrListener extends Listener{
 

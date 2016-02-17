@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 @Controller
 @RequestMapping(value = "/site")

@@ -1,7 +1,7 @@
 package org.nazymko.thehomeland.parser;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 public interface TimePolicy {
 

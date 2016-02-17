@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 public class Gen {
 

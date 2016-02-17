@@ -3,7 +3,7 @@ package org.nazymko.thehomeland.parser.db.model;
 import lombok.Data;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 @Data
 public class Site {

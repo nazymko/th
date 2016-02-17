@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 public interface ProcessorRegister extends ProcessorResolver {
 

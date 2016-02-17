@@ -4,7 +4,7 @@ import lombok.extern.log4j.Log4j2;
 import org.nazymko.thehomeland.parser.db.model.Attribute;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 @Log4j2(topic = "[LOG LISTENER]")
 public class LogAttrListener implements AttrListener {

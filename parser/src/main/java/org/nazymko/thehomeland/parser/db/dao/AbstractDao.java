@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 import java.util.Optional;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 public abstract class AbstractDao<K, T> implements Dao<K, T> {
 

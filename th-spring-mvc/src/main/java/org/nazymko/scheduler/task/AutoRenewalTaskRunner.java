@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 
 @Log4j2

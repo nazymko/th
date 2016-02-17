@@ -8,7 +8,7 @@ import java.net.URI;
 import java.sql.Timestamp;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 @ToString
 @EqualsAndHashCode(exclude = {"id"})

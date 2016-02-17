@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 import java.util.*;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 
 @Log4j2

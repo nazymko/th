@@ -13,7 +13,7 @@ import java.util.UUID;
 import java.util.concurrent.*;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 @Log4j2(topic = THLParserRunner.THL_PARSER_MARKER)
 public class THLParserRunner {

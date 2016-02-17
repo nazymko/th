@@ -1,7 +1,7 @@
 package org.nazymko.controller.cron;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 public class ViewTasksController {
 }

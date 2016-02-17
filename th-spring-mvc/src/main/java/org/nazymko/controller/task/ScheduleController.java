@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 @Controller
 @RequestMapping("/task")

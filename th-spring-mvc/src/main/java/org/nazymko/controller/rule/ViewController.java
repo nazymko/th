@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 import java.util.Optional;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 @Controller
 @RequestMapping("rule")

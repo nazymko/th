@@ -7,6 +7,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.nazymko.th.parser.autodao.tables.records.PageRecord;
 import org.nazymko.thehomeland.parser.db.dao.PageDao;
 import org.nazymko.thehomeland.parser.db.dao.RuleDao;
 import org.nazymko.thehomeland.parser.db.dao.SiteDao;
@@ -17,7 +18,6 @@ import org.nazymko.thehomeland.parser.rule.PageItem;
 import org.nazymko.thehomeland.parser.topology.History;
 import org.nazymko.thehomeland.parser.topology.RuleResolver;
 
-import javax.annotation.Resource;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -26,31 +26,22 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 @Log4j2
 public class ParserTask implements Runnable, InfoSource {
     public static String userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36";
-    Config config = new Config();
-    @Setter
-    List<AttrListener> listeners = new ArrayList<>();
-    @Resource
-    RuleResolver ruleResolver;
-    @Setter
-    private String page, type;
-    @Setter
-    private Integer sourcePage, sessionKey;
-    @Resource
-    private History historyDao;
-    @Resource
-    private SiteDao siteDao;
-    @Resource
-    private PageDao pageDao;
-    @Resource
-    private RuleDao ruleDao;
-    private Document document;
+    @Setter List<AttrListener> listeners = new ArrayList<>();
+    @Setter RuleResolver ruleResolver;
+    @Setter private String page, type;
+    @Setter private Integer sourcePage, sessionKey;
+    @Setter private History historyDao;
+    @Setter private SiteDao siteDao;
+    @Setter private PageDao pageDao;
+    @Setter private RuleDao ruleDao;
+    @Setter private Document document;
 
-
+    private Config config = new Config();
     private PageItem thisPageRule;
 
     public ParserTask(String page) {
@@ -73,10 +64,10 @@ public class ParserTask implements Runnable, InfoSource {
 
             for (AttrsItem attr : thisPageRule.getAttrs()) {
                 Elements select = document.select(attr.getPath());
-                log.debug(String.format(name + ": " + "Processing '%s'", attr.getPath()));
+                log.info(String.format(name + ": " + "Processing '%s'", attr.getPath()));
 
                 if (select.size() == 0) {
-                    log.debug(String.format(name + ": " + "Element not found '%s'", attr.getPath()));
+                    log.info(String.format(name + ": " + "Element not found '%s'", attr.getPath()));
                     continue;
                 } else {
                     select.forEach(new Consumer<Element>() {
@@ -133,11 +124,19 @@ public class ParserTask implements Runnable, InfoSource {
         URL url = new URL(this.page);
         String siteUrl = url.getProtocol() + "://" + url.getAuthority();
 
-        this.config.setSiteId(siteDao.getIdByUrl(siteUrl));
+        Integer siteId = siteDao.getIdByUrl(siteUrl);
+        this.config.setSiteId(siteId);
 
-        Page pageModel = new Page(siteUrl, this.page, type, sourcePage);
-        pageDao.save(pageModel);
-        config.setPageId(pageModel.getId());
+        PageRecord pageRecord = new PageRecord();
+
+        pageRecord.setUrl(page);
+        pageRecord.setSourcepage(sourcePage);
+        pageRecord.setTaskRunId(sessionKey);
+        pageRecord.setType(type);
+        pageRecord.setSiteId(config.getSiteId());
+
+        pageDao.save(pageRecord);
+        config.setPageId(pageRecord.getId());
 
         config.setRuleId(ruleDao.get(siteUrl).get().getId());
 

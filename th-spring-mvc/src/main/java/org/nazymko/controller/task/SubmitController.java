@@ -17,7 +17,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import java.util.HashMap;
 
 /**
- * Created by nazymko on 15.01.2016.
+ * Created by nazymko.patronus@gmail.com. on 15.01.2016.
  */
 @Controller
 @RequestMapping(value = "task")

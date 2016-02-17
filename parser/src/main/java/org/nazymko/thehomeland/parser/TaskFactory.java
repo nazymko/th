@@ -39,9 +39,8 @@ public class TaskFactory {
     private List<AttrListener> listeners;
 
     public Runnable makeScheduledTask(String page, String type, Integer sourcePage, Integer sessionKey) {
-//        pageDao.save(new Page(site, page, type, sourcePage));
-
         ParserTask task = new ParserTask(page);
+        injectDao(task);
 
         task.setListeners(listeners);
         task.setSessionKey(sessionKey);
@@ -56,7 +55,7 @@ public class TaskFactory {
         if (!visitedInSession) {
             return Optional.of(makeScheduledTask(page, pageType, sourcePage, runId));
         } else {
-            log.warn("page {} rejected, because it was visited", page);
+            log.warn("page {} rejected, because it was visited on page {} at run {}", page,sourcePage,runId);
         }
 
         return Optional.empty();
@@ -73,5 +72,13 @@ public class TaskFactory {
         tTaskRecord.store();
 
         return tTaskRecord;
+    }
+
+    public void injectDao(ParserTask dao) {
+        dao.setHistoryDao(historyDao);
+        dao.setPageDao(pageDao);
+        dao.setSiteDao(siteDao);
+        dao.setRuleDao(ruleDao);
+        dao.setRuleResolver(resolver);
     }
 }

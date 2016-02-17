@@ -1,7 +1,6 @@
 package org.nazymko.thehomeland.parser.db.dao;
 
 import lombok.extern.log4j.Log4j2;
-import org.jooq.util.derby.sys.Sys;
 import org.nazymko.th.parser.autodao.tables.records.PageRecord;
 import org.nazymko.thehomeland.parser.db.model.Page;
 import org.springframework.dao.DataAccessException;
@@ -19,7 +18,7 @@ import static org.nazymko.th.parser.autodao.tables.Page.PAGE;
 
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 @Log4j2
 public class PageDao extends AbstractDao<String, Page> {
@@ -72,17 +71,26 @@ public class PageDao extends AbstractDao<String, Page> {
         int update = getJdbcTemplate().update("INSERT INTO page(site_id,url,type,version,registered_at,sourcePage) VALUES ((SELECT id FROM site s WHERE s.url = :site),:url,:type,:version,now(),:sourcePage)", source);
         return obj.getPage();
     }
+    /**
+     * @return database Id
+     */
+    public Integer save(PageRecord record) {
+
+        getDslContext().attach(record);
+        record.store();
+
+        return record.getId();
+    }
 
     private int getVersion(String page) {
-        Integer result = getJdbcTemplate().query("SELECT MAX(version) max  FROM page WHERE url=:url", new MapSqlParameterSource("url", page), new ResultSetExtractor<Integer>() {
+
+        return getJdbcTemplate().query("SELECT MAX(version) max  FROM page WHERE url=:url", new MapSqlParameterSource("url", page), new ResultSetExtractor<Integer>() {
             @Override
             public Integer extractData(ResultSet resultSet) throws SQLException, DataAccessException {
                 resultSet.next();
                 return resultSet.getInt("max");
             }
         });
-
-        return result;
     }
 
     @Override

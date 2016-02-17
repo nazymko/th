@@ -6,7 +6,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 @Data
 public class Schedule {

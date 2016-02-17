@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import java.io.FileReader;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 
 public class RuleDaoSaveTest {

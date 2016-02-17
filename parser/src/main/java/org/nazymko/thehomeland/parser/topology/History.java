@@ -3,7 +3,7 @@ package org.nazymko.thehomeland.parser.topology;
 import java.sql.Timestamp;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 public interface History {
     boolean visited(String link);

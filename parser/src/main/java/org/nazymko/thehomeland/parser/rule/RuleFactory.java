@@ -3,7 +3,7 @@ package org.nazymko.thehomeland.parser.rule;
 import com.google.gson.Gson;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 public class RuleFactory {
 

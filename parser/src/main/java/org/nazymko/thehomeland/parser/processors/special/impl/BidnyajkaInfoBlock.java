@@ -3,7 +3,7 @@ package org.nazymko.thehomeland.parser.processors.special.impl;
 import org.nazymko.thehomeland.parser.processors.special.SpecialProcessor;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 public class BidnyajkaInfoBlock implements SpecialProcessor {
     String pageType;

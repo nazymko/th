@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * Created by nazymko on 17.01.2016.
+ * Created by nazymko.patronus@gmail.com. on 17.01.2016.
  */
 @Controller
 @RequestMapping("rule")

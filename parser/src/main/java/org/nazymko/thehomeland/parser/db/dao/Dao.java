@@ -3,7 +3,7 @@ package org.nazymko.thehomeland.parser.db.dao;
 import java.util.Optional;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 public interface Dao<K, T> {
     Optional<T> get(K key);

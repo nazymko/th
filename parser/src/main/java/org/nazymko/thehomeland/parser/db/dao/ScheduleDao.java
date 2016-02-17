@@ -13,7 +13,7 @@ import static org.nazymko.th.parser.autodao.tables.TSchedule.T_SCHEDULE;
 import static org.nazymko.th.parser.autodao.tables.TTask.T_TASK;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 public class ScheduleDao extends AbstractDao<Integer, TScheduleRecord> {
     @Override

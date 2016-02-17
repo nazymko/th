@@ -1,0 +1,38 @@
+{
+  "name": "stackoverflow.com",
+  "url": "http://stackoverflow.com",
+  "path_provider": "css",
+  "page": [
+    {
+      "type": "front_page",
+      "url": "http://stackoverflow.com",
+      "attrs": [
+        {
+          "path": ".question-hyperlink",
+          "attr": "href",
+          "type": "question_page"
+        }
+      ]
+    },
+    {
+      "type": "question_page",
+      "attrs": [
+        {
+          "path": "h1 .question-hyperlink",
+          "attr": "text",
+          "type": "question_title"
+        },
+        {
+          "path": ".question .post-text",
+          "attr": "text",
+          "type": "question_description"
+        },
+        {
+          "path": "#question-header .question-hyperlink",
+          "attr": "href",
+          "type": "question_page"
+        }
+      ]
+    }
+  ]
+}

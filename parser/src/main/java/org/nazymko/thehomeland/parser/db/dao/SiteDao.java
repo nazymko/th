@@ -23,7 +23,7 @@ import java.util.Optional;
 import static org.nazymko.th.parser.autodao.tables.Site.SITE;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 public class SiteDao extends AbstractDao<Integer, Site> {
 

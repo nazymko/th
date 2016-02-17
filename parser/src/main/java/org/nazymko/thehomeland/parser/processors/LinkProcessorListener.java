@@ -12,7 +12,7 @@ import java.net.URL;
 import java.util.Set;
 
 /**
- * Created by nazymko
+ * Created by nazymko.patronus@gmail.com.
  */
 @Log4j2
 public class LinkProcessorListener implements AttrListener {

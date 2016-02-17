@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.Optional;
 
 /**
- * <p> Created by nazymko</p>
+ * <p> Created by nazymko.patronus@gmail.com.</p>
  * In memory implementation
  */
 @Log4j2
