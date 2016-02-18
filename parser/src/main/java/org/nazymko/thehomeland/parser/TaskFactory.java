@@ -33,9 +33,6 @@ public class TaskFactory {
     @Autowired
     private SiteDao siteDao;
     @Setter
-    @Autowired
-    private AttributeDao attributeDao;
-    @Setter
     private List<AttrListener> listeners;
 
     public Runnable makeScheduledTask(String page, String type, Integer sourcePage, Integer sessionKey) {

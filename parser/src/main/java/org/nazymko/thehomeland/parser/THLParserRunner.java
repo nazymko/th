@@ -4,37 +4,40 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
+import org.nazymko.thehomeland.parser.processors.InfoSource;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Created by nazymko.patronus@gmail.com.
  */
 @Log4j2(topic = THLParserRunner.THL_PARSER_MARKER)
 public class THLParserRunner {
-    @Resource
-    @Getter
-    Config config;
-
-    @Getter
-    @Setter
-    public ThreadPoolExecutor threadPool;
     public static final String signature;
+    public static final String THL_PARSER_MARKER = "THL_PARSER";
 
     static {
         signature = UUID.randomUUID().toString();
     }
 
+    @Getter
+    @Setter
+    public ThreadPoolExecutor threadPool;
+    @Resource
+    @Getter
+    Config config;
+    @Resource
+    LinkedBlockingDeque<Runnable> deque;
     @Resource
     @Getter
     private TaskFactory taskFac;
-
-    public static final String THL_PARSER_MARKER = "THL_PARSER";
 
     public void submit(Runnable task) {
         threadPool.submit(task);
@@ -59,6 +62,20 @@ public class THLParserRunner {
             Runnable task = runnable.get();
             threadPool.submit(task);
         }
+    }
+
+    Integer tasks(Integer session) {
+        int count = 0;
+        for (Runnable task : deque) {
+            if (task instanceof InfoSource) {
+                if (session.equals(((InfoSource) task).runId())) {
+                    count++;
+                }
+
+            }
+        }
+
+        return count;
     }
 
     @NoArgsConstructor

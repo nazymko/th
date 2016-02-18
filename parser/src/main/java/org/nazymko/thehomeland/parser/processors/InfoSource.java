@@ -6,4 +6,6 @@ package org.nazymko.thehomeland.parser.processors;
 public interface InfoSource {
 
     String info();
+
+    Integer runId();
 }

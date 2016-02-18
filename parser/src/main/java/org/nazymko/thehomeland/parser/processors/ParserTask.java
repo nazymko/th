@@ -12,7 +12,6 @@ import org.nazymko.thehomeland.parser.db.dao.PageDao;
 import org.nazymko.thehomeland.parser.db.dao.RuleDao;
 import org.nazymko.thehomeland.parser.db.dao.SiteDao;
 import org.nazymko.thehomeland.parser.db.model.Attribute;
-import org.nazymko.thehomeland.parser.db.model.Page;
 import org.nazymko.thehomeland.parser.rule.AttrsItem;
 import org.nazymko.thehomeland.parser.rule.PageItem;
 import org.nazymko.thehomeland.parser.topology.History;
@@ -178,6 +177,11 @@ public class ParserTask implements Runnable, InfoSource {
     @Override
     public String info() {
         return null;
+    }
+
+    @Override
+    public Integer runId() {
+        return sessionKey;
     }
 
     @Data
