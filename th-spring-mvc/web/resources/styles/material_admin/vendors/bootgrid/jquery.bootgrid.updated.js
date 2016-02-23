@@ -1192,7 +1192,7 @@
         responseHandler: function (response) { return response; },
 
         /**
-         * A list of converters.
+         * A list of org.nazymko.th.parser.autodao.converters.
          *
          * @property converters
          * @type Object

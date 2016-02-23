@@ -1,9 +1,9 @@
 package org.nazymko.thehomeland.parser.db.dao;
 
 import lombok.Getter;
-import lombok.Setter;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
+import org.jooq.UpdatableRecord;
 import org.jooq.impl.DSL;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -19,12 +19,11 @@ import java.util.Optional;
 public abstract class AbstractDao<K, T> implements Dao<K, T> {
 
     T v;
-
-    @Resource
-    private NamedParameterJdbcTemplate jdbcTemplate;
     @Getter
     @Resource
     DataSource source;
+    @Resource
+    private NamedParameterJdbcTemplate jdbcTemplate;
 
     public NamedParameterJdbcTemplate getJdbcTemplate() {
         return jdbcTemplate;
@@ -43,6 +42,12 @@ public abstract class AbstractDao<K, T> implements Dao<K, T> {
         return new Timestamp(System.currentTimeMillis());
     }
 
+    protected void store(UpdatableRecord target) {
+        DSLContext dslContext = getDslContext();
+        dslContext.attach(target);
+        target.store();
+        dslContext.close();
+    }
 
 
 }

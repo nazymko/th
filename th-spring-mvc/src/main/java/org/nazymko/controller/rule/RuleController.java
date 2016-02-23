@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("rule")
-public class IndexController {
+public class RuleController {
     @Resource
     RuleDao ruleDao;
 

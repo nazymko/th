@@ -1,8 +1,8 @@
 <thead>
 <tr>
     <th>id</th>
-    <th>site</th>
-    <th>name</th>
     <th>status</th>
+    <th>siteId</th>
+    <th>runType</th>
 </tr>
 </thead>

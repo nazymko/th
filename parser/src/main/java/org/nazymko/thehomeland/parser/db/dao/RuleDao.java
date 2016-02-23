@@ -2,6 +2,7 @@ package org.nazymko.thehomeland.parser.db.dao;
 
 import com.google.gson.Gson;
 import lombok.Setter;
+import org.nazymko.th.parser.autodao.tables.records.RuleRecord;
 import org.nazymko.thehomeland.parser.db.model.Site;
 import org.nazymko.thehomeland.parser.rule.JsonRule;
 import org.nazymko.thehomeland.parser.rule.RuleFactory;
@@ -17,15 +18,19 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+import static org.nazymko.th.parser.autodao.tables.Rule.RULE;
+import static utils.support.rule.RuleStatus.ACTIVE;
+
 /**
  * Created by nazymko.patronus@gmail.com.
  */
 public class RuleDao extends AbstractDao<String, JsonRule> {
 
     @Resource
+    RuleResolver resolver;
+    @Resource
     @Setter
     private SiteDao siteDao;
-
 
     @Override
     public Optional<JsonRule> get(String site) {
@@ -44,8 +49,7 @@ public class RuleDao extends AbstractDao<String, JsonRule> {
         return result;
     }
 
-    @Override
-    public Optional<JsonRule> getById(int key) {
+    public Optional<JsonRule> getJsonById(int key) {
         Optional<JsonRule> result = getJdbcTemplate().query("" +
                 "SELECT * FROM rule WHERE id=:id AND version = (SELECT  MAX(version) FROM rule )", new MapSqlParameterSource("id", key), new ResultSetExtractor<Optional<JsonRule>>() {
             @Override
@@ -64,26 +68,26 @@ public class RuleDao extends AbstractDao<String, JsonRule> {
 
     @Override
     public String save(JsonRule rule) {
+
+        saveNewSiteOrIgnore(rule);
+
+        RuleRecord ruleRecord = new RuleRecord();
+
         String serialized = new Gson().toJson(rule);
         Integer version = ruleVersion(rule.getUrl());
-        MapSqlParameterSource paramSource = new MapSqlParameterSource();
+        ruleRecord.setSite(rule.getUrl());
+        ruleRecord.setRule(serialized);
+        ruleRecord.setVersion(version);
+        ruleRecord.setStatus(ACTIVE);
 
-        paramSource.addValue("site", rule.getUrl());
-        paramSource.addValue("rule", serialized);
-        paramSource.addValue("version", version + 1);
+        store(ruleRecord);
 
-        getJdbcTemplate().update("INSERT INTO rule(site, rule, version) VALUES (:site,:rule,:version)",
-                paramSource);
-
-        saveNewSite(rule);
         resolver.refresh();
         return rule.getUrl();
+
     }
 
-    @Resource
-    RuleResolver resolver;
-
-    private void saveNewSite(JsonRule rule) {
+    private void saveNewSiteOrIgnore(JsonRule rule) {
         Integer idByUrl = siteDao.getIdByUrl(rule.getUrl());
         if (idByUrl < 0) {
             siteDao.save(new Site(rule.getUrl(), rule.getName()));
@@ -117,6 +121,10 @@ public class RuleDao extends AbstractDao<String, JsonRule> {
 
     }
 
+    public List<RuleRecord> getAllRules() {
+        return getDslContext().selectFrom(RULE).where(RULE.STATUS.isNotNull()).fetch();
+    }
+
     private Optional<JsonRule> rsToJsonRule(ResultSet rs) throws SQLException {
         JsonRule jsonRule = getJsonRule(rs);
 
@@ -132,5 +140,10 @@ public class RuleDao extends AbstractDao<String, JsonRule> {
 
         make.setId(id);
         return make;
+    }
+
+    public Optional<RuleRecord> getById(Integer id) {
+        RuleRecord ruleRecord = getDslContext().selectFrom(RULE).where(RULE.ID.eq(id)).fetchOne();
+        return Optional.ofNullable(ruleRecord);
     }
 }

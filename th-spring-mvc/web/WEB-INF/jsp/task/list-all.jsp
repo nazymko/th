@@ -27,8 +27,15 @@
             <td>${item.startAt}</td>
             <td>${item.cron}</td>
             <td>${item.isEnabled}</td>
-            <td><a href="/task/schedule/${item.id}/suspend">suspend</a></td>
-            <td><a href="/task/schedule/${item.id}/delete">delete</a></td>
+            <c:choose>
+                <c:when test="${item.isEnabled}">
+                    <td><a class="btn bgm-lightblue" href="/task/schedule/${item.id}/suspend">suspend</a></td>
+                </c:when>
+                <c:when test="${!item.isEnabled}">
+                    <td><a class="btn bgm-lightblue" href="/task/schedule/${item.id}/activate">activate</a></td>
+                </c:when>
+            </c:choose>
+            <td><a class="btn bgm-red" href="/task/schedule/${item.id}/delete">delete</a></td>
         </tr>
     </c:forEach>
 

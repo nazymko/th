@@ -137,6 +137,7 @@ public class PageDao extends AbstractDao<String, Page> {
     }
 
     public PageRecord getPageByUrlAndSession(String link, Integer sessionKey) {
+        log.error("session key: {} , link {}",sessionKey,link);
         PageRecord pageRecord = getDslContext().selectFrom(PAGE).where(PAGE.URL.eq(link)).and(PAGE.TASK_RUN_ID.eq(sessionKey)).fetchOne();
         return pageRecord;
     }

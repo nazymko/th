@@ -35,13 +35,50 @@
                  Excludes match before includes -->
             <excludes></excludes>
 
+            <customTypes>
+                <customType>
+                    <name>TaskStatus</name>
+                    <type>utils.support.task.TaskStatus</type>
 
+                    <converter>utils.support.task.TaskStatusConverter</converter>
+                </customType>
+
+                <customType>
+                    <name>RuleStatus</name>
+                    <type>utils.support.rule.RuleStatus</type>
+                    <converter>utils.support.rule.RuleStatusConverter</converter>
+                </customType>
+                <customType>
+                    <name>RunType</name>
+                    <type>utils.support.runtype.RunType</type>
+                    <converter>utils.support.runtype.RunTypeConverter</converter>
+                </customType>
+
+            </customTypes>
             <!-- Associate data type rewrites with database columns -->
             <forcedTypes>
+                <!--any table-->
                 <forcedType>
                     <name>BOOLEAN</name>
                     <expression>.*\.is_enabled</expression>
                     <types>.*</types>
+                </forcedType>
+                <!--T_TASK table-->
+                <forcedType>
+                    <name>TaskStatus</name>
+                    <expression>.*t_task\.status</expression>
+                    <types>INT</types>
+                </forcedType>
+                <forcedType>
+                    <name>RunType</name>
+                    <expression>.*t_task\.run_type</expression>
+                    <types>INT</types>
+                </forcedType>
+                <!--RULE table-->
+                <forcedType>
+                    <name>RuleStatus</name>
+                    <expression>.*rule\.status</expression>
+                    <types>INT</types>
                 </forcedType>
             </forcedTypes>
         </database>

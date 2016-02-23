@@ -123,7 +123,7 @@ public class RuleResolver implements ProcessorRegister {
     @Override
     public Optional<Set<String>> availableTypes(Integer site) {
 
-        Optional<JsonRule> jsonRuleOptional = ruleDao.getById(site);
+        Optional<JsonRule> jsonRuleOptional = ruleDao.getJsonById(site);
         if (((Optional<JsonRule>) jsonRuleOptional).isPresent()) {
             HashSet<String> types = getTypes(jsonRuleOptional);
 

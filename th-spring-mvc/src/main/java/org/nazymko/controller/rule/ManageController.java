@@ -1,5 +1,6 @@
 package org.nazymko.controller.rule;
 
+import org.nazymko.th.parser.autodao.tables.records.RuleRecord;
 import org.nazymko.thehomeland.parser.db.dao.RuleDao;
 import org.nazymko.thehomeland.parser.rule.JsonRule;
 import org.springframework.stereotype.Controller;
@@ -12,7 +13,8 @@ import java.util.List;
 /**
  * Created by nazymko.patronus@gmail.com.
  */
-@Controller("rule")
+@Controller()
+@RequestMapping("rule")
 public class ManageController {
     @Resource
     RuleDao ruleDao;
@@ -20,8 +22,9 @@ public class ManageController {
     @RequestMapping("manage")
     public String managePage(Model model) {
 
-        List<JsonRule> all = ruleDao.getAll();
+        List<RuleRecord> all = ruleDao.getAllRules();
         model.addAttribute("rules", all);
+
         return "rule/manage";
     }
 }

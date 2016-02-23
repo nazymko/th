@@ -64,7 +64,7 @@ public class THLParserRunner {
         }
     }
 
-    Integer tasks(Integer session) {
+    public Integer tasks(Integer session) {
         int count = 0;
         for (Runnable task : deque) {
             if (task instanceof InfoSource) {

@@ -48,7 +48,7 @@ public class AddController {
 
         model.addAttribute("ex", params);
         ruleDao.save(rule);
-        pageDao.save(new Page(rule.getUrl(), rule.getUrl(), rule.getRoot()));
+//        pageDao.save(new Page(rule.getUrl(), rule.getUrl(), rule.getRoot()));
 
         ruleResolver.init();
 

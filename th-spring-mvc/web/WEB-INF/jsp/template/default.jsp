@@ -5,6 +5,7 @@
     <jsp:include page="${css}"/>
     <jsp:include page="${js}"/>
     <link rel="icon" sizes="32x32" href="/favicon.ico">
+
 </head>
 <body>
 <jsp:include page="../group-header.jsp"/>

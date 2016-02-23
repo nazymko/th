@@ -47,7 +47,7 @@ public class TaskFactory {
         return task;
     }
 
-    public Optional<Runnable> scheduleParsing(String page, String pageType, Integer sourcePage, Integer runId) {
+    public synchronized Optional<Runnable> scheduleParsing(String page, String pageType, Integer sourcePage, Integer runId) {
         boolean visitedInSession = historyDao.isVisitedInSession(page, runId);
         if (!visitedInSession) {
             return Optional.of(makeScheduledTask(page, pageType, sourcePage, runId));

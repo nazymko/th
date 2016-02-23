@@ -11,6 +11,7 @@ import java.util.Optional;
 
 import static org.nazymko.th.parser.autodao.tables.TSchedule.T_SCHEDULE;
 import static org.nazymko.th.parser.autodao.tables.TTask.T_TASK;
+import static utils.support.task.TaskStatus.NEW;
 
 /**
  * Created by nazymko.patronus@gmail.com.
@@ -54,6 +55,7 @@ public class ScheduleDao extends AbstractDao<Integer, TScheduleRecord> {
         Result<TTaskRecord> tTaskRecords = getDslContext()
                 .selectFrom(T_TASK)
                 .where(T_TASK.FINISH_AT.isNull())
+                .and(T_TASK.STATUS.eq(NEW))
                 .groupBy(T_TASK.SCHEDULE_SOURCE_ID)
                 .fetch();
 

@@ -23,7 +23,7 @@ public class ViewController {
     public String viewRule(@PathVariable("id") Integer id, Model model) {
 
 
-        Optional<JsonRule> byId = ruleDao.getById(id);
+        Optional<JsonRule> byId = ruleDao.getJsonById(id);
         if(byId.isPresent()){
             JsonRule jsonRule = byId.get();
             model.addAttribute("rule",jsonRule);

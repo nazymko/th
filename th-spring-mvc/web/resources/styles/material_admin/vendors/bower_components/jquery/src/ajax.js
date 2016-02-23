@@ -188,7 +188,7 @@ function ajaxConvert( s, response, jqXHR, isSuccess ) {
 		// Work with a copy of dataTypes in case we need to modify it for conversion
 		dataTypes = s.dataTypes.slice();
 
-	// Create converters map with lowercased keys
+	// Create org.nazymko.th.parser.autodao.converters map with lowercased keys
 	if ( dataTypes[ 1 ] ) {
 		for ( conv in s.converters ) {
 			converters[ conv.toLowerCase() ] = s.converters[ conv ];
@@ -237,7 +237,7 @@ function ajaxConvert( s, response, jqXHR, isSuccess ) {
 							conv = converters[ prev + " " + tmp[ 0 ] ] ||
 								converters[ "* " + tmp[ 0 ] ];
 							if ( conv ) {
-								// Condense equivalence converters
+								// Condense equivalence org.nazymko.th.parser.autodao.converters
 								if ( conv === true ) {
 									conv = converters[ conv2 ];
 
@@ -322,7 +322,7 @@ jQuery.extend({
 			json: "responseJSON"
 		},
 
-		// Data converters
+		// Data org.nazymko.th.parser.autodao.converters
 		// Keys separate source (or catchall "*") and destination types with a single space
 		converters: {
 
