@@ -36,25 +36,6 @@ public class FollowDecider implements History {
     }
 
     @Override
-    public Timestamp lastVisit(String link) {
-        Optional<Page> page = pageDao.get(link);
-        if (!page.isPresent()) {
-            return Timestamp.from(Instant.EPOCH);//not visited
-        }
-        return page.get().getVisited();
-    }
-
-    @Override
-    public void visit(String link) {
-        if (!pageDao.get(link).isPresent()) {
-            throw new IllegalArgumentException("Page was not found in database :" + link);
-        }
-
-        pageDao.visit(link);
-
-    }
-
-    @Override
     public void visitBySession(String link, Integer sessionKey) {
         PageRecord pageRecord = pageDao.getPageByUrlAndSession(link, sessionKey);
 

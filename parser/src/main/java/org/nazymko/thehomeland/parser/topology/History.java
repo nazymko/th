@@ -8,9 +8,6 @@ import java.sql.Timestamp;
 public interface History {
     boolean visited(String link);
 
-    Timestamp lastVisit(String link);
-
-    void visit(String link);
 
     void visitBySession(String link, Integer sessionKey);
 

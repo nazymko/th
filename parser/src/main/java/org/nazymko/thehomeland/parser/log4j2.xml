@@ -6,12 +6,12 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Root level="DEBUG">
+        <Root level="info">
             <AppenderRef ref="Console"/>
         </Root>
     </Loggers>
 
     <category name="org.springframework.jdbc.core.JdbcTemplate">
-        <priority value="debug" />
+        <priority value="info" />
     </category>
 </Configuration>

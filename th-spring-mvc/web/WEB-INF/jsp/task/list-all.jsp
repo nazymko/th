@@ -10,7 +10,7 @@
         <th>pageType</th>
         <th>startAt</th>
         <th>cron</th>
-        <th>isEnabled</th>
+        <th>status</th>
         <th>suspend</th>
         <th>delete</th>
 
@@ -26,7 +26,15 @@
             <td>${item.pageType}</td>
             <td>${item.startAt}</td>
             <td>${item.cron}</td>
-            <td>${item.isEnabled}</td>
+            <c:choose>
+                <c:when test="${item.isEnabled}">
+                    <td><div class="btn bgm-lightgreen">active</div></td>
+                </c:when>
+                <c:otherwise>
+                    <td><div class="btn bgm-gray">inactive</div></td>
+                </c:otherwise>
+            </c:choose>
+
             <c:choose>
                 <c:when test="${item.isEnabled}">
                     <td><a class="btn bgm-lightblue" href="/task/schedule/${item.id}/suspend">suspend</a></td>

@@ -2,6 +2,17 @@
   "name": "stackoverflow.com",
   "url": "http://stackoverflow.com",
   "path_provider": "css",
+  "meta": {
+    "topics": [
+      "programming"
+    ],
+    "types": [
+      "q&a"
+    ],
+    "languages": [
+      "eng"
+    ]
+  },
   "page": [
     {
       "type": "front_page",

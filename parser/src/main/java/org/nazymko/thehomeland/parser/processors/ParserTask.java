@@ -16,6 +16,7 @@ import org.nazymko.thehomeland.parser.rule.AttrsItem;
 import org.nazymko.thehomeland.parser.rule.PageItem;
 import org.nazymko.thehomeland.parser.topology.History;
 import org.nazymko.thehomeland.parser.topology.RuleResolver;
+import utils.TimeStampHelper;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -133,6 +134,7 @@ public class ParserTask implements Runnable, InfoSource {
         pageRecord.setTaskRunId(sessionKey);
         pageRecord.setType(type);
         pageRecord.setSiteId(config.getSiteId());
+        pageRecord.setRegisteredAt(TimeStampHelper.now());
 
         pageDao.save(pageRecord);
         config.setPageId(pageRecord.getId());
@@ -151,7 +153,7 @@ public class ParserTask implements Runnable, InfoSource {
                     .execute()
                     .parse();
 
-            historyDao.visit(link);
+            historyDao.visitBySession(link, sessionKey);
 
             log.info("'{}' parsed", link);
         } catch (IOException e) {

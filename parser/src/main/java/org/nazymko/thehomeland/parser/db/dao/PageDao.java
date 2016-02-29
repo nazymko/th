@@ -71,6 +71,7 @@ public class PageDao extends AbstractDao<String, Page> {
         int update = getJdbcTemplate().update("INSERT INTO page(site_id,url,type,version,registered_at,sourcePage) VALUES ((SELECT id FROM site s WHERE s.url = :site),:url,:type,:version,now(),:sourcePage)", source);
         return obj.getPage();
     }
+
     /**
      * @return database Id
      */
@@ -107,6 +108,8 @@ public class PageDao extends AbstractDao<String, Page> {
     }
 
     public void visit(String link) {
+
+//        getDslContext().selectFrom(PAGE).where(PAGE.URL.eq(link)).and()
         Optional<Page> page = get(link);
         if (page.isPresent()) {
             Integer id = page.get().getId();
@@ -137,7 +140,7 @@ public class PageDao extends AbstractDao<String, Page> {
     }
 
     public PageRecord getPageByUrlAndSession(String link, Integer sessionKey) {
-        log.error("session key: {} , link {}",sessionKey,link);
+        log.debug("session key: {} , link {}", sessionKey, link);
         PageRecord pageRecord = getDslContext().selectFrom(PAGE).where(PAGE.URL.eq(link)).and(PAGE.TASK_RUN_ID.eq(sessionKey)).fetchOne();
         return pageRecord;
     }
