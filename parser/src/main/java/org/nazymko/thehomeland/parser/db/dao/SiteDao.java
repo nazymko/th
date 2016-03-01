@@ -1,10 +1,7 @@
 package org.nazymko.thehomeland.parser.db.dao;
 
-import org.apache.logging.log4j.core.config.plugins.validation.constraints.Required;
 import org.jooq.DSLContext;
 import org.jooq.Result;
-import org.jooq.SQLDialect;
-import org.jooq.impl.DSL;
 import org.nazymko.th.parser.autodao.tables.records.SiteRecord;
 import org.nazymko.thehomeland.parser.db.model.Site;
 import org.springframework.dao.DataAccessException;
@@ -12,11 +9,9 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
-import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,27 +20,15 @@ import static org.nazymko.th.parser.autodao.tables.Site.SITE;
 /**
  * Created by nazymko.patronus@gmail.com.
  */
-public class SiteDao extends AbstractDao<Integer, Site> {
+public class SiteDao extends AbstractDao<Integer, SiteRecord> {
 
     @Override
-    public Optional<Site> get(Integer key) {
-        Site url = getJdbcTemplate().query("SELECT id,url,name FROM site WHERE id=:id", new MapSqlParameterSource("id", key), new ResultSetExtractor<Site>() {
-            @Override
-            public Site extractData(ResultSet rs) throws SQLException, DataAccessException {
-                if (rs.next()) {
+    public Optional<SiteRecord> get(Integer id) {
+        SiteRecord siteRecord = getDslContext().selectFrom(SITE).where(SITE.ID.eq(id)).fetchOne();
 
-                    Site site = getSite(rs);
-
-                    return site;
-                } else {
-                    return null;
-                }
-            }
-        });
-
-        return Optional.ofNullable(url);
+        return Optional.of(siteRecord);
     }
-
+/*
     private Site getSite(ResultSet rs) throws SQLException {
         Site site = new Site();
 
@@ -53,33 +36,23 @@ public class SiteDao extends AbstractDao<Integer, Site> {
         site.setName(rs.getString("name"));
         site.setId(rs.getInt("id"));
         return site;
-    }
+    }*/
 
     @Override
+    public Integer save(SiteRecord site) {
 
-    public Integer save(Site site) {
+        getDslContext().attach(site);
+        site.store();
 
-        MapSqlParameterSource paramSource = new MapSqlParameterSource("site", site.getUrl())
-                .addValue("name", site.getName());
-
-        int updated = getJdbcTemplate().update("INSERT INTO site(url,name) VALUES (:site,:name)",
-                paramSource);
-
-        return updated;
+        return site.getId();
     }
 
     public Integer getIdByUrl(String url) {
-        Integer query = getJdbcTemplate().query("SELECT id FROM site WHERE url=:url", new MapSqlParameterSource("url", url), new ResultSetExtractor<Integer>() {
-            @Override
-            public Integer extractData(ResultSet rs) throws SQLException, DataAccessException {
-                if (rs.next()) {
-                    return rs.getInt("id");
-                } else {
-                    return -1;
-                }
-            }
-        });
-        return query;
+        SiteRecord siteRecord = getDslContext().selectFrom(SITE).where(SITE.URL.eq(url)).fetchOne();
+        if(siteRecord!=null){
+            return siteRecord.getId();
+        }
+        return -1;
     }
 
 
@@ -95,17 +68,8 @@ public class SiteDao extends AbstractDao<Integer, Site> {
         return resultList;
     }
 
-
-    public List<Site> getList(int pageSize, int page) {
-
-        List<Site> resultList = getJdbcTemplate().query("SELECT url,name,id FROM site LIMIT :start, :size", new MapSqlParameterSource("start", page * pageSize).addValue("size", pageSize), new RowMapper<Site>() {
-            @Override
-            public Site mapRow(ResultSet resultSet, int i) throws SQLException {
-                return getSite(resultSet);
-            }
-        });
-
-        return resultList;
+    public List<SiteRecord> getList(int pageSize, int page) {
+        return getDslContext().selectFrom(SITE).limit(page * pageSize, pageSize).fetch();
     }
 
 

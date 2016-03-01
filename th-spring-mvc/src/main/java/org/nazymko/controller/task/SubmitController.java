@@ -1,6 +1,7 @@
 package org.nazymko.controller.task;
 
 import lombok.extern.log4j.Log4j2;
+import org.nazymko.th.parser.autodao.tables.records.SiteRecord;
 import org.nazymko.th.parser.autodao.tables.records.TTaskRecord;
 import org.nazymko.thehomeland.parser.THLParserRunner;
 import org.nazymko.thehomeland.parser.db.dao.SiteDao;
@@ -31,21 +32,19 @@ public class SubmitController {
     @RequestMapping(value = "submit/{site}", method = RequestMethod.GET)
     public String submitTask(Model model, @PathVariable("site") Integer id) {
 
-        throw new NotImplementedException();
-//
-//
-//        Site site = siteDao.get(id).get();
-//
-//        TTaskRecord tTaskRecord = parser.getTaskFac().nextRecord();
-//
-//        parser.schedule(site.getUrl(), "front_page", -1, tTaskRecord.getId());
-//
-//        model.addAttribute("site", site);
-//
-//
-//        log.info("SCHEDULED: {}:{}", site.getName(), site.getUrl());
-//
-//        return "/submit/info";
+//        throw new NotImplementedException();
+        SiteRecord site = siteDao.get(id).get();
+
+        TTaskRecord tTaskRecord = parser.getTaskFac().nextRecord(id);
+
+        parser.schedule(site.getUrl(), "front_page", -1, tTaskRecord.getId());
+
+        model.addAttribute("site", site);
+
+
+        log.info("SCHEDULED: {}:{}", site.getName(), site.getUrl());
+
+        return "/submit/info";
     }
 
     @RequestMapping(value = "submit}", method = RequestMethod.POST)

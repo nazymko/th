@@ -3,6 +3,7 @@ package org.nazymko.scheduler;
 import lombok.extern.log4j.Log4j2;
 import org.jooq.Result;
 import org.nazymko.th.parser.autodao.tables.TSchedule;
+import org.nazymko.th.parser.autodao.tables.records.SiteRecord;
 import org.nazymko.th.parser.autodao.tables.records.TScheduleRecord;
 import org.nazymko.th.parser.autodao.tables.records.TTaskRecord;
 import org.nazymko.thehomeland.parser.THLParserRunner;
@@ -82,7 +83,7 @@ public class MyCronTrigger {
     }
 
     private void executeRecord(TScheduleRecord scheduleRecord, TTaskRecord tTaskRecord) {
-        Optional<Site> site = siteDao.get(scheduleRecord.getSiteid());
+        Optional<SiteRecord> site = siteDao.get(scheduleRecord.getSiteid());
         if (site.isPresent()) {
             //Ok, lets start the job
             Runnable runnable = taskFac.makeScheduledTask(scheduleRecord.getStartPage(), scheduleRecord.getPageType(), -1, tTaskRecord.getId());

@@ -1,5 +1,6 @@
 package org.nazymko.controller.site;
 
+import org.nazymko.th.parser.autodao.tables.records.SiteRecord;
 import org.nazymko.thehomeland.parser.db.dao.PageDao;
 import org.nazymko.thehomeland.parser.db.dao.SiteDao;
 import org.nazymko.thehomeland.parser.db.model.Page;
@@ -22,11 +23,12 @@ import java.util.Optional;
 public class SitesController {
 
     @Resource
+    PageDao pageDao;
+    @Resource
     private SiteDao siteDao;
 
     @RequestMapping(method = RequestMethod.GET)
     public String root(Model model) {
-//        List<Site> sites = siteDao.getList(10, 0);
         List<Site> sites = siteDao.getAll();
 
         model.addAttribute("sites", sites);
@@ -37,21 +39,18 @@ public class SitesController {
     @RequestMapping(value = "commands", method = RequestMethod.GET)
     public String sites(Model model) {
 
-        List<Site> sites = siteDao.getList(10, 0);
+        List<SiteRecord> sites = siteDao.getList(10, 0);
 
         model.addAttribute("sites", sites);
 
         return "site/sites";
     }
 
-    @Resource
-    PageDao pageDao;
-
     @RequestMapping(value = "{id}/info", method = RequestMethod.GET)
     public String info(Model model, @PathVariable("id") Integer id) {
 
 
-        Optional<Site> siteOptional = siteDao.get(id);
+        Optional<SiteRecord> siteOptional = siteDao.get(id);
         if (siteOptional.isPresent()) {
             model.addAttribute("site", siteOptional.get());
             List<Page> latestVersion = pageDao.getLatestVersion(id);

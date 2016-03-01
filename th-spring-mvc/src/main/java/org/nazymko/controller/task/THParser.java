@@ -1,5 +1,6 @@
 package org.nazymko.controller.task;
 
+import org.nazymko.th.parser.autodao.tables.records.PageRecord;
 import org.nazymko.thehomeland.parser.THLParserRunner;
 import org.nazymko.thehomeland.parser.db.dao.PageDao;
 import org.nazymko.thehomeland.parser.db.model.Page;
@@ -30,7 +31,7 @@ public class THParser {
         List<String> queUrls = parser.getStatusMessage();
         Integer size = Integer.valueOf(coalesce(params.get("size"), 15).toString());
         Integer page = Integer.valueOf(coalesce(params.get("page"), 0).toString());
-        List<Page> list = pageDao.getList(size, page);
+        List<PageRecord> list = pageDao.getList(size, page);
         model.addAttribute("tasks", queUrls);
         model.addAttribute("last", list);
         model.addAttribute("page", page);

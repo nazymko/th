@@ -37,11 +37,28 @@
     </bean>
 
 
+    <!-- <bean id="simpleMappingExceptionResolver"
+             class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+           <property name="exceptionMappings">
+               <map>
+                   <entry key="any" value="Exception"/>
+               </map>
+           </property>
+           &lt;!&ndash; See note below on how this interacts with Spring Boot &ndash;&gt;
+           <property name="defaultErrorView" value="error"/>
+           <property name="exceptionAttribute" value="ex"/>
+
+           &lt;!&ndash; Name of logger to use to log exceptions. Unset by default, so logging disabled &ndash;&gt;
+           <property name="warnLogCategory" value="org.apache.commons.logging.impl.Log4JLogger"/>
+     </bean>-->
+
     <!--This code will broke your autocompletion feature-->
-    <!--<bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <!--
+    <bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" ref="prefix"/>
         <property name="suffix" ref="suffix"/>
-    </bean>-->
+    </bean>
+    -->
     <mvc:default-servlet-handler/>
     <mvc:resources mapping="/resources/styles/**" location="/resources/styles/" order="1" cache-period="31556926"/>
     <mvc:resources mapping="/favicon.ico" location="/resources/images/favicon.ico" order="2" cache-period="31556926"/>

@@ -3,7 +3,7 @@ package org.nazymko.thehomeland.parser.db.dao;
 import com.google.gson.Gson;
 import lombok.Setter;
 import org.nazymko.th.parser.autodao.tables.records.RuleRecord;
-import org.nazymko.thehomeland.parser.db.model.Site;
+import org.nazymko.th.parser.autodao.tables.records.SiteRecord;
 import org.nazymko.thehomeland.parser.rule.JsonRule;
 import org.nazymko.thehomeland.parser.rule.RuleFactory;
 import org.nazymko.thehomeland.parser.topology.RuleResolver;
@@ -74,7 +74,7 @@ public class RuleDao extends AbstractDao<String, JsonRule> {
         RuleRecord ruleRecord = new RuleRecord();
 
         String serialized = new Gson().toJson(rule);
-        Integer version = ruleVersion(rule.getUrl());
+        Integer version = ruleMaxVersion(rule.getUrl());
         ruleRecord.setSite(rule.getUrl());
         ruleRecord.setRule(serialized);
         ruleRecord.setVersion(version);
@@ -90,11 +90,15 @@ public class RuleDao extends AbstractDao<String, JsonRule> {
     private void saveNewSiteOrIgnore(JsonRule rule) {
         Integer idByUrl = siteDao.getIdByUrl(rule.getUrl());
         if (idByUrl < 0) {
-            siteDao.save(new Site(rule.getUrl(), rule.getName()));
+            SiteRecord site = new SiteRecord();
+
+            site.setUrl(rule.getUrl());
+            site.setName(rule.getName());
+            siteDao.save(site);
         }
     }
 
-    private Integer ruleVersion(String url) {
+    private Integer ruleMaxVersion(String url) {
         MapSqlParameterSource params = new MapSqlParameterSource("site", url);
         return getJdbcTemplate().query("SELECT COUNT(*) number,MAX(version) version FROM rule WHERE site =:site", params, new ResultSetExtractor<Integer>() {
             @Override

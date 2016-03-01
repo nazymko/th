@@ -1,6 +1,8 @@
 package org.nazymko.thehomeland.parser.db.dao;
 
 import lombok.extern.log4j.Log4j2;
+import org.jooq.Result;
+import org.nazymko.th.parser.autodao.tables.Site;
 import org.nazymko.th.parser.autodao.tables.records.PageRecord;
 import org.nazymko.thehomeland.parser.db.model.Page;
 import org.springframework.dao.DataAccessException;
@@ -15,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.nazymko.th.parser.autodao.tables.Page.PAGE;
+import static org.nazymko.th.parser.autodao.tables.Site.SITE;
 
 
 /**
@@ -117,15 +120,9 @@ public class PageDao extends AbstractDao<String, Page> {
         }
     }
 
-    public List<Page> getList(int pageSize, int pageNumber) {
-        List<Page> list = getJdbcTemplate().query("SELECT url,(SELECT url FROM site s WHERE s.id=p.site_id) AS site_url,id,type,version,visited_at,registered_at FROM page p ORDER BY visited_at DESC LIMIT :start OFFSET :offset", new MapSqlParameterSource("start", pageSize).addValue("offset", pageSize * pageNumber), new RowMapper<Page>() {
-            @Override
-            public Page mapRow(ResultSet resultSet, int i) throws SQLException {
-                return readPage(resultSet);
-            }
-        });
-
-        return list;
+    public Result<PageRecord> getList(int pageSize, int pageNumber) {
+        Result<PageRecord> fetch = getDslContext().selectFrom(PAGE).orderBy(PAGE.VISITED_AT.desc()).limit(pageNumber * pageSize, pageSize).fetch();
+        return fetch;
     }
 
     public List<Page> getLatestVersion(Integer siteId) {

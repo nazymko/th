@@ -10,10 +10,13 @@ import org.nazymko.thehomeland.parser.topology.History;
 import org.nazymko.thehomeland.parser.topology.RuleResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import utils.TimeStampHelper;
+import utils.support.runtype.RunType;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
+
+import static utils.support.runtype.RunType.MANUAL;
 
 @Log4j2
 public class TaskFactory {
@@ -58,13 +61,15 @@ public class TaskFactory {
         return Optional.empty();
     }
 
-    public TTaskRecord nextRecord() {
+    public TTaskRecord nextRecord(Integer siteId) {
         TTaskRecord tTaskRecord = new TTaskRecord();
         taskDao.attach(tTaskRecord);
 
         tTaskRecord.setStartAt(TimeStampHelper.now());
         tTaskRecord.setIsEnabled(true);
         tTaskRecord.setMessage("Manual start");
+        tTaskRecord.setRunType(MANUAL);
+        tTaskRecord.setSiteId(siteId);
         tTaskRecord.setScheduleSourceId(null);
         tTaskRecord.store();
 
