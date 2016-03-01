@@ -36,7 +36,7 @@ import utils.support.rule.RuleStatusConverter;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Rule extends TableImpl<RuleRecord> {
 
-	private static final long serialVersionUID = 1167513512;
+	private static final long serialVersionUID = 123781347;
 
 	/**
 	 * The reference instance of <code>thehomeland.rule</code>
@@ -119,7 +119,7 @@ public class Rule extends TableImpl<RuleRecord> {
 	 */
 	@Override
 	public List<UniqueKey<RuleRecord>> getKeys() {
-		return Arrays.<UniqueKey<RuleRecord>>asList(Keys.KEY_RULE_PRIMARY, Keys.KEY_RULE_RULE_ID_UINDEX);
+		return Arrays.<UniqueKey<RuleRecord>>asList(Keys.KEY_RULE_PRIMARY);
 	}
 
 	/**

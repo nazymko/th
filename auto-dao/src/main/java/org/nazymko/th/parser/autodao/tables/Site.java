@@ -33,7 +33,7 @@ import org.nazymko.th.parser.autodao.tables.records.SiteRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Site extends TableImpl<SiteRecord> {
 
-	private static final long serialVersionUID = -920534024;
+	private static final long serialVersionUID = 284546707;
 
 	/**
 	 * The reference instance of <code>thehomeland.site</code>
@@ -106,7 +106,7 @@ public class Site extends TableImpl<SiteRecord> {
 	 */
 	@Override
 	public List<UniqueKey<SiteRecord>> getKeys() {
-		return Arrays.<UniqueKey<SiteRecord>>asList(Keys.KEY_SITE_PRIMARY, Keys.KEY_SITE_SITE_ID_UINDEX);
+		return Arrays.<UniqueKey<SiteRecord>>asList(Keys.KEY_SITE_PRIMARY);
 	}
 
 	/**

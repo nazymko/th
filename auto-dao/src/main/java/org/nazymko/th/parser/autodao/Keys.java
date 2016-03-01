@@ -54,9 +54,7 @@ public class Keys {
 
 	public static final UniqueKey<PageRecord> KEY_PAGE_PRIMARY = UniqueKeys0.KEY_PAGE_PRIMARY;
 	public static final UniqueKey<RuleRecord> KEY_RULE_PRIMARY = UniqueKeys0.KEY_RULE_PRIMARY;
-	public static final UniqueKey<RuleRecord> KEY_RULE_RULE_ID_UINDEX = UniqueKeys0.KEY_RULE_RULE_ID_UINDEX;
 	public static final UniqueKey<SiteRecord> KEY_SITE_PRIMARY = UniqueKeys0.KEY_SITE_PRIMARY;
-	public static final UniqueKey<SiteRecord> KEY_SITE_SITE_ID_UINDEX = UniqueKeys0.KEY_SITE_SITE_ID_UINDEX;
 	public static final UniqueKey<TScheduleRecord> KEY_T_SCHEDULE_PRIMARY = UniqueKeys0.KEY_T_SCHEDULE_PRIMARY;
 	public static final UniqueKey<TTaskRecord> KEY_T_TASK_PRIMARY = UniqueKeys0.KEY_T_TASK_PRIMARY;
 
@@ -83,9 +81,7 @@ public class Keys {
 	private static class UniqueKeys0 extends AbstractKeys {
 		public static final UniqueKey<PageRecord> KEY_PAGE_PRIMARY = createUniqueKey(Page.PAGE, Page.PAGE.ID);
 		public static final UniqueKey<RuleRecord> KEY_RULE_PRIMARY = createUniqueKey(Rule.RULE, Rule.RULE.ID);
-		public static final UniqueKey<RuleRecord> KEY_RULE_RULE_ID_UINDEX = createUniqueKey(Rule.RULE, Rule.RULE.ID);
 		public static final UniqueKey<SiteRecord> KEY_SITE_PRIMARY = createUniqueKey(Site.SITE, Site.SITE.ID);
-		public static final UniqueKey<SiteRecord> KEY_SITE_SITE_ID_UINDEX = createUniqueKey(Site.SITE, Site.SITE.ID);
 		public static final UniqueKey<TScheduleRecord> KEY_T_SCHEDULE_PRIMARY = createUniqueKey(TSchedule.T_SCHEDULE, TSchedule.T_SCHEDULE.ID);
 		public static final UniqueKey<TTaskRecord> KEY_T_TASK_PRIMARY = createUniqueKey(TTask.T_TASK, TTask.T_TASK.ID);
 	}
