@@ -1,33 +1,25 @@
 package org.nazymko.thehomeland.parser.rule;
 
 /**
- * Created by JacksonGenerator on 02.12.15.
+ * Created by JacksonGenerator on 03.03.16.
  */
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import java.io.Serializable;
-import java.net.URI;
-import java.net.URL;
 import java.util.List;
 
 @Data
-public class JsonRule implements Serializable {
-    transient Integer id = -1;
+public class JsonRule {
 
+    @JsonProperty("meta")
+    private Meta meta;
     @JsonProperty("name")
     private String name;
-    @JsonProperty("path_provider")
-    private String path_provider;
+    @JsonProperty("selector")
+    private String selector;
     @JsonProperty("page")
     private List<PageItem> page;
     @JsonProperty("url")
     private String url;
-    @JsonProperty("root")
-    private String root;
-
-    public String getUrl() {
-        return "http://" + URI.create(url).getAuthority();
-    }
 }

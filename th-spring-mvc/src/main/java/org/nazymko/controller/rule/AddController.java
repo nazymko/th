@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 import lombok.extern.log4j.Log4j2;
 import org.nazymko.thehomeland.parser.db.dao.PageDao;
 import org.nazymko.thehomeland.parser.db.dao.RuleDao;
-import org.nazymko.thehomeland.parser.db.model.Page;
 import org.nazymko.thehomeland.parser.rule.JsonRule;
+import org.nazymko.thehomeland.parser.rule.ParsingRule;
 import org.nazymko.thehomeland.parser.topology.RuleResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,9 +37,9 @@ public class AddController {
     @RequestMapping(value = "addnew", method = RequestMethod.POST)
     public String addPost(@RequestParam HashMap<String, String> params, Model model) {
         log.info("params = {}", params);
-        JsonRule rule;
+        ParsingRule rule;
         try {
-            rule = gson.fromJson(params.get("rule"), JsonRule.class);
+            rule = gson.fromJson(params.get("rule"), ParsingRule.class);
         } catch (Exception ex) {
             log.error(ex);
             model.addAttribute("ex", ex);
@@ -48,7 +48,6 @@ public class AddController {
 
         model.addAttribute("ex", params);
         ruleDao.save(rule);
-//        pageDao.save(new Page(rule.getUrl(), rule.getUrl(), rule.getRoot()));
 
         ruleResolver.init();
 

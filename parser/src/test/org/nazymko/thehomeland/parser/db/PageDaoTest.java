@@ -23,7 +23,6 @@ public class PageDaoTest {
         MysqlDataSource mysqlDataSource = DaoFactory.getMysqlDataSource();
 
         pageDao = new PageDao();
-        pageDao.setJdbcTemplate(new NamedParameterJdbcTemplate(mysqlDataSource));
 
     }
 

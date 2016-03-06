@@ -13,7 +13,7 @@ public class RuleMeta {
     boolean allowDuplicates = false;//visit once
 
     private String name;
-    private String pathProvider;
+    private String selector;
     private String url;
     private HashMap<String, List<Timestamp>> history = new HashMap<>();
 

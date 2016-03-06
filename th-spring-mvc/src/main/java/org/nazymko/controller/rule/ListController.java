@@ -2,6 +2,7 @@ package org.nazymko.controller.rule;
 
 import org.nazymko.thehomeland.parser.db.dao.RuleDao;
 import org.nazymko.thehomeland.parser.rule.JsonRule;
+import org.nazymko.thehomeland.parser.rule.ParsingRule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -15,7 +16,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("rule")
-public class ListController  {
+public class ListController {
 
 
     @Qualifier("ruleDao")
@@ -24,7 +25,7 @@ public class ListController  {
 
     @RequestMapping("list")
     public String list(Model model) {
-        List<JsonRule> all = ruleDao.getAll();
+        List<ParsingRule> all = ruleDao.getAllParsingRules();
         model.addAttribute("rules", all);
         return "rule/list";
     }

@@ -1,9 +1,12 @@
+<%--@elvariable id="site" type="org.nazymko.th.parser.autodao.tables.records.SiteRecord"--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <pre>${site}</pre>
+<%--@elvariable id="pages" type="java.util.List<org.nazymko.thehomeland.parser.db.model.Page>"--%>
 <c:if test="${!empty pages}">
-    <table class="table-row-cell">
+    <h3>Latest</h3>
+    <table border="1px" cellspacing="3px">
         <thead>
         <tr>
             <th>id</th>

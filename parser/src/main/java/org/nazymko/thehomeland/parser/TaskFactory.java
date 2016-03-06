@@ -5,12 +5,11 @@ import lombok.extern.log4j.Log4j2;
 import org.nazymko.th.parser.autodao.tables.records.TTaskRecord;
 import org.nazymko.thehomeland.parser.db.dao.*;
 import org.nazymko.thehomeland.parser.processors.AttrListener;
-import org.nazymko.thehomeland.parser.processors.ParserTask;
+import org.nazymko.thehomeland.parser.processors.ParsingTask;
 import org.nazymko.thehomeland.parser.topology.History;
 import org.nazymko.thehomeland.parser.topology.RuleResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import utils.TimeStampHelper;
-import utils.support.runtype.RunType;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -39,7 +38,7 @@ public class TaskFactory {
     private List<AttrListener> listeners;
 
     public Runnable makeScheduledTask(String page, String type, Integer sourcePage, Integer sessionKey) {
-        ParserTask task = new ParserTask(page);
+        ParsingTask task = new ParsingTask(page);
         injectDao(task);
 
         task.setListeners(listeners);
@@ -76,7 +75,7 @@ public class TaskFactory {
         return tTaskRecord;
     }
 
-    public void injectDao(ParserTask dao) {
+    public void injectDao(ParsingTask dao) {
         dao.setHistoryDao(historyDao);
         dao.setPageDao(pageDao);
         dao.setSiteDao(siteDao);

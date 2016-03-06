@@ -2,8 +2,10 @@ package org.nazymko.thehomeland.parser.db.dao;
 
 import lombok.extern.log4j.Log4j2;
 import org.jooq.Result;
+import org.nazymko.th.parser.autodao.tables.records.SiteRecord;
 import org.nazymko.th.parser.autodao.tables.records.TTaskRecord;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +19,9 @@ import static utils.support.task.TaskStatus.RUNNING;
 @Log4j2
 public class TaskDao extends AbstractDao<Integer, TTaskRecord> {
 
+
+    @Resource
+    SiteDao siteDao;
 
     @Override
     public Optional<TTaskRecord> get(Integer key) {
@@ -56,5 +61,12 @@ public class TaskDao extends AbstractDao<Integer, TTaskRecord> {
 
     public Result<TTaskRecord> getFinished(int limit) {
         return getDslContext().selectFrom(T_TASK).where(T_TASK.FINISH_AT.isNotNull()).and(T_TASK.STATUS.eq(FINISHED)).maxRows(limit).fetch();
+    }
+
+    public SiteRecord getSiteBySession(Integer sessionKey) {
+        Integer siteId = getDslContext().selectFrom(T_TASK).where(T_TASK.ID.eq(sessionKey)).fetchOne().getSiteId();
+
+        Optional<SiteRecord> siteRecord = siteDao.get(siteId);
+        return siteRecord.get();
     }
 }

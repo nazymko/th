@@ -17,7 +17,7 @@
             <td>${site.id}</td>
             <td><a href="/site/${site.id}/supportedtypes">${site.name}</a></td>
             <td><a href="/site/${site.id}/info">history</a></td>
-            <td><a href="/task/submit/${site.id}">start</a></td>
+            <td><a class="btn" href="/task/submit/${site.id}">start</a></td>
         </tr>
 
     </c:forEach>

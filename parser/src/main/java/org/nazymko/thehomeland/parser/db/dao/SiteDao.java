@@ -49,12 +49,19 @@ public class SiteDao extends AbstractDao<Integer, SiteRecord> {
 
     public Integer getIdByUrl(String url) {
         SiteRecord siteRecord = getDslContext().selectFrom(SITE).where(SITE.URL.eq(url)).fetchOne();
-        if(siteRecord!=null){
+        if (siteRecord != null) {
             return siteRecord.getId();
         }
         return -1;
     }
 
+    public Optional<SiteRecord> getByUrl(String url) {
+        SiteRecord siteRecord = getDslContext().selectFrom(SITE).where(SITE.URL.eq(url)).fetchOne();
+        if (siteRecord != null) {
+            return Optional.of(siteRecord);
+        }
+        return Optional.empty();
+    }
 
     public List<String> getUrlList(int pageSize, int page) {
 

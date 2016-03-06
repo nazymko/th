@@ -2,13 +2,8 @@
        xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
-
-    <!--        xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
-        http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context-4.2.xsd">-->
     <context:component-scan base-package="org.nazymko"/>
-
+    <context:property-placeholder location="classpath*:application.properties"/>
     <bean id="jsInclude" class="java.lang.String">
         <constructor-arg type="java.lang.String" value="/WEB-INF/jsp/js.jsp"/>
     </bean>
@@ -37,35 +32,20 @@
     </bean>
 
 
-    <!-- <bean id="simpleMappingExceptionResolver"
-             class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-           <property name="exceptionMappings">
-               <map>
-                   <entry key="any" value="Exception"/>
-               </map>
-           </property>
-           &lt;!&ndash; See note below on how this interacts with Spring Boot &ndash;&gt;
-           <property name="defaultErrorView" value="error"/>
-           <property name="exceptionAttribute" value="ex"/>
-
-           &lt;!&ndash; Name of logger to use to log exceptions. Unset by default, so logging disabled &ndash;&gt;
-           <property name="warnLogCategory" value="org.apache.commons.logging.impl.Log4JLogger"/>
-     </bean>-->
-
-    <!--This code will broke your autocompletion feature-->
-    <!--
-    <bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" ref="prefix"/>
-        <property name="suffix" ref="suffix"/>
+    <bean id="isDebugEnabled" class="java.lang.Boolean">
+        <constructor-arg type="java.lang.String" value="true"/>
     </bean>
-    -->
+
+
     <mvc:default-servlet-handler/>
     <mvc:resources mapping="/resources/styles/**" location="/resources/styles/" order="1" cache-period="31556926"/>
     <mvc:resources mapping="/favicon.ico" location="/resources/images/favicon.ico" order="2" cache-period="31556926"/>
-    <mvc:resources mapping="/resources/images/**" location="/resources/images/" order="3"
-                   cache-period="31556926"/>
+    <mvc:resources mapping="/resources/images/**" location="/resources/images/" order="3" cache-period="31556926"/>
+    <mvc:resources mapping="/resources/js/**" location="/resources/js/" order="4" cache-period="31556926"/>
     <mvc:annotation-driven/>
+
+
     <mvc:interceptors>
-        <bean class="org.nazymko.controller.interceptor.TemplateInterceptor"/>
+        <bean id="interceptor" class="org.nazymko.controller.interceptor.TemplateInterceptor"/>
     </mvc:interceptors>
 </beans>

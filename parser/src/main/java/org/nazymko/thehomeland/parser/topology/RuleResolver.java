@@ -4,6 +4,7 @@ import lombok.extern.log4j.Log4j2;
 import org.nazymko.thehomeland.parser.db.dao.RuleDao;
 import org.nazymko.thehomeland.parser.rule.JsonRule;
 import org.nazymko.thehomeland.parser.rule.PageItem;
+import org.nazymko.thehomeland.parser.rule.ParsingRule;
 import org.nazymko.thehomeland.parser.rule.RuleMeta;
 
 import javax.annotation.PostConstruct;
@@ -34,7 +35,7 @@ public class RuleResolver implements ProcessorRegister {
     @PostConstruct
     public void init() {
 
-        List<JsonRule> all = ruleDao.getAll();
+        List<ParsingRule> all = ruleDao.getLatestParsingRules();
         catalogue.clear();
 
         for (JsonRule jsonRule : all) {
@@ -54,7 +55,7 @@ public class RuleResolver implements ProcessorRegister {
 
     @Override
     public Optional<PageItem> resolveByTypeForSite(String site, String type) {
-        log.info("site = {}, type = {}",site,type);
+        log.info("site = {}, type = {}", site, type);
 
         return Optional.ofNullable(catalogue.get(site).get(type));
     }
@@ -88,7 +89,7 @@ public class RuleResolver implements ProcessorRegister {
 
             RuleMeta ruleMeta = new RuleMeta();
             ruleMeta.setName(rule.getName());
-            ruleMeta.setPathProvider(rule.getPath_provider());
+            ruleMeta.setSelector(rule.getSelector());
             ruleMeta.setUrl(rule.getUrl());
             meta.put(site, ruleMeta);
 
@@ -110,8 +111,8 @@ public class RuleResolver implements ProcessorRegister {
     @Override
     public Optional<Set<String>> availableTypes(String site) {
 
-        Optional<JsonRule> jsonRuleOptional = ruleDao.get(site);
-        if (((Optional<JsonRule>) jsonRuleOptional).isPresent()) {
+        Optional<ParsingRule> jsonRuleOptional = ruleDao.get(site);
+        if (((Optional<ParsingRule>) jsonRuleOptional).isPresent()) {
             HashSet<String> types = getTypes(jsonRuleOptional);
 
             return Optional.of(types);
@@ -123,8 +124,8 @@ public class RuleResolver implements ProcessorRegister {
     @Override
     public Optional<Set<String>> availableTypes(Integer site) {
 
-        Optional<JsonRule> jsonRuleOptional = ruleDao.getJsonById(site);
-        if (((Optional<JsonRule>) jsonRuleOptional).isPresent()) {
+        Optional<ParsingRule> jsonRuleOptional = ruleDao.getJsonById(site);
+        if (((Optional<ParsingRule>) jsonRuleOptional).isPresent()) {
             HashSet<String> types = getTypes(jsonRuleOptional);
 
             return Optional.of(types);
@@ -132,7 +133,7 @@ public class RuleResolver implements ProcessorRegister {
         return Optional.empty();
     }
 
-    private HashSet<String> getTypes(Optional<JsonRule> jsonRuleOptional) {
+    private HashSet<String> getTypes(Optional<ParsingRule> jsonRuleOptional) {
         HashSet<String> types = new HashSet<>();
         JsonRule rule = jsonRuleOptional.get();
 

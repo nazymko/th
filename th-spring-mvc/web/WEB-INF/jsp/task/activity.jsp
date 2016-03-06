@@ -18,6 +18,7 @@
         </div>
 
     </div>
+    <h3>Latest</h3>
     <table border="1px">
 
         <thead>
@@ -25,8 +26,8 @@
             <th>id</th>
             <th>visited at</th>
             <th>registered at</th>
-            <th>page</th>
-            <th>site</th>
+            <th>page id</th>
+            <th>site url</th>
         </tr>
         </thead>
         <%--@elvariable id="last" type="java.util.List<org.nazymko.th.parser.autodao.tables.records.PageRecord>"--%>
@@ -36,7 +37,7 @@
                 <td>&nbsp;<a href="/task/attrs/${row.id}">${row.visitedAt}</a></td>
                 <td>&nbsp;${row.registeredAt}</td>
                 <td>&nbsp;${row.sourcepage}</td>
-                <td>&nbsp;<a href="/site/${row.siteId}/info">info</a></td>
+                <td>&nbsp;<a href="/site/${row.siteId}/info">${row.siteUrl}</a></td>
             </tr>
         </c:forEach>
     </table>

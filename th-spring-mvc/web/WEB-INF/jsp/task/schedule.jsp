@@ -5,23 +5,6 @@
 <script type="text/javascript" src="<c:url value="/resources/styles/libs/jquery-cron/cron/jquery-cron.js"/>"></script>
 <link type="text/css" href="<c:url value="/resources/styles/libs/jquery-cron/cron/jquery-cron.css"/>" rel="stylesheet"/>
 
-<%--<script type="text/javascript" src="<c:url value="/resources/styles/libs/jquery-cron/gentleSelect/jquery-gentleSelect.js"/>"></script>--%>
-<%--<link type="text/css" href="<c:url value="/resources/styles/libs/jquery-cron/gentleSelect/jquery-gentleSelect.css"/>" rel="stylesheet"/>--%>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        <c:forEach items="${sites}" var="site">
-        $('.cron-sel-${site.id}').cron({
-            initial: "59 23 31 12 *",
-            onChange: function () {
-                $('.cron-val-${site.id}').text("* " + $(this).cron("value"));
-                $('.cron-val-form-${site.id}').attr('value', "* " + $(this).cron("value"));
-            }
-        });
-        </c:forEach>
-    });
-</script>
-
 <jsp:include page="header.jsp"/>
 
 <table role="grid" border="1px">
@@ -35,6 +18,7 @@
         <th>submit</th>
     </tr>
     </thead>
+    <%--@elvariable id="sites" type="java.util.List<org.nazymko.thehomeland.parser.db.model.Site>"--%>
     <c:forEach items="${sites}" var="site">
         <tr>
             <td>${site.id}</td>
@@ -56,3 +40,21 @@
         </tr>
     </c:forEach>
 </table>
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        <c:forEach items="${sites}" var="site">
+        $('.cron-sel-${site.id}').cron({
+            initial: "59 23 31 12 *",
+            onChange: function () {
+                $('.cron-val-${site.id}').text("* " + $(this).cron("value"));
+                $('.cron-val-form-${site.id}').attr('value', "* " + $(this).cron("value"));
+            }
+        });
+        </c:forEach>
+    });
+</script>
+

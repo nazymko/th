@@ -1,10 +1,14 @@
 package org.nazymko.thehomeland.parser.db.dao;
 
+import com.fasterxml.jackson.core.JsonFactory;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import lombok.Setter;
+import org.jooq.Result;
 import org.nazymko.th.parser.autodao.tables.records.RuleRecord;
 import org.nazymko.th.parser.autodao.tables.records.SiteRecord;
 import org.nazymko.thehomeland.parser.rule.JsonRule;
+import org.nazymko.thehomeland.parser.rule.ParsingRule;
 import org.nazymko.thehomeland.parser.rule.RuleFactory;
 import org.nazymko.thehomeland.parser.topology.RuleResolver;
 import org.springframework.dao.DataAccessException;
@@ -15,6 +19,8 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import javax.annotation.Resource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +30,7 @@ import static utils.support.rule.RuleStatus.ACTIVE;
 /**
  * Created by nazymko.patronus@gmail.com.
  */
-public class RuleDao extends AbstractDao<String, JsonRule> {
+public class RuleDao extends AbstractDao<String, ParsingRule> {
 
     @Resource
     RuleResolver resolver;
@@ -33,11 +39,11 @@ public class RuleDao extends AbstractDao<String, JsonRule> {
     private SiteDao siteDao;
 
     @Override
-    public Optional<JsonRule> get(String site) {
-        Optional<JsonRule> result = getJdbcTemplate().query("" +
-                "SELECT * FROM rule WHERE site=:site AND version = (SELECT  MAX(version) FROM rule )", new MapSqlParameterSource("site", site), new ResultSetExtractor<Optional<JsonRule>>() {
+    public Optional<ParsingRule> get(String site) {
+        Optional<ParsingRule> result = getJdbcTemplate().query("" +
+                "SELECT * FROM rule WHERE site=:site AND version = (SELECT  MAX(version) FROM rule WHERE site=:site)", new MapSqlParameterSource("site", site), new ResultSetExtractor<Optional<ParsingRule>>() {
             @Override
-            public Optional<JsonRule> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            public Optional<ParsingRule> extractData(ResultSet rs) throws SQLException, DataAccessException {
                 if (rs.next()) {
                     return rsToJsonRule(rs);
 
@@ -49,31 +55,27 @@ public class RuleDao extends AbstractDao<String, JsonRule> {
         return result;
     }
 
-    public Optional<JsonRule> getJsonById(int key) {
-        Optional<JsonRule> result = getJdbcTemplate().query("" +
-                "SELECT * FROM rule WHERE id=:id AND version = (SELECT  MAX(version) FROM rule )", new MapSqlParameterSource("id", key), new ResultSetExtractor<Optional<JsonRule>>() {
-            @Override
-            public Optional<JsonRule> extractData(ResultSet rs) throws SQLException, DataAccessException {
-                if (rs.next()) {
-                    return rsToJsonRule(rs);
+    public Optional<ParsingRule> getJsonById(int key) {
+        ParsingRule parsingRule = null;
+        RuleRecord ruleRecord = getDslContext().selectFrom(RULE).where(RULE.ID.eq(key)).orderBy(RULE.VERSION.desc()).limit(1).fetchOne();
+        if (isPresent(ruleRecord)) {
+            parsingRule = RuleFactory.make(ruleRecord.getRule());
+            parsingRule.setId(ruleRecord.getId());
+            parsingRule.setVersion(ruleRecord.getVersion());
+        }
 
-                }
-                return Optional.ofNullable(null);
-            }
-        });
-
-
-        return result;
+        return Optional.ofNullable(parsingRule);
     }
 
     @Override
-    public String save(JsonRule rule) {
+    public String save(ParsingRule rule) {
 
         saveNewSiteOrIgnore(rule);
 
         RuleRecord ruleRecord = new RuleRecord();
 
-        String serialized = new Gson().toJson(rule);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String serialized = gson.toJson(rule);
         Integer version = ruleMaxVersion(rule.getUrl());
         ruleRecord.setSite(rule.getUrl());
         ruleRecord.setRule(serialized);
@@ -112,35 +114,63 @@ public class RuleDao extends AbstractDao<String, JsonRule> {
         });
     }
 
-    public List<JsonRule> getAll() {
-        List<JsonRule> ruleList = getJdbcTemplate().query("SELECT site,rule,MAX(version) AS version ,id FROM rule GROUP BY site", new RowMapper<JsonRule>() {
-                    @Override
-                    public JsonRule mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        return getJsonRule(rs);
-                    }
-                }
-        );
-
-        return ruleList;
-
-    }
 
     public List<RuleRecord> getAllRules() {
+
         return getDslContext().selectFrom(RULE).where(RULE.STATUS.isNotNull()).fetch();
     }
 
-    private Optional<JsonRule> rsToJsonRule(ResultSet rs) throws SQLException {
-        JsonRule jsonRule = getJsonRule(rs);
+    public List<ParsingRule> getLatestParsingRules() {
+        List<RuleRecord> latest = getLatest();
+        List<ParsingRule> ruleList = new ArrayList<>();
+        for (RuleRecord ruleRecord : latest) {
+            ruleList.add(RuleFactory.make(ruleRecord));
+
+        }
+        return ruleList;
+    }
+
+    public List<RuleRecord> getLatest() {
+        Result<RuleRecord> fetch = getDslContext().selectFrom(RULE).where(RULE.STATUS.isNotNull()).orderBy(RULE.SITE.asc(), RULE.VERSION.desc()).fetch();
+        ArrayList<RuleRecord> ruleRecords = new ArrayList<>();
+        HashMap<String, RuleRecord> latest = new HashMap<>();
+        //hardcode to obtain latest rules (with max version)
+        for (RuleRecord ruleRecord : fetch) {
+            if (latest.containsKey(ruleRecord.getSite())) {
+                RuleRecord latestPretentent = latest.get(ruleRecord.getSite());
+                if (latestPretentent.getVersion() < ruleRecord.getVersion()) {
+                    latest.put(ruleRecord.getSite(), ruleRecord);
+                }
+            } else {
+                latest.put(ruleRecord.getSite(), ruleRecord);
+            }
+        }
+        ruleRecords.addAll(latest.values());
+        return ruleRecords;
+    }
+
+    public List<ParsingRule> getAllParsingRules() {
+        ArrayList<ParsingRule> list = new ArrayList<>();
+        Result<RuleRecord> ruleRecords = getDslContext().selectFrom(RULE).where(RULE.STATUS.isNotNull()).fetch();
+        for (RuleRecord ruleRecord : ruleRecords) {
+            ParsingRule rule = RuleFactory.make(ruleRecord);
+            list.add(rule);
+        }
+        return list;
+    }
+
+    private Optional<ParsingRule> rsToJsonRule(ResultSet rs) throws SQLException {
+        ParsingRule jsonRule = getJsonRule(rs);
 
         return Optional.of(jsonRule);
     }
 
-    private JsonRule getJsonRule(ResultSet rs) throws SQLException {
+    private ParsingRule getJsonRule(ResultSet rs) throws SQLException {
         int version = rs.getInt("version");//for debug
         int id = rs.getInt("id");
 
         String rule = rs.getString("rule");
-        JsonRule make = RuleFactory.make(rule);
+        ParsingRule make = RuleFactory.make(rule);
 
         make.setId(id);
         return make;

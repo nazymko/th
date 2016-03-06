@@ -2,6 +2,7 @@ package org.nazymko.thehomeland.parser.db.dao;
 
 import lombok.Getter;
 import org.jooq.DSLContext;
+import org.jooq.Record;
 import org.jooq.SQLDialect;
 import org.jooq.UpdatableRecord;
 import org.jooq.impl.DSL;
@@ -50,4 +51,11 @@ public abstract class AbstractDao<K, T> implements Dao<K, T> {
     }
 
 
+    protected boolean isPresent(Optional optional) {
+        return optional.isPresent();
+    }
+
+    protected boolean isPresent(Record record) {
+        return record != null;
+    }
 }

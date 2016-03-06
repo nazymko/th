@@ -1,9 +1,10 @@
+<%--@elvariable id="rule" type="org.nazymko.th.parser.autodao.tables.records.RuleRecord"--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<div>rule\parts\rule-manage-view.jsp</div>
 <tr>
     <td style="padding: 5px;">${rule.id}</td>
     <td><a href="/rule/view/${rule.id}">${rule.site}</a></td>
+    <td>${rule.version}</td>
     <spring:eval expression="rule.status == T(utils.support.rule.RuleStatus).ACTIVE" var="isValid"/>
     <c:choose>
         <c:when test="${isValid}">

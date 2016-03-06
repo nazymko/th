@@ -4,7 +4,11 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import lombok.Setter;
 import org.nazymko.thehomeland.parser.THLParserRunner;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -13,11 +17,13 @@ import java.util.Map;
 
 public class TemplateInterceptor implements HandlerInterceptor {
     @Resource
+    THLParserRunner parser;
+    @Resource
+    boolean isDebugEnabled ;
+    @Resource
     private InternalResourceViewResolver resolver;
     @Resource
     private String prefix, suffix, siteName, jsInclude, cssInclude;
-    @Resource
-    THLParserRunner parser;
 
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         return true;
@@ -27,6 +33,12 @@ public class TemplateInterceptor implements HandlerInterceptor {
         if (modelAndView == null) {
             //skip  resource requests
             return;
+        }
+
+        if (isDebugEnabled) {
+            if (o instanceof HandlerMethod) {
+                modelAndView.addObject("method", ((HandlerMethod) o).getMethod().toString());
+            }
         }
         Map<String, Object> model = modelAndView.getModel();
 

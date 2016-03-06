@@ -30,7 +30,7 @@ import static utils.support.task.TaskStatus.*;
  * Created by nazymko.patronus@gmail.com.
  */
 @Log4j2
-public class MyCronTrigger {
+public class ScheduleCronTrigger {
 
     @Resource
     THLParserRunner runner;
@@ -55,7 +55,10 @@ public class MyCronTrigger {
 
     private void disableFinished() {
         Result<TTaskRecord> running = taskDao.getStarted();
-        log.info("Found {} running tasks.\n {}", running.size(), running);
+        log.info("Found {} running tasks.", running.size());
+        if (!running.isEmpty()) {
+            log.info("{}", running);
+        }
         for (TTaskRecord tTaskRecord : running) {
             Integer tasks = runner.tasks(tTaskRecord.getId());
             if (tasks <= 0) {

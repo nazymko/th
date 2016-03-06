@@ -2,7 +2,6 @@ package org.nazymko.controller.rule;
 
 import org.nazymko.th.parser.autodao.tables.records.RuleRecord;
 import org.nazymko.thehomeland.parser.db.dao.RuleDao;
-import org.nazymko.thehomeland.parser.rule.JsonRule;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;

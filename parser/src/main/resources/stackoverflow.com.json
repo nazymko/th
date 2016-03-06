@@ -7,7 +7,9 @@
       "programming"
     ],
     "types": [
-      "q&a"
+      "q&a",
+      "excursion",
+      "bus_travel"
     ],
     "languages": [
       "eng"
@@ -16,6 +18,7 @@
   "page": [
     {
       "type": "front_page",
+      "unique_visit": false,
       "url": "http://stackoverflow.com",
       "attrs": [
         {
@@ -27,6 +30,7 @@
     },
     {
       "type": "question_page",
+      "unique_visit": true,
       "attrs": [
         {
           "path": "h1 .question-hyperlink",
