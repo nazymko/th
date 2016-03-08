@@ -49,4 +49,6 @@
         <value>question_page</value>
     </util:set>
 
+
+    <bean id="simplifier" class="org.nazymko.thehomeland.parser.utils.UrlSimplifier"/>
 </beans>

@@ -1,0 +1,89 @@
+{
+  "name": "kraina-ua.com",
+  "url": "http://kraina-ua.com/",
+  "path_provider": "css",
+  "meta": {
+    "topics": [
+      "tourism"
+    ],
+    "types": [
+      "tourism",
+      "excursion"
+    ],
+    "languages": [
+      "rus"
+    ]
+  },
+  "page": [
+    {
+      "type": "front_page",
+      "unique_visit": false,
+      "url": "http://kraina-ua.com",
+      "attrs": [
+        {
+          "path": ".menu__li  a",
+          "attr": "href",
+          "type": "group_page"
+        }
+      ]
+    },
+    {
+      "type": "group_page",
+      "unique_visit": false,
+      "attrs": [
+        {
+          "path": ".tour-types-i a",
+          "attr": "href",
+          "type": "excursion_list"
+        }
+      ]
+    },
+    {
+      "type": "excursion_list",
+      "unique_visit": false,
+      "attrs": [
+        {
+          "path": ".tours-lst__ac a",
+          "attr": "href",
+          "type": "excursion_page"
+        },
+        {
+          "path": ".next a",
+          "attr": "href",
+          "type": "excursion_list"
+        }
+      ]
+    },
+    {
+      "type": "excursion_page",
+      "unique_visit": true,
+      "attrs": [
+        {
+          "path": ".item-img img",
+          "attr": "src",
+          "type": "excursion_page"
+        },
+        {
+          "path": ".item-view p",
+          "attr": "text",
+          "type": "article-text"
+        },
+        {
+          "path": ".page-header span",
+          "attr": "text",
+          "type": "article-title"
+        },
+        {
+          "path": ".item-view__price",
+          "attr": "text",
+          "type": "price"
+        },
+        {
+          "path": ".dectab-cnt .item-cnt",
+          "attr": "text",
+          "type": "article-promotion"
+        }
+      ]
+    }
+  ]
+}

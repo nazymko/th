@@ -11,12 +11,17 @@ import org.nazymko.thehomeland.parser.rule.JsonRule;
 import org.nazymko.thehomeland.parser.rule.ParsingRule;
 import org.nazymko.thehomeland.parser.rule.RuleFactory;
 import org.nazymko.thehomeland.parser.topology.RuleResolver;
+import org.nazymko.thehomeland.parser.utils.UrlSimplifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import sun.net.util.URLUtil;
 
 import javax.annotation.Resource;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -34,6 +39,8 @@ public class RuleDao extends AbstractDao<String, ParsingRule> {
 
     @Resource
     RuleResolver resolver;
+    @Resource
+    UrlSimplifier simplifier;
     @Resource
     @Setter
     private SiteDao siteDao;
@@ -68,16 +75,16 @@ public class RuleDao extends AbstractDao<String, ParsingRule> {
     }
 
     @Override
-    public String save(ParsingRule rule) {
-
-        saveNewSiteOrIgnore(rule);
+    public String save(ParsingRule rule) throws MalformedURLException, URISyntaxException {
+        String siteUrl = simplifier.simplify(rule.getUrl());
+        saveNewSiteOrIgnore(rule, siteUrl);
 
         RuleRecord ruleRecord = new RuleRecord();
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String serialized = gson.toJson(rule);
         Integer version = ruleMaxVersion(rule.getUrl());
-        ruleRecord.setSite(rule.getUrl());
+        ruleRecord.setSite(siteUrl);
         ruleRecord.setRule(serialized);
         ruleRecord.setVersion(version);
         ruleRecord.setStatus(ACTIVE);
@@ -89,12 +96,13 @@ public class RuleDao extends AbstractDao<String, ParsingRule> {
 
     }
 
-    private void saveNewSiteOrIgnore(JsonRule rule) {
-        Integer idByUrl = siteDao.getIdByUrl(rule.getUrl());
+    private void saveNewSiteOrIgnore(JsonRule rule, String siteUrl) throws MalformedURLException, URISyntaxException {
+
+        Integer idByUrl = siteDao.getIdByUrl(siteUrl);
         if (idByUrl < 0) {
             SiteRecord site = new SiteRecord();
 
-            site.setUrl(rule.getUrl());
+            site.setUrl(siteUrl);
             site.setName(rule.getName());
             siteDao.save(site);
         }

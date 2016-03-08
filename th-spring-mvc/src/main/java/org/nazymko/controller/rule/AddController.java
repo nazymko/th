@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 
 /**
@@ -35,7 +37,7 @@ public class AddController {
     RuleResolver ruleResolver;
 
     @RequestMapping(value = "addnew", method = RequestMethod.POST)
-    public String addPost(@RequestParam HashMap<String, String> params, Model model) {
+    public String addPost(@RequestParam HashMap<String, String> params, Model model) throws MalformedURLException, URISyntaxException {
         log.info("params = {}", params);
         ParsingRule rule;
         try {

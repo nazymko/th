@@ -18,8 +18,10 @@ import org.nazymko.thehomeland.parser.rule.PageItem;
 import org.nazymko.thehomeland.parser.rule.RegexpItem;
 import org.nazymko.thehomeland.parser.topology.History;
 import org.nazymko.thehomeland.parser.topology.RuleResolver;
+import org.nazymko.thehomeland.parser.utils.UrlSimplifier;
 import utils.TimeStampHelper;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -40,6 +42,7 @@ public class ParsingTask implements Runnable, InfoSource {
     public static String userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36";
     @Setter List<AttrListener> listeners = new ArrayList<>();
     @Setter RuleResolver ruleResolver;
+    UrlSimplifier simplifier = new UrlSimplifier();
     @Setter private String page, type;
     @Setter private Integer sourcePage, sessionKey;
     @Setter private History historyDao;
@@ -47,14 +50,13 @@ public class ParsingTask implements Runnable, InfoSource {
     @Setter private PageDao pageDao;
     @Setter private RuleDao ruleDao;
     @Setter private Document document;
-
     private Config config = new Config();
     private PageItem thisPageRule;
+
 
     public ParsingTask(String page) {
         this.page = page;
     }
-
 
     @Override
     public void run() {
@@ -83,6 +85,7 @@ public class ParsingTask implements Runnable, InfoSource {
                                        @Override
                                        public void accept(Element item) {
 
+
                                            String valueAttribute = attr.getAttr();
 
                                            Attribute attribute = new Attribute();
@@ -98,7 +101,7 @@ public class ParsingTask implements Runnable, InfoSource {
                                            attribute.setRuleId(config.getRuleId());
 
                                            for (AttrListener listener : listeners) {
-                                               if (listener.support(attr.getType())) {
+                                               if (listener.support(attr.getType(), attr.getAttr())) {
                                                    listener.process(config.getPageId(), attribute, sessionKey);
                                                }
                                            }
@@ -106,22 +109,22 @@ public class ParsingTask implements Runnable, InfoSource {
                                                for (RegexpItem regexpItem : attr.getRegexp()) {
                                                    //can optimize it
                                                    String expression = regexpItem.getExpression();
-                                                   expression=extend(expression);
+                                                   expression = extend(expression);
                                                    Pattern compile = Pattern.compile(expression);
                                                    String[] split = attribute.getAttrValue().split("\n");
                                                    for (String line : split) {
                                                        Matcher matcher = compile.matcher(line);
 //                                                       if (matcher.matches()) {//todo
-                                                           if (matcher.find()) {
-                                                               MatchResult matchResult = matcher.toMatchResult();
-                                                               for (int i = 0; i < matchResult.groupCount(); i++) {
-                                                                   String group = matchResult.group(i);
-                                                                   log.error("group = " + group);
-                                                               }
-
-                                                               String regexp=".*Орг\\.збір:\\s(.*)\\s(.*)\\..*";
-                                                               String example;
+                                                       if (matcher.find()) {
+                                                           MatchResult matchResult = matcher.toMatchResult();
+                                                           for (int i = 0; i < matchResult.groupCount(); i++) {
+                                                               String group = matchResult.group(i);
+                                                               log.error("group = " + group);
                                                            }
+
+                                                           String regexp = ".*Орг\\.збір:\\s(.*)\\s(.*)\\..*";
+                                                           String example;
+                                                       }
 //                                                       }
                                                    }
                                                }
@@ -131,7 +134,7 @@ public class ParsingTask implements Runnable, InfoSource {
 
                                        private String extend(String expression) {
 
-                                           return ".*"+expression+".*";
+                                           return ".*" + expression + ".*";
                                        }
                                    }
 
@@ -158,8 +161,7 @@ public class ParsingTask implements Runnable, InfoSource {
     private Document load() throws MalformedURLException {
         log.info("Init {}", page);
 
-        URL url = new URL(this.page);
-        String siteUrl = url.getProtocol() + "://" + url.getAuthority();
+        String siteUrl = simplifier.simplify(this.page);
 
         SiteRecord site = siteDao.getByUrl(siteUrl).get();
         this.config.setSiteId(site.getId());

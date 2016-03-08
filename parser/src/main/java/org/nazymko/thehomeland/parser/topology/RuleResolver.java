@@ -6,6 +6,7 @@ import org.nazymko.thehomeland.parser.rule.JsonRule;
 import org.nazymko.thehomeland.parser.rule.PageItem;
 import org.nazymko.thehomeland.parser.rule.ParsingRule;
 import org.nazymko.thehomeland.parser.rule.RuleMeta;
+import org.nazymko.thehomeland.parser.utils.UrlSimplifier;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -18,10 +19,11 @@ import java.util.*;
 @Log4j2
 public class RuleResolver implements ProcessorRegister {
     @Resource
+    UrlSimplifier simplifier;
+    @Resource
     private RuleDao ruleDao;
     private HashMap<String, HashMap<String, PageItem>> catalogue = new HashMap<>();
     private HashMap<String, RuleMeta> meta = new HashMap<>();
-
 
     public void setRuleDao(RuleDao ruleDao) {
         this.ruleDao = ruleDao;
@@ -39,10 +41,10 @@ public class RuleResolver implements ProcessorRegister {
         catalogue.clear();
 
         for (JsonRule jsonRule : all) {
-            HashMap<String, PageItem> stringPageItemHashMap = catalogue.get(jsonRule.getUrl());
+            HashMap<String, PageItem> stringPageItemHashMap = catalogue.get(simplifier.simplify(jsonRule.getUrl()));
             if (stringPageItemHashMap == null) {
                 stringPageItemHashMap = new HashMap<>();
-                catalogue.put(jsonRule.getUrl(), stringPageItemHashMap);
+                catalogue.put(simplifier.simplify(jsonRule.getUrl()), stringPageItemHashMap);
             }
 
             List<PageItem> page = jsonRule.getPage();

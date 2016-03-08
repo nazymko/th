@@ -17,7 +17,7 @@ public class PersistenceAttrListener implements AttrListener {
     private AttributeDao attributeDao;
 
     @Override
-    public boolean support(String type) {
+    public boolean support(String type,String attr) {
         return true;//because of persisting every attribute
     }
 

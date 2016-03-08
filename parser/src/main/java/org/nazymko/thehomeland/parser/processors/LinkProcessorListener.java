@@ -16,28 +16,28 @@ import java.util.Set;
  */
 @Log4j2
 public class LinkProcessorListener implements AttrListener {
+    Set<String> supportedAttrs;
+    @Resource
+    THLParserRunner instance;
+    @Setter
+    @Resource
+    private SiteDao siteDao;
+
     public void setSupportedAttrs(Set<String> supportedAttrs) {
         this.supportedAttrs = supportedAttrs;
     }
 
-    Set<String> supportedAttrs;
-
-    @Setter
-    @Resource
-    private SiteDao siteDao;
-    @Resource
-    THLParserRunner instance;
-
     @Override
-    public boolean support(String type) {
-        log.info("type = [" + type + "]");
+    public boolean support(String type, String attr) {
+        log.info("type = [" + type + "], attr = [" + attr + "]");
+        return "href".equalsIgnoreCase(attr);
 
-        if (supportedAttrs != null) {
-            return supportedAttrs.contains(type);
-        } else {
-            log.warn("Supported list is not set.");
-            return false;
-        }
+//        if (supportedAttrs != null) {
+//            return supportedAttrs.contains(type);
+//        } else {
+//            log.warn("Supported list is not set.");
+//            return false;
+//        }
     }
 
     @Override

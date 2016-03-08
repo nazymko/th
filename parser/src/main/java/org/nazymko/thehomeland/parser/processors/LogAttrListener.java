@@ -10,7 +10,7 @@ import org.nazymko.thehomeland.parser.db.model.Attribute;
 public class LogAttrListener implements AttrListener {
 
     @Override
-    public boolean support(String type) {
+    public boolean support(String type, String attr) {
         return true;
     }
 
