@@ -60,7 +60,7 @@
           "regexp":[
             {
               "type":"price",
-              "expression":"Орг\\.збір:\\s(.*)\\s(.*)\\.",
+              "expression":".*Орг\\.збір:\\s(\\d*)\\s(\\S*)\\..*",
               "group":[
                 {
                   "order":1,

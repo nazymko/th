@@ -117,7 +117,7 @@ public class ParsingTask implements Runnable, InfoSource {
 //                                                       if (matcher.matches()) {//todo
                                                        if (matcher.find()) {
                                                            MatchResult matchResult = matcher.toMatchResult();
-                                                           for (int i = 0; i < matchResult.groupCount(); i++) {
+                                                           for (int i = 0; i <= matchResult.groupCount(); i++) {
                                                                String group = matchResult.group(i);
                                                                log.error("group = " + group);
                                                            }

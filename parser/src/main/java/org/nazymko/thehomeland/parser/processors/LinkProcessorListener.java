@@ -31,13 +31,6 @@ public class LinkProcessorListener implements AttrListener {
     public boolean support(String type, String attr) {
         log.info("type = [" + type + "], attr = [" + attr + "]");
         return "href".equalsIgnoreCase(attr);
-
-//        if (supportedAttrs != null) {
-//            return supportedAttrs.contains(type);
-//        } else {
-//            log.warn("Supported list is not set.");
-//            return false;
-//        }
     }
 
     @Override
