@@ -42,7 +42,7 @@ public class SubmitController {
         model.addAttribute("site", site);
 
 
-        log.info("SCHEDULED: {}:{}", site.getName(), site.getUrl());
+        log.debug("SCHEDULED: {}:{}", site.getName(), site.getUrl());
 
         return "/submit/info";
     }
@@ -50,7 +50,7 @@ public class SubmitController {
     @RequestMapping(value = "submit}", method = RequestMethod.POST)
     public String submitPost(@RequestParam HashMap<String, String> params) {
 
-        log.info("params = {}", params);
+        log.debug("params = {}", params);
 
 
         return "redirect:/task/submit";

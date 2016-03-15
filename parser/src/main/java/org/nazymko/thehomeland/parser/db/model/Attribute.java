@@ -1,9 +1,6 @@
 package org.nazymko.thehomeland.parser.db.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 
 /**
  * Created by nazymko.patronus@gmail.com.
@@ -22,11 +19,14 @@ import lombok.NonNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Attribute {
     @NonNull
     int siteId, pageId, ruleId, attrIndex = -1;
     @NonNull
     String attrMeaning, attrValue, attrType;
+
+    boolean persistable = true;
 
     String attrFormat;
 }

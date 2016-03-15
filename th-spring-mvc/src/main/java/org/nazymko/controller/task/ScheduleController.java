@@ -52,7 +52,7 @@ public class ScheduleController {
 
         String cron = params.get("cron");
         Integer siteId = Integer.valueOf(params.get("site_id"));
-        log.info(cron);
+        log.debug(cron);
 
         CronTrigger cronTrigger = new CronTrigger(cron);
 
@@ -70,7 +70,7 @@ public class ScheduleController {
 
         scheduleDao.save(record);
 
-        log.info(record);
+        log.debug(record);
 
         System.out.println("next date  = " + date);
 

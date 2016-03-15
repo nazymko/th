@@ -14,6 +14,7 @@ import org.nazymko.thehomeland.parser.db.dao.RuleDao;
 import org.nazymko.thehomeland.parser.db.dao.SiteDao;
 import org.nazymko.thehomeland.parser.db.model.Attribute;
 import org.nazymko.thehomeland.parser.rule.AttrsItem;
+import org.nazymko.thehomeland.parser.rule.GroupItem;
 import org.nazymko.thehomeland.parser.rule.PageItem;
 import org.nazymko.thehomeland.parser.rule.RegexpItem;
 import org.nazymko.thehomeland.parser.topology.History;
@@ -61,22 +62,22 @@ public class ParsingTask implements Runnable, InfoSource {
     @Override
     public void run() {
         try {
-            log.info("Start load..{}.", page);
+            log.debug("Start load..{}.", page);
             document = load();
 
             if (document == null) {
                 log.error("Page reading error '{}' : Reason 'Document is null'; ", page);
                 return;
             }
-            log.info("After load...");
+            log.debug("After load...");
             String name = "[" + Thread.currentThread().getName() + "] : threadId " + Thread.currentThread().getId();
-            log.info("USED : {}", thisPageRule);
+            log.debug("USED : {}", thisPageRule);
             for (AttrsItem attr : thisPageRule.getAttrs()) {
                 Elements select = document.select(attr.getPath());
-                log.info(String.format(name + ": " + "Processing '%s'", attr.getPath()));
+                log.debug(String.format(name + ": " + "Processing '%s'", attr.getPath()));
 
                 if (select.size() == 0) {
-                    log.info(String.format(name + ": " + "Element not found '%s'", attr.getPath()));
+                    log.debug(String.format(name + ": " + "Element not found '%s'", attr.getPath()));
                     continue;
                 } else {
                     select.forEach(new Consumer<Element>() {
@@ -84,56 +85,93 @@ public class ParsingTask implements Runnable, InfoSource {
 
                                        @Override
                                        public void accept(Element item) {
+                                           String value = getElementValue(item, attr);
+                                           processMainAttr(item, value);
+
+                                           if (hasCompositeAttrs()) {
+                                               processCompositeAttr(item, value);
+                                           }
+                                           index++;
+                                       }
+
+                                       private void processCompositeAttr(Element attribute, String value) {
+                                           for (RegexpItem regexpItem : attr.getRegexp()) {
+                                               //can optimize it
+                                               String expression = regexpItem.getExpression();
+                                               expression = extend(expression);
+                                               Pattern compile = Pattern.compile(expression);
+                                               String[] split = value.split("\n");
+                                               for (String line : split) {
+                                                   Matcher matcher = compile.matcher(line);
+                                                   if (matcher.find()) {
+                                                       MatchResult matchResult = matcher.toMatchResult();
+                                                       if (regexpItem.getGroup() == null) {
+                                                           Attribute compositeAttr = Attribute.builder()
+                                                                   .siteId(config.siteId)
+                                                                   .attrIndex(index)
+                                                                   .attrValue(value)
+                                                                   .attrType(attr.getAttr())
+                                                                   .attrMeaning(regexpItem.getType())
+                                                                   .pageId(config.getPageId())
+                                                                   .ruleId(config.getRuleId())
+                                                                   .persistable(attr.isPersist())
+                                                                   .build();
+                                                           publish(compositeAttr);
+                                                       } else {
+                                                           for (GroupItem regExpGroup : regexpItem.getGroup()) {
+                                                               String group = matchResult.group(regExpGroup.getOrder());
+                                                               log.debug("composite attr " + regExpGroup.getOrder() + ":" + group);
 
 
-                                           String valueAttribute = attr.getAttr();
+                                                               Attribute compositeAttr = Attribute.builder()
+                                                                       .siteId(config.siteId)
+                                                                       .attrIndex(index)
+                                                                       .attrValue(group)
+                                                                       .attrFormat(regExpGroup.getFormat())
+                                                                       .attrType(attr.getAttr())
+                                                                       .attrMeaning(regExpGroup.getType())
+                                                                       .pageId(config.getPageId())
+                                                                       .ruleId(config.getRuleId())
+                                                                       .persistable(attr.isPersist())
+                                                                       .build();
+                                                               publish(compositeAttr);
+                                                           }
+                                                       }
+                                                   }
+                                               }
+                                           }
+                                       }
+
+                                       private boolean hasCompositeAttrs() {
+                                           return attr.getRegexp() != null && !attr.getRegexp().isEmpty();
+                                       }
+
+                                       private void processMainAttr(Element item, String value) {
+                                           String type = attr.getAttr();
 
                                            Attribute attribute = new Attribute();
 
-                                           String value = getElementValue(item, attr);
 
                                            attribute.setAttrIndex(index);
-                                           attribute.setAttrType(valueAttribute);
+                                           attribute.setAttrType(type);
                                            attribute.setAttrMeaning(attr.getType());
                                            attribute.setAttrValue(value);
                                            attribute.setSiteId(config.getSiteId());
                                            attribute.setPageId(config.getPageId());
                                            attribute.setRuleId(config.getRuleId());
+                                           attribute.setPersistable(attr.isPersist());
+                                           publish(attribute);
+                                       }
 
+                                       private void publish(Attribute attribute) {
                                            for (AttrListener listener : listeners) {
                                                if (listener.support(attr.getType(), attr.getAttr())) {
                                                    listener.process(config.getPageId(), attribute, sessionKey);
                                                }
                                            }
-                                           if (attr.getRegexp() != null && !attr.getRegexp().isEmpty()) {
-                                               for (RegexpItem regexpItem : attr.getRegexp()) {
-                                                   //can optimize it
-                                                   String expression = regexpItem.getExpression();
-                                                   expression = extend(expression);
-                                                   Pattern compile = Pattern.compile(expression);
-                                                   String[] split = attribute.getAttrValue().split("\n");
-                                                   for (String line : split) {
-                                                       Matcher matcher = compile.matcher(line);
-//                                                       if (matcher.matches()) {//todo
-                                                       if (matcher.find()) {
-                                                           MatchResult matchResult = matcher.toMatchResult();
-                                                           for (int i = 0; i <= matchResult.groupCount(); i++) {
-                                                               String group = matchResult.group(i);
-                                                               log.error("group = " + group);
-                                                           }
-
-                                                           String regexp = ".*Орг\\.збір:\\s(.*)\\s(.*)\\..*";
-                                                           String example;
-                                                       }
-//                                                       }
-                                                   }
-                                               }
-                                           }
-                                           index++;
                                        }
 
                                        private String extend(String expression) {
-
                                            return ".*" + expression + ".*";
                                        }
                                    }
@@ -141,7 +179,7 @@ public class ParsingTask implements Runnable, InfoSource {
                     );
                 }
             }
-            log.info("Finished {}.", page);
+            log.debug("Finished {}.", page);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -159,11 +197,47 @@ public class ParsingTask implements Runnable, InfoSource {
     }
 
     private Document load() throws MalformedURLException {
-        log.info("Init {}", page);
+        log.debug("Init {}", page);
 
         String siteUrl = simplifier.simplify(this.page);
 
-        SiteRecord site = siteDao.getByUrl(siteUrl).get();
+
+/*java.util.NoSuchElementException: No value present
+00:09:14.010 [pool-2-thread-1] DEBUG org.nazymko.thehomeland.parser.processors.ParsingTask - Init https://tcb.vn.ua/?p=8118
+	at java.util.Optional.get(Optional.java:135)
+00:09:14.016 [pool-2-thread-1] DEBUG org.nazymko.thehomeland.parser.processors.ParsingTask - Start load..https://tcb.vn.ua/%D0%B4%D1%80%D0%B0%D0%B3%D0%BE%D0%B1%D1%80%D0%B0%D1%824-%D0%B4%D0%BD%D1%96-24-27-%D0%B1%D0%B5%D1%80%D0%B5%D0%B7%D0%BD%D1%8F-2016-%D0%BD%D0%B8%D0%B7%D1%8C%D0%BA%D0%B8%D0%B9-%D1%81%D0%B5%D0%B7/.
+00:09:14.017 [pool-2-thread-1] DEBUG org.nazymko.thehomeland.parser.processors.ParsingTask - Init https://tcb.vn.ua/%D0%B4%D1%80%D0%B0%D0%B3%D0%BE%D0%B1%D1%80%D0%B0%D1%824-%D0%B4%D0%BD%D1%96-24-27-%D0%B1%D0%B5%D1%80%D0%B5%D0%B7%D0%BD%D1%8F-2016-%D0%BD%D0%B8%D0%B7%D1%8C%D0%BA%D0%B8%D0%B9-%D1%81%D0%B5%D0%B7/
+	at org.nazymko.thehomeland.parser.processors.ParsingTask.load(ParsingTask.java:163)
+	at org.nazymko.thehomeland.parser.processors.ParsingTask.run(ParsingTask.java:66)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+java.util.NoSuchElementException: No value present
+	at java.util.Optional.get(Optional.java:135)
+	at org.nazymko.thehomeland.parser.processors.ParsingTask.load(ParsingTask.java:163)
+	at org.nazymko.thehomeland.parser.processors.ParsingTask.run(ParsingTask.java:66)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+java.util.NoSuchElementException: No value present
+	at java.util.Optional.get(Optional.java:135)
+	at org.nazymko.thehomeland.parser.processors.ParsingTask.load(ParsingTask.java:163)
+	at org.nazymko.thehomeland.parser.processors.ParsingTask.run(ParsingTask.java:66)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+
+	*/
+        Optional<SiteRecord> byUrl = siteDao.getByUrl(siteUrl);
+        if (!byUrl.isPresent()) {
+            log.error("Not found for {}", siteUrl);
+        }
+        SiteRecord site = byUrl.get();
         this.config.setSiteId(site.getId());
 
         PageRecord pageRecord = new PageRecord();
@@ -185,7 +259,7 @@ public class ParsingTask implements Runnable, InfoSource {
 
         Document document = null;
         try {
-            log.info("Connect");
+            log.debug("Connect");
             String link = makeUrl(siteUrl, page);
             document = Jsoup.connect(link)
                     .userAgent(userAgent)
@@ -195,7 +269,7 @@ public class ParsingTask implements Runnable, InfoSource {
 
             historyDao.visitBySession(link, sessionKey);
 
-            log.info("'{}' parsed", link);
+            log.debug("'{}' parsed", link);
         } catch (IOException e) {
             e.printStackTrace();
         }

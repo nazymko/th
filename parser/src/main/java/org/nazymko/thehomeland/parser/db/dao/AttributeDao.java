@@ -29,12 +29,21 @@ public class AttributeDao extends AbstractDao<Integer, Attribute> {
                 int page_id = resultSet.getInt("page_id");
                 int rule_id = resultSet.getInt("rule_id");
                 int attribute_index = resultSet.getInt("attribute_index");
-                String attribute_name = resultSet.getString("attribute_name");
+                String attribute_meaning = resultSet.getString("attribute_name");
                 String attribute_value = resultSet.getString("attribute_value");
                 String attribute_type = resultSet.getString("attribute_type");
                 String attribute_format = resultSet.getString("attribute_format");
 
-                return new Attribute(site_id, page_id, rule_id, attribute_index, attribute_name, attribute_value, attribute_type, attribute_format);
+                return Attribute.builder()
+                        .siteId(site_id)
+                        .pageId(page_id)
+                        .ruleId(rule_id)
+                        .attrIndex(attribute_index)
+                        .attrMeaning(attribute_meaning)
+                        .attrValue(attribute_value)
+                        .attrType(attribute_type)
+                        .attrFormat(attribute_format)
+                        .build();
             }
         });
 

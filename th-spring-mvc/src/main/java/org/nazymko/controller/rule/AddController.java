@@ -38,7 +38,7 @@ public class AddController {
 
     @RequestMapping(value = "addnew", method = RequestMethod.POST)
     public String addPost(@RequestParam HashMap<String, String> params, Model model) throws MalformedURLException, URISyntaxException {
-        log.info("params = {}", params);
+        log.debug("params = {}", params);
         ParsingRule rule;
         try {
             rule = gson.fromJson(params.get("rule"), ParsingRule.class);

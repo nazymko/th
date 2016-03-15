@@ -4,7 +4,9 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.Setter;
+import org.jooq.Record1;
 import org.jooq.Result;
+import org.jooq.impl.DSL;
 import org.nazymko.th.parser.autodao.tables.records.RuleRecord;
 import org.nazymko.th.parser.autodao.tables.records.SiteRecord;
 import org.nazymko.thehomeland.parser.rule.JsonRule;
@@ -86,7 +88,7 @@ public class RuleDao extends AbstractDao<String, ParsingRule> {
         Integer version = ruleMaxVersion(rule.getUrl());
         ruleRecord.setSite(siteUrl);
         ruleRecord.setRule(serialized);
-        ruleRecord.setVersion(version);
+        ruleRecord.setVersion(version + 1);
         ruleRecord.setStatus(ACTIVE);
 
         store(ruleRecord);
@@ -109,17 +111,9 @@ public class RuleDao extends AbstractDao<String, ParsingRule> {
     }
 
     private Integer ruleMaxVersion(String url) {
-        MapSqlParameterSource params = new MapSqlParameterSource("site", url);
-        return getJdbcTemplate().query("SELECT COUNT(*) number,MAX(version) version FROM rule WHERE site =:site", params, new ResultSetExtractor<Integer>() {
-            @Override
-            public Integer extractData(ResultSet rs) throws SQLException, DataAccessException {
-                if (rs.next()) {
-                    return rs.getInt(1);
-                } else {
-                    throw new RuntimeException("SQL ResultSet next failed");
-                }
-            }
-        });
+        Record1<Integer> currentMaxVersion = getDslContext().select(DSL.max(RULE.VERSION)).from(RULE).where(RULE.SITE.eq(url)).fetchOne();
+        Object value = currentMaxVersion.getValue(0);
+        return value == null ? 0 : (Integer) value;
     }
 
 

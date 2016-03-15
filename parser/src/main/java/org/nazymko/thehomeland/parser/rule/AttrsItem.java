@@ -1,7 +1,7 @@
 package org.nazymko.thehomeland.parser.rule;
 
 /**
- * Created by JacksonGenerator on 03.03.16.
+ * Created by JacksonGenerator on 15.03.16.
  */
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,6 +15,8 @@ public class AttrsItem {
     private String path;
     @JsonProperty("regexp")
     private List<RegexpItem> regexp;
+    @JsonProperty("persist")
+    private boolean persist;
     @JsonProperty("attr")
     private String attr;
     @JsonProperty("type")

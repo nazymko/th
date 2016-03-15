@@ -29,7 +29,7 @@ public class LinkProcessorListener implements AttrListener {
 
     @Override
     public boolean support(String type, String attr) {
-        log.info("type = [" + type + "], attr = [" + attr + "]");
+        log.debug("type = [" + type + "], attr = [" + attr + "]");
         return "href".equalsIgnoreCase(attr);
     }
 

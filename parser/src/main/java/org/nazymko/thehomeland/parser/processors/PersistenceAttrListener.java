@@ -23,7 +23,7 @@ public class PersistenceAttrListener implements AttrListener {
 
     @Override
     public void process(Integer pageId, Attribute attribute, Integer runId) {
-        log.info(name() + ": " + "pageId = " + pageId);
+        log.debug(name() + ": " + "pageId = " + pageId);
 
         attributeDao.save(attribute);
 

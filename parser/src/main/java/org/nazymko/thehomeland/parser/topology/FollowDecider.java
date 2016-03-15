@@ -26,9 +26,9 @@ public class FollowDecider implements History {
 
     @Override
     public boolean visited(String link) {
-        log.info("link = {}", link);
+        log.debug("link = {}", link);
         Optional<Page> page = pageDao.get(link);
-        log.info("page = {} ", page);
+        log.debug("page = {} ", page);
         if (page.isPresent()) {
             return page.get().getVisited() != null;
         }
@@ -43,7 +43,7 @@ public class FollowDecider implements History {
             pageRecord.setVisitedAt(now());
             pageRecord.store();
         } else {
-            log.info("Page {} with session {} was not found.", link, sessionKey);
+            log.debug("Page {} with session {} was not found.", link, sessionKey);
         }
     }
 

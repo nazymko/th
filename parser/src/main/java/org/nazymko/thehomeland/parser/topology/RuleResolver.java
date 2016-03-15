@@ -57,7 +57,7 @@ public class RuleResolver implements ProcessorRegister {
 
     @Override
     public Optional<PageItem> resolveByTypeForSite(String site, String type) {
-        log.info("site = {}, type = {}", site, type);
+        log.debug("site = {}, type = {}", site, type);
 
         return Optional.ofNullable(catalogue.get(site).get(type));
     }

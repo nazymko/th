@@ -48,21 +48,21 @@ public class ScheduleCronTrigger {
     // * */1 * * * *  - every minute
     @Scheduled(cron = "0 */1 * * * *")
     public void run() {
-        log.info("Cron trigger started");
+        log.debug("Cron trigger started");
         disableFinished();
         scheduleNextOrRun();
     }
 
     private void disableFinished() {
         Result<TTaskRecord> running = taskDao.getStarted();
-        log.info("Found {} running tasks.", running.size());
+        log.debug("Found {} running tasks.", running.size());
         if (!running.isEmpty()) {
-            log.info("{}", running);
+            log.debug("{}", running);
         }
         for (TTaskRecord tTaskRecord : running) {
             Integer tasks = runner.tasks(tTaskRecord.getId());
             if (tasks <= 0) {
-                log.info("Task run {} finished", tTaskRecord.getId());
+                log.debug("Task run {} finished", tTaskRecord.getId());
                 tTaskRecord.setFinishAt(now());
                 tTaskRecord.setStatus(FINISHED);
                 tTaskRecord.store();
@@ -72,7 +72,7 @@ public class ScheduleCronTrigger {
 
     private void scheduleNextOrRun() {
         Map<TScheduleRecord, TTaskRecord> activeTasks = scheduleDao.getActiveTasks();
-        log.info("Found {} schedule records", activeTasks.size());
+        log.debug("Found {} schedule records", activeTasks.size());
 
         for (TScheduleRecord scheduleRecord : activeTasks.keySet()) {
             TTaskRecord tTaskRecord = activeTasks.get(scheduleRecord);
@@ -101,10 +101,10 @@ public class ScheduleCronTrigger {
     }
 
     private void scheduleNew(TScheduleRecord scheduleRecord) {
-        log.info("Run task missing for {}", scheduleRecord);
+        log.debug("Run task missing for {}", scheduleRecord);
         Date startAt = new Date(scheduleRecord.getStartAt().getTime());
         Date date = new CronTrigger(scheduleRecord.getCron()).nextExecutionTime(new SimpleTriggerContext(startAt, startAt, startAt));
-        log.info("Next run scheduled for {}", date);
+        log.debug("Next run scheduled for {}", date);
         Timestamp timestamp = new Timestamp(date.getTime());
 
 
