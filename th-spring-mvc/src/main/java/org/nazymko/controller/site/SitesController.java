@@ -1,6 +1,6 @@
 package org.nazymko.controller.site;
 
-import org.nazymko.th.parser.autodao.tables.records.SiteRecord;
+import org.nazymko.th.parser.autodao.tables.records.ThSiteRecord;
 import org.nazymko.thehomeland.parser.db.dao.PageDao;
 import org.nazymko.thehomeland.parser.db.dao.SiteDao;
 import org.nazymko.thehomeland.parser.db.model.Page;
@@ -39,7 +39,7 @@ public class SitesController {
     @RequestMapping(value = "commands", method = RequestMethod.GET)
     public String sites(Model model) {
 
-        List<SiteRecord> sites = siteDao.getList(10, 0);
+        List<ThSiteRecord> sites = siteDao.getList(10, 0);
 
         model.addAttribute("sites", sites);
 
@@ -50,7 +50,7 @@ public class SitesController {
     public String info(Model model, @PathVariable("id") Integer id) {
 
 
-        Optional<SiteRecord> siteOptional = siteDao.get(id);
+        Optional<ThSiteRecord> siteOptional = siteDao.get(id);
         if (siteOptional.isPresent()) {
             model.addAttribute("site", siteOptional.get());
             List<Page> latestVersion = pageDao.getLatestVersion(id);

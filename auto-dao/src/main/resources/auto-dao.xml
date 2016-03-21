@@ -66,12 +66,12 @@
                 <!--T_TASK table-->
                 <forcedType>
                     <name>TaskStatus</name>
-                    <expression>.*t_task\.status</expression>
+                    <expression>.*task_run\.status</expression>
                     <types>INT</types>
                 </forcedType>
                 <forcedType>
                     <name>RunType</name>
-                    <expression>.*t_task\.run_type</expression>
+                    <expression>.*task_run\.run_type</expression>
                     <types>INT</types>
                 </forcedType>
                 <!--RULE table-->

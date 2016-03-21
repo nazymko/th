@@ -14,7 +14,7 @@ public class GroupItem {
     @JsonProperty("format")
     private String format;
     @JsonProperty("persist")
-    private Boolean persist;
+    private boolean persist;
     @JsonProperty("type")
     private String type;
     @JsonProperty("order")

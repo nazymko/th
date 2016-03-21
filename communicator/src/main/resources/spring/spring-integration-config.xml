@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-http="http://www.springframework.org/schema/integration/http"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/integration
+       http://www.springframework.org/schema/integration/spring-integration.xsd
+       http://www.springframework.org/schema/integration/http
+       http://www.springframework.org/schema/integration/http/spring-integration-http.xsd">
+
+
+    <int-http:inbound-gateway request-channel="commonInputChannel" path="/input_path">
+
+    </int-http:inbound-gateway>
+
+    <!--<int-http:outbound-channel-adapter url="/goaway" channel="getInputChannel" http-method="POST"/>-->
+
+    <int-http:inbound-gateway request-channel="commonInputChannel"
+                              reply-channel="commonOutputChannel"
+                              supported-methods="GET"
+                              path="/int/site/{personId}"
+                              payload-expression="#pathVariables.personId"
+                              request-payload-type="java.lang.Integer"/>
+
+    <int:service-activator input-channel="commonInputChannel"
+                           output-channel="commonOutputChannel"
+                           expression="@siteConverter.covert(@siteDao.get(payload).get())">
+
+    </int:service-activator>
+</beans>

@@ -1,9 +1,7 @@
 package org.nazymko.controller.task;
 
 import lombok.extern.log4j.Log4j2;
-import org.jooq.util.derby.sys.Sys;
-import org.nazymko.th.parser.autodao.tables.records.TScheduleRecord;
-import org.nazymko.th.parser.autodao.tables.records.TTaskRecord;
+import org.nazymko.th.parser.autodao.tables.records.TaskScheduleRecord;
 import org.nazymko.thehomeland.parser.db.dao.ScheduleDao;
 import org.nazymko.thehomeland.parser.db.dao.SiteDao;
 import org.nazymko.thehomeland.parser.db.dao.TaskDao;
@@ -59,7 +57,7 @@ public class ScheduleController {
         Date date = cronTrigger.nextExecutionTime(new SimpleTriggerContext());
 
 
-        TScheduleRecord record = new TScheduleRecord();
+        TaskScheduleRecord record = new TaskScheduleRecord();
 
         record.setCron(cron);
         record.setIsEnabled(true);

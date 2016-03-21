@@ -7,8 +7,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.nazymko.th.parser.autodao.tables.records.PageRecord;
-import org.nazymko.th.parser.autodao.tables.records.SiteRecord;
+import org.nazymko.th.parser.autodao.tables.records.ThPageRecord;
+import org.nazymko.th.parser.autodao.tables.records.ThSiteRecord;
 import org.nazymko.thehomeland.parser.db.dao.PageDao;
 import org.nazymko.thehomeland.parser.db.dao.RuleDao;
 import org.nazymko.thehomeland.parser.db.dao.SiteDao;
@@ -22,12 +22,10 @@ import org.nazymko.thehomeland.parser.topology.RuleResolver;
 import org.nazymko.thehomeland.parser.utils.UrlSimplifier;
 import utils.TimeStampHelper;
 
-import javax.annotation.Resource;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -87,7 +85,6 @@ public class ParsingTask implements Runnable, InfoSource {
                                        public void accept(Element item) {
                                            String value = getElementValue(item, attr);
                                            processMainAttr(item, value);
-
                                            if (hasCompositeAttrs()) {
                                                processCompositeAttr(item, value);
                                            }
@@ -97,49 +94,40 @@ public class ParsingTask implements Runnable, InfoSource {
                                        private void processCompositeAttr(Element attribute, String value) {
                                            for (RegexpItem regexpItem : attr.getRegexp()) {
                                                //can optimize it
+                                               //and refactor this
                                                String expression = regexpItem.getExpression();
                                                expression = extend(expression);
                                                Pattern compile = Pattern.compile(expression);
-                                               String[] split = value.split("\n");
-                                               for (String line : split) {
-                                                   Matcher matcher = compile.matcher(line);
-                                                   if (matcher.find()) {
-                                                       MatchResult matchResult = matcher.toMatchResult();
-                                                       if (regexpItem.getGroup() == null) {
-                                                           Attribute compositeAttr = Attribute.builder()
-                                                                   .siteId(config.siteId)
-                                                                   .attrIndex(index)
-                                                                   .attrValue(value)
-                                                                   .attrType(attr.getAttr())
-                                                                   .attrMeaning(regexpItem.getType())
-                                                                   .pageId(config.getPageId())
-                                                                   .ruleId(config.getRuleId())
-                                                                   .persistable(attr.isPersist())
-                                                                   .build();
+                                               Matcher matcher = compile.matcher(value);
+                                               if (matcher.find()) {
+                                                   MatchResult matchResult = matcher.toMatchResult();
+                                                   if (regexpItem.getGroup() == null) {
+                                                       String type = regexpItem.getType();
+                                                       Attribute attribute1 = makeAttrFromConfig(value, attr.isPersist(), type, null);
+                                                       publish(attribute1);
+                                                   } else {
+                                                       for (GroupItem regExpGroup : regexpItem.getGroup()) {
+                                                           String group = matchResult.group(regExpGroup.getOrder());
+                                                           Attribute compositeAttr = makeAttrFromConfig(group, regExpGroup.isPersist(), regExpGroup.getType(), regExpGroup.getFormat());
                                                            publish(compositeAttr);
-                                                       } else {
-                                                           for (GroupItem regExpGroup : regexpItem.getGroup()) {
-                                                               String group = matchResult.group(regExpGroup.getOrder());
-                                                               log.debug("composite attr " + regExpGroup.getOrder() + ":" + group);
-
-
-                                                               Attribute compositeAttr = Attribute.builder()
-                                                                       .siteId(config.siteId)
-                                                                       .attrIndex(index)
-                                                                       .attrValue(group)
-                                                                       .attrFormat(regExpGroup.getFormat())
-                                                                       .attrType(attr.getAttr())
-                                                                       .attrMeaning(regExpGroup.getType())
-                                                                       .pageId(config.getPageId())
-                                                                       .ruleId(config.getRuleId())
-                                                                       .persistable(attr.isPersist())
-                                                                       .build();
-                                                               publish(compositeAttr);
-                                                           }
                                                        }
                                                    }
                                                }
                                            }
+                                       }
+
+                                       private Attribute makeAttrFromConfig(String group, boolean persist, String type, String format) {
+                                           return Attribute.builder()
+                                                   .siteId(config.siteId)
+                                                   .attrIndex(index)
+                                                   .attrValue(group)
+                                                   .attrFormat(format)
+                                                   .attrType(attr.getAttr())
+                                                   .attrMeaning(type)
+                                                   .pageId(config.getPageId())
+                                                   .ruleId(config.getRuleId())
+                                                   .persistable(persist)
+                                                   .build();
                                        }
 
                                        private boolean hasCompositeAttrs() {
@@ -149,17 +137,9 @@ public class ParsingTask implements Runnable, InfoSource {
                                        private void processMainAttr(Element item, String value) {
                                            String type = attr.getAttr();
 
-                                           Attribute attribute = new Attribute();
-
-
-                                           attribute.setAttrIndex(index);
-                                           attribute.setAttrType(type);
-                                           attribute.setAttrMeaning(attr.getType());
-                                           attribute.setAttrValue(value);
-                                           attribute.setSiteId(config.getSiteId());
-                                           attribute.setPageId(config.getPageId());
-                                           attribute.setRuleId(config.getRuleId());
-                                           attribute.setPersistable(attr.isPersist());
+                                           boolean persist = attr.isPersist();
+//                                           String type1 = attr.getType();
+                                           Attribute attribute = makeAttrFromConfig(value, persist, type, null);
                                            publish(attribute);
                                        }
 
@@ -233,14 +213,14 @@ java.util.NoSuchElementException: No value present
 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
 
 	*/
-        Optional<SiteRecord> byUrl = siteDao.getByUrl(siteUrl);
+        Optional<ThSiteRecord> byUrl = siteDao.getByUrl(siteUrl);
         if (!byUrl.isPresent()) {
             log.error("Not found for {}", siteUrl);
         }
-        SiteRecord site = byUrl.get();
+        ThSiteRecord site = byUrl.get();
         this.config.setSiteId(site.getId());
 
-        PageRecord pageRecord = new PageRecord();
+        ThPageRecord pageRecord = new ThPageRecord();
 
         pageRecord.setUrl(page);
         pageRecord.setSourcepage(sourcePage);

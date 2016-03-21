@@ -58,10 +58,10 @@ CREATE TABLE t_task
     run_type INT NOT NULL,
     site_id INT NOT NULL
 );
-ALTER TABLE attribute_data ADD FOREIGN KEY (rule_id) REFERENCES rule (id);
-ALTER TABLE page ADD FOREIGN KEY (site_id) REFERENCES site (id);
+ALTER TABLE th_attribute_data ADD FOREIGN KEY (rule_id) REFERENCES th_rule (id);
+ALTER TABLE th_page ADD FOREIGN KEY (site_id) REFERENCES th_site (id);
 CREATE UNIQUE INDEX rule_id_uindex ON rule (id);
 CREATE UNIQUE INDEX site_id_uindex ON site (id);
-ALTER TABLE t_task ADD FOREIGN KEY (schedule_source_id) REFERENCES t_schedule (id);
+ALTER TABLE task_run ADD FOREIGN KEY (schedule_source_id) REFERENCES task_schedule (id);
 
 SET FOREIGN_KEY_CHECKS=1;

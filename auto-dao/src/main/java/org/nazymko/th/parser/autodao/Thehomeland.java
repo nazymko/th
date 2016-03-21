@@ -4,20 +4,14 @@
 package org.nazymko.th.parser.autodao;
 
 
+import org.jooq.Table;
+import org.jooq.impl.SchemaImpl;
+import org.nazymko.th.parser.autodao.tables.*;
+
+import javax.annotation.Generated;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Table;
-import org.jooq.impl.SchemaImpl;
-import org.nazymko.th.parser.autodao.tables.AttributeData;
-import org.nazymko.th.parser.autodao.tables.Page;
-import org.nazymko.th.parser.autodao.tables.Rule;
-import org.nazymko.th.parser.autodao.tables.Site;
-import org.nazymko.th.parser.autodao.tables.TSchedule;
-import org.nazymko.th.parser.autodao.tables.TTask;
 
 
 /**
@@ -33,12 +27,11 @@ import org.nazymko.th.parser.autodao.tables.TTask;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Thehomeland extends SchemaImpl {
 
-	private static final long serialVersionUID = -1465541348;
-
 	/**
 	 * The reference instance of <code>thehomeland</code>
 	 */
 	public static final Thehomeland THEHOMELAND = new Thehomeland();
+	private static final long serialVersionUID = 1160703407;
 
 	/**
 	 * No further instances allowed
@@ -56,11 +49,12 @@ public class Thehomeland extends SchemaImpl {
 
 	private final List<Table<?>> getTables0() {
 		return Arrays.<Table<?>>asList(
-			AttributeData.ATTRIBUTE_DATA,
-			Page.PAGE,
-			Rule.RULE,
-			Site.SITE,
-			TSchedule.T_SCHEDULE,
-			TTask.T_TASK);
+				ConnectorSyncLog.CONNECTOR_SYNC_LOG,
+				TaskRun.TASK_RUN,
+				TaskSchedule.TASK_SCHEDULE,
+				ThAttributeData.TH_ATTRIBUTE_DATA,
+				ThPage.TH_PAGE,
+				ThRule.TH_RULE,
+				ThSite.TH_SITE);
 	}
 }

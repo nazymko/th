@@ -1,6 +1,6 @@
 package org.nazymko.controller.rule;
 
-import org.nazymko.th.parser.autodao.tables.records.RuleRecord;
+import org.nazymko.th.parser.autodao.tables.records.ThRuleRecord;
 import org.nazymko.thehomeland.parser.db.dao.RuleDao;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,14 +25,14 @@ public class ManageDisableActivateController {
 
     @RequestMapping("{id}/disable")
     public String disable(@PathVariable() Integer id, Model model) {
-        Optional<RuleRecord> record = ruleDao.getById(id);
+        Optional<ThRuleRecord> record = ruleDao.getById(id);
 
         if (record.isPresent()) {
             record.get().setStatus(DISABLED);
             record.get().store();
         }
 
-        List<RuleRecord> all = ruleDao.getAllRules();
+        List<ThRuleRecord> all = ruleDao.getAllRules();
         model.addAttribute("rules", all);
 
 
@@ -41,14 +41,14 @@ public class ManageDisableActivateController {
 
     @RequestMapping("{id}/activate")
     public String activate(@PathVariable() Integer id, Model model) {
-        Optional<RuleRecord> record = ruleDao.getById(id);
+        Optional<ThRuleRecord> record = ruleDao.getById(id);
 
         if (record.isPresent()) {
             record.get().setStatus(ACTIVE);
             record.get().store();
         }
 
-        List<RuleRecord> all = ruleDao.getAllRules();
+        List<ThRuleRecord> all = ruleDao.getAllRules();
         model.addAttribute("rules", all);
 
 

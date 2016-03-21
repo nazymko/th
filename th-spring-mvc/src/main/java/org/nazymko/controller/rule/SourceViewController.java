@@ -1,13 +1,12 @@
 package org.nazymko.controller.rule;
 
 import com.google.gson.Gson;
-import org.nazymko.th.parser.autodao.tables.records.RuleRecord;
+import org.nazymko.th.parser.autodao.tables.records.ThRuleRecord;
 import org.nazymko.thehomeland.parser.db.dao.RuleDao;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import java.util.Optional;
@@ -25,7 +24,7 @@ public class SourceViewController {
     @RequestMapping("source/{id}")
     public String viewSource(@PathVariable Integer id, Model model) {
 
-        Optional<RuleRecord> byId = ruleDao.getById(id);
+        Optional<ThRuleRecord> byId = ruleDao.getById(id);
         if (!byId.isPresent()) {
             model.addAttribute("warn", "Rule with id " + id + " not found");
         } else {

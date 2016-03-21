@@ -17,16 +17,16 @@ public class PersistenceAttrListener implements AttrListener {
     private AttributeDao attributeDao;
 
     @Override
-    public boolean support(String type,String attr) {
-        return true;//because of persisting every attribute
+    public boolean support(String type, String attr) {
+        return true;
     }
 
     @Override
     public void process(Integer pageId, Attribute attribute, Integer runId) {
         log.debug(name() + ": " + "pageId = " + pageId);
-
-        attributeDao.save(attribute);
-
+        if (attribute.isPersistable()) {
+            attributeDao.save(attribute);
+        }
 
     }
 

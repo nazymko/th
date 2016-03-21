@@ -2,16 +2,14 @@ package org.nazymko.scheduler;
 
 import lombok.extern.log4j.Log4j2;
 import org.jooq.Result;
-import org.nazymko.th.parser.autodao.tables.TSchedule;
-import org.nazymko.th.parser.autodao.tables.records.SiteRecord;
-import org.nazymko.th.parser.autodao.tables.records.TScheduleRecord;
-import org.nazymko.th.parser.autodao.tables.records.TTaskRecord;
+import org.nazymko.th.parser.autodao.tables.records.TaskRunRecord;
+import org.nazymko.th.parser.autodao.tables.records.TaskScheduleRecord;
+import org.nazymko.th.parser.autodao.tables.records.ThSiteRecord;
 import org.nazymko.thehomeland.parser.THLParserRunner;
 import org.nazymko.thehomeland.parser.TaskFactory;
 import org.nazymko.thehomeland.parser.db.dao.ScheduleDao;
 import org.nazymko.thehomeland.parser.db.dao.SiteDao;
 import org.nazymko.thehomeland.parser.db.dao.TaskDao;
-import org.nazymko.thehomeland.parser.db.model.Site;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.scheduling.support.SimpleTriggerContext;
@@ -30,12 +28,10 @@ import static utils.support.task.TaskStatus.*;
  * Created by nazymko.patronus@gmail.com.
  */
 @Log4j2
-public class ScheduleCronTrigger {
+public class ParsingTriger {
 
     @Resource
     THLParserRunner runner;
-    @Resource
-    TSchedule tSchedule;
     @Resource
     ScheduleDao scheduleDao;
     @Resource
@@ -54,12 +50,12 @@ public class ScheduleCronTrigger {
     }
 
     private void disableFinished() {
-        Result<TTaskRecord> running = taskDao.getStarted();
+        Result<TaskRunRecord> running = taskDao.getStarted();
         log.debug("Found {} running tasks.", running.size());
         if (!running.isEmpty()) {
             log.debug("{}", running);
         }
-        for (TTaskRecord tTaskRecord : running) {
+        for (TaskRunRecord tTaskRecord : running) {
             Integer tasks = runner.tasks(tTaskRecord.getId());
             if (tasks <= 0) {
                 log.debug("Task run {} finished", tTaskRecord.getId());
@@ -71,11 +67,11 @@ public class ScheduleCronTrigger {
     }
 
     private void scheduleNextOrRun() {
-        Map<TScheduleRecord, TTaskRecord> activeTasks = scheduleDao.getActiveTasks();
+        Map<TaskScheduleRecord, TaskRunRecord> activeTasks = scheduleDao.getActiveTasks();
         log.debug("Found {} schedule records", activeTasks.size());
 
-        for (TScheduleRecord scheduleRecord : activeTasks.keySet()) {
-            TTaskRecord tTaskRecord = activeTasks.get(scheduleRecord);
+        for (TaskScheduleRecord scheduleRecord : activeTasks.keySet()) {
+            TaskRunRecord tTaskRecord = activeTasks.get(scheduleRecord);
             if (tTaskRecord == null) {
                 scheduleNew(scheduleRecord);
             } else if (tTaskRecord.getStartAt().before(now())) {
@@ -85,8 +81,8 @@ public class ScheduleCronTrigger {
         }
     }
 
-    private void executeRecord(TScheduleRecord scheduleRecord, TTaskRecord tTaskRecord) {
-        Optional<SiteRecord> site = siteDao.get(scheduleRecord.getSiteid());
+    private void executeRecord(TaskScheduleRecord scheduleRecord, TaskRunRecord tTaskRecord) {
+        Optional<ThSiteRecord> site = siteDao.get(scheduleRecord.getSiteid());
         if (site.isPresent()) {
             //Ok, lets start the job
             Runnable runnable = taskFac.makeScheduledTask(scheduleRecord.getStartPage(), scheduleRecord.getPageType(), -1, tTaskRecord.getId());
@@ -100,7 +96,7 @@ public class ScheduleCronTrigger {
         }
     }
 
-    private void scheduleNew(TScheduleRecord scheduleRecord) {
+    private void scheduleNew(TaskScheduleRecord scheduleRecord) {
         log.debug("Run task missing for {}", scheduleRecord);
         Date startAt = new Date(scheduleRecord.getStartAt().getTime());
         Date date = new CronTrigger(scheduleRecord.getCron()).nextExecutionTime(new SimpleTriggerContext(startAt, startAt, startAt));
@@ -109,7 +105,7 @@ public class ScheduleCronTrigger {
 
 
         //schedule next run
-        TTaskRecord newRecord = new TTaskRecord();
+        TaskRunRecord newRecord = new TaskRunRecord();
         newRecord.setStatus(NEW);
         newRecord.setRunType(CRON);
         newRecord.setSiteId(scheduleRecord.getSiteid());

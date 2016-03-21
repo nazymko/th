@@ -1,0 +1,53 @@
+{
+  "name": "stackoverflow.com",
+  "url": "http://stackoverflow.com",
+  "path_provider": "css",
+  "meta": {
+    "topics": [
+      "programming"
+    ],
+    "types": [
+      "q&a",
+      "excursion",
+      "bus_travel"
+    ],
+    "languages": [
+      "eng"
+    ]
+  },
+  "page": [
+    {
+      "type": "front_page",
+      "unique_visit": false,
+      "url": "http://stackoverflow.com",
+      "attrs": [
+        {
+          "path": ".question-hyperlink",
+          "attr": "href",
+          "type": "question_page"
+        }
+      ]
+    },
+    {
+      "type": "question_page",
+      "unique_visit": true,
+      "attrs": [
+        {
+          "path": "h1 .question-hyperlink",
+          "attr": "text",
+          "type": "question_title"
+        },
+        {
+          "path": ".question .post-text",
+          "attr": "text",
+          "type": "question_description"
+        },
+        {
+          "path": "#question-header .question-hyperlink",
+          "attr": "href",
+          "type": "question_page"
+        }
+      ]
+    }
+  ]
+}

@@ -1,7 +1,6 @@
 package org.nazymko.thehomeland.parser.db.dao;
 
 import org.nazymko.thehomeland.parser.db.model.Attribute;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -21,7 +20,7 @@ public class AttributeDao extends AbstractDao<Integer, Attribute> {
 
 
     public List<Attribute> getByPage(Integer key) {
-        List<Attribute> attributes = getJdbcTemplate().query("SELECT * FROM attribute_data WHERE page_id=:pageId", new MapSqlParameterSource("pageId", key), new RowMapper<Attribute>() {
+        List<Attribute> attributes = getJdbcTemplate().query("SELECT * FROM th_attribute_data WHERE page_id=:pageId", new MapSqlParameterSource("pageId", key), new RowMapper<Attribute>() {
             @Override
             public Attribute mapRow(ResultSet resultSet, int i) throws SQLException {
 
@@ -69,7 +68,7 @@ public class AttributeDao extends AbstractDao<Integer, Attribute> {
         paramSource.addValue("attribute_format", attr.getAttrFormat());
         paramSource.addValue("rule_id", attr.getRuleId());
 
-        getJdbcTemplate().update("INSERT INTO attribute_data(site_id, page_id, attribute_name, attribute_value, attribute_index, attribute_type, attribute_format, rule_id) VALUES( :site_id, :page_id, :attribute_name, :attribute_value, :attribute_index, :attribute_type, :attribute_format, :rule_id)", paramSource);
+        getJdbcTemplate().update("INSERT INTO th_attribute_data(site_id, page_id, attribute_name, attribute_value, attribute_index, attribute_type, attribute_format, rule_id) VALUES( :site_id, :page_id, :attribute_name, :attribute_value, :attribute_index, :attribute_type, :attribute_format, :rule_id)", paramSource);
         return null;
     }
 }

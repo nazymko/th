@@ -6,12 +6,13 @@ package org.nazymko.th.parser.autodao;
 
 import javax.annotation.Generated;
 
-import org.nazymko.th.parser.autodao.tables.AttributeData;
-import org.nazymko.th.parser.autodao.tables.Page;
-import org.nazymko.th.parser.autodao.tables.Rule;
-import org.nazymko.th.parser.autodao.tables.Site;
-import org.nazymko.th.parser.autodao.tables.TSchedule;
-import org.nazymko.th.parser.autodao.tables.TTask;
+import org.nazymko.th.parser.autodao.tables.ConnectorSyncLog;
+import org.nazymko.th.parser.autodao.tables.TaskRun;
+import org.nazymko.th.parser.autodao.tables.TaskSchedule;
+import org.nazymko.th.parser.autodao.tables.ThAttributeData;
+import org.nazymko.th.parser.autodao.tables.ThPage;
+import org.nazymko.th.parser.autodao.tables.ThRule;
+import org.nazymko.th.parser.autodao.tables.ThSite;
 
 
 /**
@@ -28,32 +29,37 @@ import org.nazymko.th.parser.autodao.tables.TTask;
 public class Tables {
 
 	/**
-	 * The table thehomeland.attribute_data
+	 * The table thehomeland.connector_sync_log
 	 */
-	public static final AttributeData ATTRIBUTE_DATA = org.nazymko.th.parser.autodao.tables.AttributeData.ATTRIBUTE_DATA;
+	public static final ConnectorSyncLog CONNECTOR_SYNC_LOG = org.nazymko.th.parser.autodao.tables.ConnectorSyncLog.CONNECTOR_SYNC_LOG;
 
 	/**
-	 * The table thehomeland.page
+	 * The table thehomeland.task_run
 	 */
-	public static final Page PAGE = org.nazymko.th.parser.autodao.tables.Page.PAGE;
+	public static final TaskRun TASK_RUN = org.nazymko.th.parser.autodao.tables.TaskRun.TASK_RUN;
 
 	/**
-	 * The table thehomeland.rule
+	 * The table thehomeland.task_schedule
 	 */
-	public static final Rule RULE = org.nazymko.th.parser.autodao.tables.Rule.RULE;
+	public static final TaskSchedule TASK_SCHEDULE = org.nazymko.th.parser.autodao.tables.TaskSchedule.TASK_SCHEDULE;
 
 	/**
-	 * The table thehomeland.site
+	 * The table thehomeland.th_attribute_data
 	 */
-	public static final Site SITE = org.nazymko.th.parser.autodao.tables.Site.SITE;
+	public static final ThAttributeData TH_ATTRIBUTE_DATA = org.nazymko.th.parser.autodao.tables.ThAttributeData.TH_ATTRIBUTE_DATA;
 
 	/**
-	 * The table thehomeland.t_schedule
+	 * The table thehomeland.th_page
 	 */
-	public static final TSchedule T_SCHEDULE = org.nazymko.th.parser.autodao.tables.TSchedule.T_SCHEDULE;
+	public static final ThPage TH_PAGE = org.nazymko.th.parser.autodao.tables.ThPage.TH_PAGE;
 
 	/**
-	 * The table thehomeland.t_task
+	 * The table thehomeland.th_rule
 	 */
-	public static final TTask T_TASK = org.nazymko.th.parser.autodao.tables.TTask.T_TASK;
+	public static final ThRule TH_RULE = org.nazymko.th.parser.autodao.tables.ThRule.TH_RULE;
+
+	/**
+	 * The table thehomeland.th_site
+	 */
+	public static final ThSite TH_SITE = org.nazymko.th.parser.autodao.tables.ThSite.TH_SITE;
 }

@@ -22,7 +22,7 @@ CREATE TABLE ATTRIBUTE_DATA (
   attribute_type   VARCHAR(32),
   attribute_format VARCHAR(256),
   rule_id          INT(11),
-  FOREIGN KEY (rule_id) REFERENCES RULE (id)
+  FOREIGN KEY (rule_id) REFERENCES th_rule (id)
 );
 CREATE TABLE PAGE (
   id            INT(11) PRIMARY KEY AUTO_INCREMENT,
@@ -33,7 +33,7 @@ CREATE TABLE PAGE (
   version       INT(11) NOT NULL    DEFAULT '0',
   registered_at DATETIME,
   sourcePage    INT(11) NOT NULL    DEFAULT '-1',
-  FOREIGN KEY (site_id) REFERENCES SITE (id)
+  FOREIGN KEY (site_id) REFERENCES th_site (id)
 );
 
 

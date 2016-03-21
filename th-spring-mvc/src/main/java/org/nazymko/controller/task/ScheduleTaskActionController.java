@@ -1,7 +1,7 @@
 package org.nazymko.controller.task;
 
-import org.nazymko.th.parser.autodao.tables.records.TScheduleRecord;
-import org.nazymko.th.parser.autodao.tables.records.TTaskRecord;
+import org.nazymko.th.parser.autodao.tables.records.TaskRunRecord;
+import org.nazymko.th.parser.autodao.tables.records.TaskScheduleRecord;
 import org.nazymko.thehomeland.parser.db.dao.ScheduleDao;
 import org.nazymko.thehomeland.parser.db.dao.TaskDao;
 import org.springframework.stereotype.Controller;
@@ -23,11 +23,13 @@ public class ScheduleTaskActionController {
 
     @Resource
     ScheduleDao scheduleDao;
+    @Resource
+    TaskDao taskDao;
 
     @RequestMapping(value = "schedule/{id}/suspend", method = RequestMethod.GET)
     public String suspend(Model model, @PathVariable("id") Integer id) {
 
-        Optional<TScheduleRecord> tScheduleRecord = scheduleDao.get(id);
+        Optional<TaskScheduleRecord> tScheduleRecord = scheduleDao.get(id);
         if (tScheduleRecord.isPresent()) {
             tScheduleRecord.get().setIsEnabled(false);
             tScheduleRecord.get().store();
@@ -39,7 +41,7 @@ public class ScheduleTaskActionController {
     }
 
     private void putArgs(Model model) {
-        List<TScheduleRecord> all = scheduleDao.getAll();
+        List<TaskScheduleRecord> all = scheduleDao.getAll();
 
         model.addAttribute("list", all);
     }
@@ -47,7 +49,7 @@ public class ScheduleTaskActionController {
     @RequestMapping(value = "schedule/{id}/activate", method = RequestMethod.GET)
     public String activate(Model model, @PathVariable("id") Integer id) {
 
-        Optional<TScheduleRecord> tScheduleRecord = scheduleDao.get(id);
+        Optional<TaskScheduleRecord> tScheduleRecord = scheduleDao.get(id);
         if (tScheduleRecord.isPresent()) {
             tScheduleRecord.get().setIsEnabled(true);
             tScheduleRecord.get().store();
@@ -56,19 +58,16 @@ public class ScheduleTaskActionController {
         return "task/list-all";
     }
 
-    @Resource
-    TaskDao taskDao;
-
     @RequestMapping(value = "schedule/{id}/delete", method = RequestMethod.GET)
     public String delete(Model model, @PathVariable("id") Integer id) {
-        Optional<TScheduleRecord> tScheduleRecord = scheduleDao.get(id);
+        Optional<TaskScheduleRecord> tScheduleRecord = scheduleDao.get(id);
         if (tScheduleRecord.isPresent()) {
-            TScheduleRecord record = tScheduleRecord.get();
+            TaskScheduleRecord record = tScheduleRecord.get();
 
-            Optional<List<TTaskRecord>> byScheduleId = taskDao.getByScheduleId(id);
+            Optional<List<TaskRunRecord>> byScheduleId = taskDao.getByScheduleId(id);
             if (byScheduleId.isPresent()) {
-                List<TTaskRecord> tTaskRecords = byScheduleId.get();
-                for (TTaskRecord tTaskRecord : tTaskRecords) {
+                List<TaskRunRecord> tTaskRecords = byScheduleId.get();
+                for (TaskRunRecord tTaskRecord : tTaskRecords) {
                     int delete = tTaskRecord.delete();
                     System.out.println("delete 1 = " + delete);
 //                    tTaskRecord.store();

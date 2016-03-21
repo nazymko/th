@@ -2,8 +2,11 @@ package org.nazymko.thehomeland.parser;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
-import org.nazymko.th.parser.autodao.tables.records.TTaskRecord;
-import org.nazymko.thehomeland.parser.db.dao.*;
+import org.nazymko.th.parser.autodao.tables.records.TaskRunRecord;
+import org.nazymko.thehomeland.parser.db.dao.PageDao;
+import org.nazymko.thehomeland.parser.db.dao.RuleDao;
+import org.nazymko.thehomeland.parser.db.dao.SiteDao;
+import org.nazymko.thehomeland.parser.db.dao.TaskDao;
 import org.nazymko.thehomeland.parser.processors.AttrListener;
 import org.nazymko.thehomeland.parser.processors.ParsingTask;
 import org.nazymko.thehomeland.parser.topology.History;
@@ -60,8 +63,8 @@ public class TaskFactory {
         return Optional.empty();
     }
 
-    public TTaskRecord nextRecord(Integer siteId) {
-        TTaskRecord tTaskRecord = new TTaskRecord();
+    public TaskRunRecord nextRecord(Integer siteId) {
+        TaskRunRecord tTaskRecord = new TaskRunRecord();
         taskDao.attach(tTaskRecord);
 
         tTaskRecord.setStartAt(TimeStampHelper.now());

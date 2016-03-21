@@ -1,6 +1,6 @@
 package org.nazymko.controller.task;
 
-import org.nazymko.th.parser.autodao.tables.records.TScheduleRecord;
+import org.nazymko.th.parser.autodao.tables.records.TaskScheduleRecord;
 import org.nazymko.thehomeland.parser.db.dao.ScheduleDao;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +21,7 @@ public class ScheduleListAllController {
     @RequestMapping("list-all")
     public String list(Model model) {
 
-        List<TScheduleRecord> all = scheduleDao.getAll();
+        List<TaskScheduleRecord> all = scheduleDao.getAll();
 
         model.addAttribute("list", all);
 

@@ -1,7 +1,7 @@
 package org.nazymko.controller;
 
 import org.jooq.Result;
-import org.nazymko.th.parser.autodao.tables.records.TTaskRecord;
+import org.nazymko.th.parser.autodao.tables.records.TaskRunRecord;
 import org.nazymko.thehomeland.parser.THLParserRunner;
 import org.nazymko.thehomeland.parser.db.dao.TaskDao;
 import org.springframework.stereotype.Controller;
@@ -31,10 +31,10 @@ public class RootController {
         boolean active = parser.getConfig().isActive();
         model.addAttribute("isActive", active);
 
-        Result<TTaskRecord> started = taskDao.getStarted();
+        Result<TaskRunRecord> started = taskDao.getStarted();
         model.addAttribute("started", started);
 
-        Result<TTaskRecord> finished = taskDao.getFinished(10);
+        Result<TaskRunRecord> finished = taskDao.getFinished(10);
         model.addAttribute("finished", finished);
         return "root/index";
     }

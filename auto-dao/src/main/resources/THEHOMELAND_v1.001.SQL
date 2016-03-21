@@ -53,9 +53,9 @@ CREATE TABLE t_task
     message LONGTEXT,
     canseled TINYINT DEFAULT 0 NOT NULL
 );
-ALTER TABLE attribute_data ADD FOREIGN KEY (rule_id) REFERENCES rule (id);
-ALTER TABLE page ADD FOREIGN KEY (site_id) REFERENCES site (id);
-CREATE UNIQUE INDEX rule_id_uindex ON rule (id);
-CREATE UNIQUE INDEX site_id_uindex ON site (id);
-ALTER TABLE t_task ADD FOREIGN KEY (schedule_source_id) REFERENCES t_schedule (id);
-CREATE INDEX t_task_t_schedule_id_fk ON t_task (schedule_source_id);
+ALTER TABLE th_attribute_data ADD FOREIGN KEY (rule_id) REFERENCES th_rule (id);
+ALTER TABLE th_page ADD FOREIGN KEY (site_id) REFERENCES th_site (id);
+CREATE UNIQUE INDEX rule_id_uindex ON th_rule (id);
+CREATE UNIQUE INDEX site_id_uindex ON th_site (id);
+ALTER TABLE task_run ADD FOREIGN KEY (schedule_source_id) REFERENCES task_schedule (id);
+CREATE INDEX t_task_t_schedule_id_fk ON task_run (schedule_source_id);
