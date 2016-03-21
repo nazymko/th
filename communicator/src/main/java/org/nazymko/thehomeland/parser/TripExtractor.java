@@ -13,14 +13,16 @@ import org.springframework.beans.factory.annotation.Qualifier;
  */
 public class TripExtractor implements Converter<ThSiteRecord> {
 
-    @Autowired
-    SyncLogDao syncLogDao;
     @Qualifier("pageDao")
     @Autowired
-    private PageDao dao;
+    private PageDao pageDao;
+
     @Qualifier("attributeDao")
     @Autowired
     private AttributeDao attributeDao;
+
+    @Autowired private SyncLogDao logDao;
+
 
     public Dto covert(ThSiteRecord record) {
 
