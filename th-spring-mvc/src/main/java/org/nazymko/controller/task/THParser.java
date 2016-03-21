@@ -24,6 +24,7 @@ public class THParser {
     @Resource
     PageDao pageDao;
 
+    /*WTF*/
     public static <T> T coalesce(T... items) {
         for (T i : items) if (i != null) return i;
         return null;

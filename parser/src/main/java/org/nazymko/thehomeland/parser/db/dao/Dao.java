@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface Dao<K, T> {
     Optional<T> get(K key);
 
-    K save(T obj) throws MalformedURLException, URISyntaxException;
+    K save(T obj) throws MalformedURLException /*WTF*/, URISyntaxException;
 
     Optional<T> getById(int key);
 }
