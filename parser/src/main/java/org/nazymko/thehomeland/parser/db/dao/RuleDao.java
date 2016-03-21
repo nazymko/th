@@ -73,25 +73,29 @@ public class RuleDao extends AbstractDao<String, ParsingRule> {
     }
 
     @Override
-    public String save(ParsingRule rule) throws MalformedURLException, URISyntaxException {
-        String siteUrl = simplifier.simplify(rule.getUrl());
-        saveNewSiteOrIgnore(rule, siteUrl);
+    public String save(ParsingRule rule) {
+        try {
+            String siteUrl = simplifier.simplify(rule.getUrl());
+            saveNewSiteOrIgnore(rule, siteUrl);
 
-        ThRuleRecord ruleRecord = new ThRuleRecord();
+            ThRuleRecord ruleRecord = new ThRuleRecord();
 
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String serialized = gson.toJson(rule);
-        Integer version = ruleMaxVersion(rule.getUrl());
-        ruleRecord.setSite(siteUrl);
-        ruleRecord.setRule(serialized);
-        ruleRecord.setVersion(version + 1);
-        ruleRecord.setStatus(ACTIVE);
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            String serialized = gson.toJson(rule);
+            Integer version = ruleMaxVersion(rule.getUrl());
+            ruleRecord.setSite(siteUrl);
+            ruleRecord.setRule(serialized);
+            ruleRecord.setVersion(version + 1);
+            ruleRecord.setStatus(ACTIVE);
 
-        store(ruleRecord);
+            store(ruleRecord);
 
-        resolver.refresh();
-        return rule.getUrl();
-
+            resolver.refresh();
+            return rule.getUrl();
+        } catch (MalformedURLException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private void saveNewSiteOrIgnore(JsonRule rule, String siteUrl) throws MalformedURLException, URISyntaxException {

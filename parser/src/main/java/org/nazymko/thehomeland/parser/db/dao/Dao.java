@@ -1,7 +1,5 @@
 package org.nazymko.thehomeland.parser.db.dao;
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.util.Optional;
 
 /**
@@ -10,7 +8,7 @@ import java.util.Optional;
 public interface Dao<K, T> {
     Optional<T> get(K key);
 
-    K save(T obj) throws MalformedURLException /*WTF*/, URISyntaxException;
+    K save(T obj);
 
     Optional<T> getById(int key);
 }

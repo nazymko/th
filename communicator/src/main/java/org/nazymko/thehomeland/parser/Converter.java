@@ -1,4 +1,4 @@
-package org.nazymko.parser;
+package org.nazymko.thehomeland.parser;
 
 import org.jooq.Record;
 

@@ -1,7 +1,8 @@
-package org.nazymko.parser;
+package org.nazymko.thehomeland.parser;
 
-import org.nazymko.Trip;
 import org.nazymko.th.parser.autodao.tables.records.ThSiteRecord;
+import org.nazymko.thehomeland.Trip;
+import org.nazymko.thehomeland.dao.SyncLogDao;
 import org.nazymko.thehomeland.parser.db.dao.AttributeDao;
 import org.nazymko.thehomeland.parser.db.dao.PageDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 /**
  * Created by nazymko.patronus@gmail.com.
  */
-public class TripConverter implements Converter<ThSiteRecord> {
+public class TripExtractor implements Converter<ThSiteRecord> {
 
+    @Autowired
+    SyncLogDao syncLogDao;
     @Qualifier("pageDao")
     @Autowired
     private PageDao dao;
@@ -20,6 +23,8 @@ public class TripConverter implements Converter<ThSiteRecord> {
     private AttributeDao attributeDao;
 
     public Dto covert(ThSiteRecord record) {
+
+
         Trip build = Trip.builder()
                 .departureCityId("Винница")
                 .description("Поездочка")

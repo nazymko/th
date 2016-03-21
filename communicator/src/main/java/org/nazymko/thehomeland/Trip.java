@@ -1,4 +1,4 @@
-package org.nazymko;
+package org.nazymko.thehomeland;
 
 /**
  * Created by JacksonGenerator on 16.03.16.
@@ -6,7 +6,7 @@ package org.nazymko;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
-import org.nazymko.parser.Dto;
+import org.nazymko.thehomeland.parser.Dto;
 
 @Builder
 public class Trip implements Dto {

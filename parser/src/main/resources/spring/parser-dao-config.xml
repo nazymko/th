@@ -12,4 +12,5 @@
     <bean id="scheduleDao" class="org.nazymko.thehomeland.parser.db.dao.ScheduleDao"/>
     <bean id="taskDao" class="org.nazymko.thehomeland.parser.db.dao.TaskDao"/>
 
+
 </beans>
