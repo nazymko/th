@@ -5,6 +5,8 @@ import org.jooq.Result;
 import org.nazymko.th.parser.autodao.tables.records.ThPageRecord;
 import org.nazymko.th.parser.autodao.tables.records.ThSiteRecord;
 import org.nazymko.thehomeland.parser.db.model.Page;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
@@ -29,6 +31,10 @@ public class PageDao extends AbstractDao<Integer, Page> {
     public static final String NEWEST_PAGE_BY_URL = "SELECT url,(SELECT url FROM th_site s WHERE s.id=p.site_id) AS site_url,id,type,version,visited_at,registered_at FROM th_page p WHERE p.url=:url AND version = (SELECT MAX(version) FROM th_page WHERE url = :url)";
     @Resource
     TaskDao taskDao;
+    @Qualifier("siteDao")
+    @Autowired
+    private SiteDao siteDao;
+
 
     /**
      * Get newest page by URL
@@ -147,7 +153,21 @@ public class PageDao extends AbstractDao<Integer, Page> {
         //TODO
         // 22:36:26.237 [pool-2-thread-1] DEBUG org.nazymko.thehomeland.parser.db.dao.PageDao - session url: 183 , link http://tcb.vn.ua/travel/?show=1378
         //org.jooq.exception.TooManyRowsException: Cursor returned more than one result
+
+        //Actually few pages have same link (link for detail description)
         ThPageRecord pageRecord = getDslContext().selectFrom(TH_PAGE).where(TH_PAGE.URL.eq(link)).and(TH_PAGE.TASK_RUN_ID.eq(sessionKey)).fetchOne();
         return pageRecord;
+    }
+
+    //TODO: how to identify consumer - authority ?
+    public Result<ThPageRecord> getAfter(Integer lastPage, String consumer) {
+        Integer siteId = siteDao.getIdByUrl(consumer);
+
+        Result<ThPageRecord> records = getDslContext()
+                .selectFrom(TH_PAGE)
+                .where(TH_PAGE.SITE_ID.eq(siteId))
+                .and(TH_PAGE.ID.gt(lastPage))
+                .fetch();
+        return records;
     }
 }

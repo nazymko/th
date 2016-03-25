@@ -1,8 +1,11 @@
 package org.nazymko.thehomeland.parser;
 
+import org.jooq.Result;
 import org.nazymko.th.parser.autodao.tables.records.ConnectorSyncPageLogRecord;
+import org.nazymko.th.parser.autodao.tables.records.ThPageRecord;
 import org.nazymko.th.parser.autodao.tables.records.ThSiteRecord;
 import org.nazymko.thehomeland.Trip;
+import org.nazymko.thehomeland.dao.SyncMainLogDao;
 import org.nazymko.thehomeland.dao.SyncPageLogDao;
 import org.nazymko.thehomeland.parser.db.dao.AttributeDao;
 import org.nazymko.thehomeland.parser.db.dao.PageDao;
@@ -25,13 +28,20 @@ public class TripExtractor implements Converter<ThSiteRecord> {
     private AttributeDao attributeDao;
 
     @Autowired private SyncPageLogDao logDao;
+    @Qualifier("mainLogDao")
+    @Autowired
+    private SyncMainLogDao mainLogDao;
 
 
     public Dto covert(ThSiteRecord record) {
-        List<ConnectorSyncPageLogRecord> all = logDao.all("thehomeland.com.ua");
+        String consumer = "thehomeland.com.ua";
+        List<ConnectorSyncPageLogRecord> all = logDao.all(consumer);
+        Long lastPage = mainLogDao.getLastPage(consumer);
 
+        Result<ThPageRecord> after = pageDao.getAfter(Math.toIntExact(lastPage), consumer);
+        //TODO: from here
 
-        logDao.getLatestDate("thehomeland.com.ua");
+        logDao.getLatestDate(consumer);
         Trip build = Trip.builder()
                 .departureCityId("Винница")
                 .description("Поездочка")

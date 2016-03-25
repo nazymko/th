@@ -55,4 +55,6 @@ public abstract class AbstractDao<K, T> implements Dao<K, T> {
     protected boolean isPresent(Record record) {
         return record != null;
     }
+
+
 }
