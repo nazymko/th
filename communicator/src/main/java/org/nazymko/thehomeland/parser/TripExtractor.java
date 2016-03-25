@@ -12,6 +12,7 @@ import org.nazymko.thehomeland.parser.db.dao.PageDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,19 +20,17 @@ import java.util.List;
  */
 public class TripExtractor implements Converter<ThSiteRecord> {
 
+    Integer BATCH_SIZE = 10;
     @Qualifier("pageDao")
     @Autowired
     private PageDao pageDao;
-
     @Qualifier("attributeDao")
     @Autowired
     private AttributeDao attributeDao;
-
     @Autowired private SyncPageLogDao logDao;
     @Qualifier("mainLogDao")
     @Autowired
     private SyncMainLogDao mainLogDao;
-
 
     public Dto covert(ThSiteRecord record) {
         String consumer = "thehomeland.com.ua";
@@ -40,6 +39,28 @@ public class TripExtractor implements Converter<ThSiteRecord> {
 
         Result<ThPageRecord> after = pageDao.getAfter(Math.toIntExact(lastPage), consumer);
         //TODO: from here
+
+        List<List<ThPageRecord>> pages = new ArrayList<List<ThPageRecord>>();
+        int pos = 0;
+        while (pos < after.size()) {
+            pages.add(after.subList(pos, pos + BATCH_SIZE));
+            pos += BATCH_SIZE;
+        }
+
+
+        for (List<ThPageRecord> page : pages) {
+//            page.stream().flatMapToLong(x->{
+//                x.getId()
+//            });
+
+
+            for (ThPageRecord thPageRecord : page) {
+
+            }
+
+
+//            send
+        }
 
         logDao.getLatestDate(consumer);
         Trip build = Trip.builder()
