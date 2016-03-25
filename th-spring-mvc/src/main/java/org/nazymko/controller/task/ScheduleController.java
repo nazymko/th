@@ -63,7 +63,7 @@ public class ScheduleController {
         record.setIsEnabled(true);
         record.setPageType("front_page");
         record.setSiteid(siteId);
-        record.setStartPage(siteDao.get(siteId).get().getUrl());
+        record.setStartPage(siteDao.getById(siteId).get().getUrl());
         record.setStartAt(new Timestamp(System.currentTimeMillis()));
 
         scheduleDao.save(record);

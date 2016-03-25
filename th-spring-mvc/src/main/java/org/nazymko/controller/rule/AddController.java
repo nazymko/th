@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import lombok.extern.log4j.Log4j2;
 import org.nazymko.thehomeland.parser.db.dao.PageDao;
 import org.nazymko.thehomeland.parser.db.dao.RuleDao;
-import org.nazymko.thehomeland.parser.rule.JsonRule;
 import org.nazymko.thehomeland.parser.rule.ParsingRule;
 import org.nazymko.thehomeland.parser.topology.RuleResolver;
 import org.springframework.beans.factory.annotation.Autowired;

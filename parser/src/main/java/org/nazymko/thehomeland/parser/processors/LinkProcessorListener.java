@@ -37,7 +37,7 @@ public class LinkProcessorListener implements AttrListener {
     public void process(Integer sourcePage, Attribute attribute, Integer runId) {
 
         String pageType = attribute.getAttrMeaning();
-        String site = siteDao.get(attribute.getSiteId()).get().getUrl();
+        String site = siteDao.getById(attribute.getSiteId()).get().getUrl();
 
         try {
             String page = fixUrlfNeed(site, attribute.getAttrValue());

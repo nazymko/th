@@ -31,7 +31,7 @@ public class SubmitController {
     public String submitTask(Model model, @PathVariable("site") Integer id) {
 
 //        throw new NotImplementedException();
-        ThSiteRecord site = siteDao.get(id).get();
+        ThSiteRecord site = siteDao.getById(id).get();
 
         TaskRunRecord tTaskRecord = parser.getTaskFac().nextRecord(id);
 

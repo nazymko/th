@@ -24,7 +24,7 @@ import static org.nazymko.th.parser.autodao.Tables.TH_PAGE;
  * Created by nazymko.patronus@gmail.com.
  */
 @Log4j2
-public class PageDao extends AbstractDao<String, Page> {
+public class PageDao extends AbstractDao<Integer, Page> {
     public static final String PAGE_BY_ID = "SELECT url,(SELECT url FROM th_site s WHERE s.id=p.site_id) AS site_url,id,type,registered_at,visited_at FROM th_page p WHERE p.id=:id";
     public static final String NEWEST_PAGE_BY_URL = "SELECT url,(SELECT url FROM th_site s WHERE s.id=p.site_id) AS site_url,id,type,version,visited_at,registered_at FROM th_page p WHERE p.url=:url AND version = (SELECT MAX(version) FROM th_page WHERE url = :url)";
     @Resource
@@ -33,22 +33,7 @@ public class PageDao extends AbstractDao<String, Page> {
     /**
      * Get newest page by URL
      */
-    @Override
-    public Optional<Page> get(String key) {
-        MapSqlParameterSource source = new MapSqlParameterSource();
-        source.addValue("url", key);
-        Page page = getJdbcTemplate().query(NEWEST_PAGE_BY_URL,
-                source, new ResultSetExtractor<Page>() {
-                    @Override
-                    public Page extractData(ResultSet rs) throws SQLException, DataAccessException {
-                        if (rs.next()) {
-                            return readPage(rs);
-                        }
-                        return null;
-                    }
-                });
-        return Optional.ofNullable(page);
-    }
+
 
     private Page readPage(ResultSet rs) throws SQLException {
         Integer id = rs.getInt("id");
@@ -62,8 +47,8 @@ public class PageDao extends AbstractDao<String, Page> {
     }
 
     @Override
-    public String save(Page obj) {
-
+    public Integer save(Page obj) {
+        //TODO : rework
         MapSqlParameterSource source = new MapSqlParameterSource();
         int version = getVersion(obj.getPage());
 
@@ -74,7 +59,37 @@ public class PageDao extends AbstractDao<String, Page> {
         source.addValue("version", version + 1);
 
         int update = getJdbcTemplate().update("INSERT INTO th_page(site_id,url,type,version,registered_at,sourcePage) VALUES ((SELECT id FROM th_site s WHERE s.url = :site),:url,:type,:version,now(),:sourcePage)", source);
-        return obj.getPage();
+
+        return getByUrl(obj.getPage()).get().getId();
+    }
+
+    @Override
+    public Optional<Page> getById(Integer key) {
+        return getJdbcTemplate().query(PAGE_BY_ID, new MapSqlParameterSource("id", key), new ResultSetExtractor<Optional<Page>>() {
+            @Override
+            public Optional<Page> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                if (rs.next())
+                    return Optional.of(readPage(rs));
+                else
+                    return null;
+            }
+        });
+    }
+
+    public Optional<Page> getByUrl(String url) {
+        MapSqlParameterSource source = new MapSqlParameterSource();
+        source.addValue("url", url);
+        Page page = getJdbcTemplate().query(NEWEST_PAGE_BY_URL,
+                source, new ResultSetExtractor<Page>() {
+                    @Override
+                    public Page extractData(ResultSet rs) throws SQLException, DataAccessException {
+                        if (rs.next()) {
+                            return readPage(rs);
+                        }
+                        return null;
+                    }
+                });
+        return Optional.ofNullable(page);
     }
 
     /**
@@ -99,23 +114,11 @@ public class PageDao extends AbstractDao<String, Page> {
         });
     }
 
-    @Override
-    public Optional<Page> getById(int key) {
-        return getJdbcTemplate().query(PAGE_BY_ID, new MapSqlParameterSource("id", key), new ResultSetExtractor<Optional<Page>>() {
-            @Override
-            public Optional<Page> extractData(ResultSet rs) throws SQLException, DataAccessException {
-                if (rs.next())
-                    return Optional.of(readPage(rs));
-                else
-                    return null;
-            }
-        });
-    }
 
     public void visit(String link) {
 
 //        getDslContext().selectFrom(PAGE).where(PAGE.URL.eq(link)).and()
-        Optional<Page> page = get(link);
+        Optional<Page> page = getByUrl(link);
         if (page.isPresent()) {
             Integer id = page.get().getId();
             getJdbcTemplate().update("UPDATE th_page SET visited_at = now() WHERE id = :id", new MapSqlParameterSource("id", id));
@@ -142,7 +145,7 @@ public class PageDao extends AbstractDao<String, Page> {
         log.debug("session key: {} , link {}", sessionKey, link);
         ThSiteRecord siteForSession = taskDao.getSiteBySession(sessionKey);
         //TODO
-        // 22:36:26.237 [pool-2-thread-1] DEBUG org.nazymko.thehomeland.parser.db.dao.PageDao - session key: 183 , link http://tcb.vn.ua/travel/?show=1378
+        // 22:36:26.237 [pool-2-thread-1] DEBUG org.nazymko.thehomeland.parser.db.dao.PageDao - session url: 183 , link http://tcb.vn.ua/travel/?show=1378
         //org.jooq.exception.TooManyRowsException: Cursor returned more than one result
         ThPageRecord pageRecord = getDslContext().selectFrom(TH_PAGE).where(TH_PAGE.URL.eq(link)).and(TH_PAGE.TASK_RUN_ID.eq(sessionKey)).fetchOne();
         return pageRecord;

@@ -44,7 +44,7 @@ public class AutoRenewalTaskRunner implements Runnable {
     }
 
     private void scheduleNext(TaskRunRecord source) {
-        TaskScheduleRecord record = scheduleDao.get(source.getScheduleSourceId()).get();
+        TaskScheduleRecord record = scheduleDao.getById(source.getScheduleSourceId()).get();
         Date nextExecutionTime = new CronTrigger(record.getCron()).nextExecutionTime(new SimpleTriggerContext());
 
         TaskRunRecord taskRecord = new TaskRunRecord();

@@ -6,15 +6,18 @@
     <thead>
     <tr>
         <th>id</th>
+        <th>url</th>
         <th>name</th>
         <th>history</th>
         <th>command</th>
     </tr>
     </thead>
+    <%--@elvariable id="sites" type="java.util.List<org.nazymko.th.parser.autodao.tables.records.ThSiteRecord>"--%>
     <c:forEach items="${sites}" var="site">
 
         <tr>
             <td>${site.id}</td>
+            <td>${site.url}</td>
             <td><a href="/site/${site.id}/supportedtypes">${site.name}</a></td>
             <td><a href="/site/${site.id}/info">history</a></td>
             <td><a class="btn" href="/task/submit/${site.id}">start</a></td>

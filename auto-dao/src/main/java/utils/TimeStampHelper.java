@@ -1,7 +1,5 @@
 package utils;
 
-import org.jooq.util.derby.sys.Sys;
-
 import java.sql.Timestamp;
 
 /**
@@ -10,5 +8,9 @@ import java.sql.Timestamp;
 public class TimeStampHelper {
     public static Timestamp now() {
         return new Timestamp(System.currentTimeMillis());
+    }
+
+    public static Timestamp zero() {
+        return new Timestamp(0);
     }
 }

@@ -12,7 +12,7 @@ import lombok.*;
  * int attrIndex;<br>
  * String attrMeaning;<br>
  * String attrValue;<br>
- * String attrType;<br>
+ * String attrTag;<br>
  * String attrFormat;<br>
  * </code>
  */
@@ -24,7 +24,7 @@ public class Attribute {
     @NonNull
     int siteId, pageId, ruleId, attrIndex = -1;
     @NonNull
-    String attrMeaning, attrValue, attrType;
+    String attrMeaning, attrValue, attrTag;
 
     boolean persistable = true;
 

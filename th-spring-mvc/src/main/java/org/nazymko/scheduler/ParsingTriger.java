@@ -82,7 +82,7 @@ public class ParsingTriger {
     }
 
     private void executeRecord(TaskScheduleRecord scheduleRecord, TaskRunRecord tTaskRecord) {
-        Optional<ThSiteRecord> site = siteDao.get(scheduleRecord.getSiteid());
+        Optional<ThSiteRecord> site = siteDao.getById(scheduleRecord.getSiteid());
         if (site.isPresent()) {
             //Ok, lets start the job
             Runnable runnable = taskFac.makeScheduledTask(scheduleRecord.getStartPage(), scheduleRecord.getPageType(), -1, tTaskRecord.getId());

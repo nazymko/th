@@ -17,11 +17,7 @@ import static utils.support.task.TaskStatus.NEW;
  * Created by nazymko.patronus@gmail.com.
  */
 public class ScheduleDao extends AbstractDao<Integer, TaskScheduleRecord> {
-    @Override
-    public Optional<TaskScheduleRecord> get(Integer key) {
-        TaskScheduleRecord fetch = getDslContext().selectFrom(TASK_SCHEDULE).where(TASK_SCHEDULE.ID.eq(key)).fetchOne();
-        return Optional.ofNullable(fetch);
-    }
+
 
     public Optional<List<TaskScheduleRecord>> getAllForSite(Integer id) {
         List<TaskScheduleRecord> fetch = getDslContext().selectFrom(TASK_SCHEDULE).where(TASK_SCHEDULE.SITEID.eq(id)).fetch();
@@ -32,6 +28,12 @@ public class ScheduleDao extends AbstractDao<Integer, TaskScheduleRecord> {
     public Integer save(TaskScheduleRecord obj) {
         getDslContext().attach(obj);
         return obj.store();
+    }
+
+    @Override
+    public Optional<TaskScheduleRecord> getById(Integer key) {
+        TaskScheduleRecord fetch = getDslContext().selectFrom(TASK_SCHEDULE).where(TASK_SCHEDULE.ID.eq(key)).fetchOne();
+        return Optional.ofNullable(fetch);
     }
 
     public List<TaskScheduleRecord> getSchedules(Integer siteId) {

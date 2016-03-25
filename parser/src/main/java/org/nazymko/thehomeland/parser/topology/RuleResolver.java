@@ -113,8 +113,8 @@ public class RuleResolver implements ProcessorRegister {
     @Override
     public Optional<Set<String>> availableTypes(String site) {
 
-        Optional<ParsingRule> jsonRuleOptional = ruleDao.get(site);
-        if (((Optional<ParsingRule>) jsonRuleOptional).isPresent()) {
+        Optional<ParsingRule> jsonRuleOptional = ruleDao.getById(site);
+        if (jsonRuleOptional.isPresent()) {
             HashSet<String> types = getTypes(jsonRuleOptional);
 
             return Optional.of(types);
@@ -127,7 +127,7 @@ public class RuleResolver implements ProcessorRegister {
     public Optional<Set<String>> availableTypes(Integer site) {
 
         Optional<ParsingRule> jsonRuleOptional = ruleDao.getJsonById(site);
-        if (((Optional<ParsingRule>) jsonRuleOptional).isPresent()) {
+        if (jsonRuleOptional.isPresent()) {
             HashSet<String> types = getTypes(jsonRuleOptional);
 
             return Optional.of(types);

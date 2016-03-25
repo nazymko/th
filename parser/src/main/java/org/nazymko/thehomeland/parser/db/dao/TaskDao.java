@@ -23,12 +23,6 @@ public class TaskDao extends AbstractDao<Integer, TaskRunRecord> {
     @Resource
     SiteDao siteDao;
 
-    @Override
-    public Optional<TaskRunRecord> get(Integer key) {
-
-        return Optional.ofNullable(getDslContext().selectFrom(TASK_RUN).where(TASK_RUN.ID.eq(key)).fetchOne());
-
-    }
 
     public Optional<List<TaskRunRecord>> getByScheduleId(Integer id) {
         return Optional.ofNullable(getDslContext().selectFrom(TASK_RUN).where(TASK_RUN.SCHEDULE_SOURCE_ID.eq(id)).fetch());
@@ -41,6 +35,11 @@ public class TaskDao extends AbstractDao<Integer, TaskRunRecord> {
             log.error("Object didn't was saved {}", obj);
         }
         return obj.getId();
+    }
+
+    @Override
+    public Optional<TaskRunRecord> getById(Integer key) {
+        return Optional.ofNullable(getDslContext().selectFrom(TASK_RUN).where(TASK_RUN.ID.eq(key)).fetchOne());
     }
 
     public void attach(TaskRunRecord tTaskRecord) {
@@ -66,7 +65,7 @@ public class TaskDao extends AbstractDao<Integer, TaskRunRecord> {
     public ThSiteRecord getSiteBySession(Integer sessionKey) {
         Integer siteId = getDslContext().selectFrom(TASK_RUN).where(TASK_RUN.ID.eq(sessionKey)).fetchOne().getSiteId();
 
-        Optional<ThSiteRecord> siteRecord = siteDao.get(siteId);
+        Optional<ThSiteRecord> siteRecord = siteDao.getById(siteId);
         return siteRecord.get();
     }
 }

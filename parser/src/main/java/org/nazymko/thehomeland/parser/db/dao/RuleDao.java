@@ -13,6 +13,7 @@ import org.nazymko.thehomeland.parser.rule.ParsingRule;
 import org.nazymko.thehomeland.parser.rule.RuleFactory;
 import org.nazymko.thehomeland.parser.topology.RuleResolver;
 import org.nazymko.thehomeland.parser.utils.UrlSimplifier;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -20,6 +21,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import javax.annotation.Resource;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -37,28 +39,11 @@ public class RuleDao extends AbstractDao<String, ParsingRule> {
 
     @Resource
     RuleResolver resolver;
-    @Resource
+    @Autowired
     UrlSimplifier simplifier;
     @Resource
     @Setter
     private SiteDao siteDao;
-
-    @Override
-    public Optional<ParsingRule> get(String site) {
-        Optional<ParsingRule> result = getJdbcTemplate().query("" +
-                "SELECT * FROM th_rule WHERE site=:site AND version = (SELECT  MAX(version) FROM th_rule WHERE site=:site)", new MapSqlParameterSource("site", site), new ResultSetExtractor<Optional<ParsingRule>>() {
-            @Override
-            public Optional<ParsingRule> extractData(ResultSet rs) throws SQLException, DataAccessException {
-                if (rs.next()) {
-                    return rsToJsonRule(rs);
-
-                }
-                return null;
-            }
-        });
-
-        return result;
-    }
 
     public Optional<ParsingRule> getJsonById(int key) {
         ParsingRule parsingRule = null;
@@ -87,6 +72,7 @@ public class RuleDao extends AbstractDao<String, ParsingRule> {
             ruleRecord.setRule(serialized);
             ruleRecord.setVersion(version + 1);
             ruleRecord.setStatus(ACTIVE);
+            ruleRecord.setAuthority(simplifier.authority(siteUrl));
 
             store(ruleRecord);
 
@@ -98,15 +84,54 @@ public class RuleDao extends AbstractDao<String, ParsingRule> {
         return null;
     }
 
+    @Override
+    public Optional<ParsingRule> getById(String site) {
+        Optional<ParsingRule> result = getJdbcTemplate().query("SELECT * FROM th_rule WHERE authority=:site AND version = (SELECT  MAX(version) FROM th_rule WHERE authority=:site)", new MapSqlParameterSource("site", site), new ResultSetExtractor<Optional<ParsingRule>>() {
+            @Override
+            public Optional<ParsingRule> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                if (rs.next()) {
+                    return rsToJsonRule(rs);
+
+                }
+                return null;
+            }
+        });
+
+        return result;
+    }
+
     private void saveNewSiteOrIgnore(JsonRule rule, String siteUrl) throws MalformedURLException, URISyntaxException {
 
         Integer idByUrl = siteDao.getIdByUrl(siteUrl);
         if (idByUrl < 0) {
-            ThSiteRecord site = new ThSiteRecord();
+            makeHttpVersion(rule, siteUrl);
+            makeHttpsVersion(rule, siteUrl);
+        }
+    }
 
-            site.setUrl(siteUrl);
+    private void makeHttpVersion(JsonRule rule, String siteUrl) {
+        try {
+            ThSiteRecord site = new ThSiteRecord();
+            URL url = new URL(siteUrl);
+            site.setUrl("http://" + url.getAuthority());
             site.setName(rule.getName());
             siteDao.save(site);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void makeHttpsVersion(JsonRule rule, String siteUrl) {
+        ThSiteRecord site = new ThSiteRecord();
+        try {
+            URL url = null;
+            url = new URL(siteUrl);
+
+            site.setUrl("https://" + url.getAuthority());
+            site.setName(rule.getName());
+            siteDao.save(site);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
         }
     }
 

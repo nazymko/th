@@ -42,7 +42,8 @@ public class Keys {
 	// UNIQUE and PRIMARY KEY definitions
 	// -------------------------------------------------------------------------
 
-	public static final UniqueKey<ConnectorSyncLogRecord> KEY_CONNECTOR_SYNC_LOG_PRIMARY = UniqueKeys0.KEY_CONNECTOR_SYNC_LOG_PRIMARY;
+	public static final UniqueKey<ConnectorSyncMainLogRecord> KEY_CONNECTOR_SYNC_MAIN_LOG_PRIMARY = UniqueKeys0.KEY_CONNECTOR_SYNC_MAIN_LOG_PRIMARY;
+	public static final UniqueKey<ConnectorSyncPageLogRecord> KEY_CONNECTOR_SYNC_PAGE_LOG_PRIMARY = UniqueKeys0.KEY_CONNECTOR_SYNC_PAGE_LOG_PRIMARY;
 	public static final UniqueKey<TaskRunRecord> KEY_TASK_RUN_PRIMARY = UniqueKeys0.KEY_TASK_RUN_PRIMARY;
 	public static final UniqueKey<TaskScheduleRecord> KEY_TASK_SCHEDULE_PRIMARY = UniqueKeys0.KEY_TASK_SCHEDULE_PRIMARY;
 	public static final UniqueKey<ThPageRecord> KEY_TH_PAGE_PRIMARY = UniqueKeys0.KEY_TH_PAGE_PRIMARY;
@@ -70,7 +71,8 @@ public class Keys {
 	}
 
 	private static class UniqueKeys0 extends AbstractKeys {
-		public static final UniqueKey<ConnectorSyncLogRecord> KEY_CONNECTOR_SYNC_LOG_PRIMARY = createUniqueKey(ConnectorSyncLog.CONNECTOR_SYNC_LOG, ConnectorSyncLog.CONNECTOR_SYNC_LOG.ID);
+		public static final UniqueKey<ConnectorSyncMainLogRecord> KEY_CONNECTOR_SYNC_MAIN_LOG_PRIMARY = createUniqueKey(ConnectorSyncMainLog.CONNECTOR_SYNC_MAIN_LOG, ConnectorSyncMainLog.CONNECTOR_SYNC_MAIN_LOG.ID);
+		public static final UniqueKey<ConnectorSyncPageLogRecord> KEY_CONNECTOR_SYNC_PAGE_LOG_PRIMARY = createUniqueKey(ConnectorSyncPageLog.CONNECTOR_SYNC_PAGE_LOG, ConnectorSyncPageLog.CONNECTOR_SYNC_PAGE_LOG.ID);
 		public static final UniqueKey<TaskRunRecord> KEY_TASK_RUN_PRIMARY = createUniqueKey(TaskRun.TASK_RUN, TaskRun.TASK_RUN.ID);
 		public static final UniqueKey<TaskScheduleRecord> KEY_TASK_SCHEDULE_PRIMARY = createUniqueKey(TaskSchedule.TASK_SCHEDULE, TaskSchedule.TASK_SCHEDULE.ID);
 		public static final UniqueKey<ThPageRecord> KEY_TH_PAGE_PRIMARY = createUniqueKey(ThPage.TH_PAGE, ThPage.TH_PAGE.ID);

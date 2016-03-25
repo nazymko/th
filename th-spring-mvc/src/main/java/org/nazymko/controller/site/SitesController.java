@@ -50,7 +50,7 @@ public class SitesController {
     public String info(Model model, @PathVariable("id") Integer id) {
 
 
-        Optional<ThSiteRecord> siteOptional = siteDao.get(id);
+        Optional<ThSiteRecord> siteOptional = siteDao.getById(id);
         if (siteOptional.isPresent()) {
             model.addAttribute("site", siteOptional.get());
             List<Page> latestVersion = pageDao.getLatestVersion(id);

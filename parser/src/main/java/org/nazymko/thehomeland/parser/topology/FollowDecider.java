@@ -22,7 +22,7 @@ public class FollowDecider implements History {
     @Override
     public boolean visited(String link) {
         log.debug("link = {}", link);
-        Optional<Page> page = pageDao.get(link);
+        Optional<Page> page = pageDao.getByUrl(link);
         log.debug("page = {} ", page);
         if (page.isPresent()) {
             return page.get().getVisited() != null;

@@ -14,10 +14,6 @@ import java.util.Optional;
  * Created by nazymko.patronus@gmail.com.
  */
 public class AttributeDao extends AbstractDao<Integer, Attribute> {
-    public Optional<Attribute> get(Integer key) {
-        throw new NotImplementedException();
-    }
-
 
     public List<Attribute> getByPage(Integer key) {
         List<Attribute> attributes = getJdbcTemplate().query("SELECT * FROM th_attribute_data WHERE page_id=:pageId", new MapSqlParameterSource("pageId", key), new RowMapper<Attribute>() {
@@ -40,7 +36,7 @@ public class AttributeDao extends AbstractDao<Integer, Attribute> {
                         .attrIndex(attribute_index)
                         .attrMeaning(attribute_meaning)
                         .attrValue(attribute_value)
-                        .attrType(attribute_type)
+                        .attrTag(attribute_type)
                         .attrFormat(attribute_format)
                         .build();
             }
@@ -64,11 +60,16 @@ public class AttributeDao extends AbstractDao<Integer, Attribute> {
         paramSource.addValue("attribute_name", attr.getAttrMeaning());
         paramSource.addValue("attribute_value", attr.getAttrValue());
         paramSource.addValue("attribute_index", attr.getAttrIndex());
-        paramSource.addValue("attribute_type", attr.getAttrType());
+        paramSource.addValue("attribute_type", attr.getAttrTag());
         paramSource.addValue("attribute_format", attr.getAttrFormat());
         paramSource.addValue("rule_id", attr.getRuleId());
 
         getJdbcTemplate().update("INSERT INTO th_attribute_data(site_id, page_id, attribute_name, attribute_value, attribute_index, attribute_type, attribute_format, rule_id) VALUES( :site_id, :page_id, :attribute_name, :attribute_value, :attribute_index, :attribute_type, :attribute_format, :rule_id)", paramSource);
         return null;
+    }
+
+    @Override
+    public Optional<Attribute> getById(Integer key) {
+        throw new UnsupportedOperationException();
     }
 }

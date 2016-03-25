@@ -116,14 +116,14 @@ public class ParsingTask implements Runnable, InfoSource {
                                            }
                                        }
 
-                                       private Attribute makeAttrFromConfig(String group, boolean persist, String type, String format) {
+                                       private Attribute makeAttrFromConfig(String group, boolean persist, String tag, String format) {
                                            return Attribute.builder()
                                                    .siteId(config.siteId)
                                                    .attrIndex(index)
                                                    .attrValue(group)
                                                    .attrFormat(format)
-                                                   .attrType(attr.getAttr())
-                                                   .attrMeaning(type)
+                                                   .attrTag(tag)
+                                                   .attrMeaning(attr.getType())
                                                    .pageId(config.getPageId())
                                                    .ruleId(config.getRuleId())
                                                    .persistable(persist)
@@ -135,11 +135,10 @@ public class ParsingTask implements Runnable, InfoSource {
                                        }
 
                                        private void processMainAttr(Element item, String value) {
-                                           String type = attr.getAttr();
+                                           String _attr = attr.getAttr();
 
                                            boolean persist = attr.isPersist();
-//                                           String type1 = attr.getType();
-                                           Attribute attribute = makeAttrFromConfig(value, persist, type, null);
+                                           Attribute attribute = makeAttrFromConfig(value, persist, _attr, null);
                                            publish(attribute);
                                        }
 
@@ -216,6 +215,7 @@ java.util.NoSuchElementException: No value present
         Optional<ThSiteRecord> byUrl = siteDao.getByUrl(siteUrl);
         if (!byUrl.isPresent()) {
             log.error("Not found for {}", siteUrl);
+
         }
         ThSiteRecord site = byUrl.get();
         this.config.setSiteId(site.getId());
@@ -233,7 +233,7 @@ java.util.NoSuchElementException: No value present
         pageDao.save(pageRecord);
         config.setPageId(pageRecord.getId());
 
-        config.setRuleId(ruleDao.get(siteUrl).get().getId());
+        config.setRuleId(ruleDao.getById(simplifier.authority(siteUrl)).get().getId());
 
         thisPageRule = ruleResolver.resolveByTypeForSite(siteUrl, type).get();
 

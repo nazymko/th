@@ -29,7 +29,7 @@ public class ScheduleTaskActionController {
     @RequestMapping(value = "schedule/{id}/suspend", method = RequestMethod.GET)
     public String suspend(Model model, @PathVariable("id") Integer id) {
 
-        Optional<TaskScheduleRecord> tScheduleRecord = scheduleDao.get(id);
+        Optional<TaskScheduleRecord> tScheduleRecord = scheduleDao.getById(id);
         if (tScheduleRecord.isPresent()) {
             tScheduleRecord.get().setIsEnabled(false);
             tScheduleRecord.get().store();
@@ -49,7 +49,7 @@ public class ScheduleTaskActionController {
     @RequestMapping(value = "schedule/{id}/activate", method = RequestMethod.GET)
     public String activate(Model model, @PathVariable("id") Integer id) {
 
-        Optional<TaskScheduleRecord> tScheduleRecord = scheduleDao.get(id);
+        Optional<TaskScheduleRecord> tScheduleRecord = scheduleDao.getById(id);
         if (tScheduleRecord.isPresent()) {
             tScheduleRecord.get().setIsEnabled(true);
             tScheduleRecord.get().store();
@@ -60,7 +60,7 @@ public class ScheduleTaskActionController {
 
     @RequestMapping(value = "schedule/{id}/delete", method = RequestMethod.GET)
     public String delete(Model model, @PathVariable("id") Integer id) {
-        Optional<TaskScheduleRecord> tScheduleRecord = scheduleDao.get(id);
+        Optional<TaskScheduleRecord> tScheduleRecord = scheduleDao.getById(id);
         if (tScheduleRecord.isPresent()) {
             TaskScheduleRecord record = tScheduleRecord.get();
 
@@ -74,7 +74,7 @@ public class ScheduleTaskActionController {
                 }
             }
 
-            int delete = scheduleDao.get(id).get().delete();
+            int delete = scheduleDao.getById(id).get().delete();
             tScheduleRecord.get().store();
             System.out.println("delete = " + delete);
         }

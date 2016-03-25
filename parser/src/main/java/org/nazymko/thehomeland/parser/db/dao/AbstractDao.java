@@ -7,7 +7,6 @@ import org.jooq.SQLDialect;
 import org.jooq.UpdatableRecord;
 import org.jooq.impl.DSL;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
@@ -19,7 +18,6 @@ import java.util.Optional;
  */
 public abstract class AbstractDao<K, T> implements Dao<K, T> {
 
-    T v;
     @Getter
     @Resource
     DataSource source;
@@ -30,14 +28,13 @@ public abstract class AbstractDao<K, T> implements Dao<K, T> {
         return jdbcTemplate;
     }
 
-    @Override
-    public Optional<T> getById(int key) {
-        throw new NotImplementedException();
-    }
-
     protected DSLContext getDslContext() {
         return DSL.using(getSource(), SQLDialect.MYSQL);
     }
+
+//    private DSLContext from() {
+//        getDslContext().selectFrom()
+//    }
 
     protected Timestamp currentTimeStamp() {
         return new Timestamp(System.currentTimeMillis());
