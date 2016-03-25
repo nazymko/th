@@ -21,13 +21,14 @@
 
     <task:annotation-driven/>
 
-    <context:component-scan base-package="org.nazymko, org.nazymko.thehomeland.parser"/>
+    <context:component-scan
+            base-package="org.nazymko, org.nazymko.thehomeland.parser, org.nazymko.controller , org.nazymko.controller.test_"/>
 
     <import resource="spring/datasource.xml"/>
     <import resource="spring/jdbc.xml"/>
     <import resource="spring/beans.xml"/>
     <import resource="spring/scheduling/scheduling-beans.xml"/>
     <import resource="classpath*:spring/parser-dao-config.xml"/>
-    <import resource="classpath*:spring/spring-communicator-config.xml"/>
+    <import resource="classpath*:spring/spring-connector-config.xml"/>
 
 </beans>

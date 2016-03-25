@@ -29,6 +29,8 @@ public class TripExtractor implements Converter<ThSiteRecord> {
 
     public Dto covert(ThSiteRecord record) {
         List<ConnectorSyncPageLogRecord> all = logDao.all("thehomeland.com.ua");
+
+
         logDao.getLatestDate("thehomeland.com.ua");
         Trip build = Trip.builder()
                 .departureCityId("Винница")
