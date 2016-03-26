@@ -15,7 +15,10 @@
              - org.jooq.util.ScalaGenerator
              Defaults to org.jooq.util.JavaGenerator -->
         <name>org.jooq.util.JavaGenerator</name>
-
+        <generate>
+            <pojos>true</pojos>
+            <daos>true</daos>
+        </generate>
         <database>
             <!-- The database type. The format here is:
                  org.util.[database].[database]Database -->

@@ -34,7 +34,11 @@ public class ThRule extends TableImpl<ThRuleRecord> {
 	 * The reference instance of <code>thehomeland.th_rule</code>
 	 */
 	public static final ThRule TH_RULE = new ThRule();
-	private static final long serialVersionUID = 1371976525;
+	private static final long serialVersionUID = -1382523059;
+	/**
+	 * The column <code>thehomeland.th_rule.id</code>.
+	 */
+	public final TableField<ThRuleRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 	/**
 	 * The column <code>thehomeland.th_rule.site</code>.
 	 */
@@ -47,10 +51,6 @@ public class ThRule extends TableImpl<ThRuleRecord> {
 	 * The column <code>thehomeland.th_rule.version</code>.
 	 */
 	public final TableField<ThRuleRecord, Integer> VERSION = createField("version", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaulted(true), this, "");
-	/**
-	 * The column <code>thehomeland.th_rule.id</code>.
-	 */
-	public final TableField<ThRuleRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 	/**
 	 * The column <code>thehomeland.th_rule.status</code>.
 	 */
