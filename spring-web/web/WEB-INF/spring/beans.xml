@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util" xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <bean id="ruleResolver" class="org.nazymko.thehomeland.parser.topology.RuleResolver"/>
+
+    <bean class="org.nazymko.thehomeland.parser.THLParserRunner">
+        <property name="threadPool" ref="th.main.threadpool"/>
+    </bean>
+
+    <bean id="config" class="org.nazymko.thehomeland.parser.THLParserRunner$Config">
+        <property name="active" value="true"/>
+    </bean>
+    <bean class="org.nazymko.thehomeland.parser.TaskFactory">
+        <property name="listeners" ref="thl.listeners"/>
+    </bean>
+
+
+    <bean id="linkedBlockingDeque" class="java.util.concurrent.LinkedBlockingDeque"/>
+
+    <bean id="th.main.threadpool" class="java.util.concurrent.ThreadPoolExecutor">
+        <constructor-arg index="0" value="0"/>
+        <constructor-arg index="1" value="4"/>
+        <constructor-arg index="2" value="20"/>
+        <constructor-arg index="3" value="SECONDS"/>
+        <constructor-arg index="4" ref="linkedBlockingDeque"/>
+    </bean>
+
+
+    <bean id="gson" class="com.google.gson.Gson"/>
+
+    <bean id="linkProcessorListener" class="org.nazymko.thehomeland.parser.processors.LinkProcessorListener">
+        <property name="supportedAttrs" ref="supportedTypes"/>
+    </bean>
+
+    <bean id="persistenceAttrListener" class="org.nazymko.thehomeland.parser.processors.PersistenceAttrListener"/>
+    <bean id="logAttrListener" class="org.nazymko.thehomeland.parser.processors.LogAttrListener"/>
+
+    <util:list id="thl.listeners">
+        <ref bean="logAttrListener"/>
+        <ref bean="persistenceAttrListener"/>
+        <ref bean="linkProcessorListener"/>
+    </util:list>
+
+    <util:set id="supportedTypes">
+        <value>article</value>
+        <value>category_list</value>
+        <value>question_page</value>
+    </util:set>
+
+
+    <bean id="simplifier" class="org.nazymko.thehomeland.parser.utils.UrlSimplifier"/>
+</beans>

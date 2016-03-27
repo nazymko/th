@@ -1,7 +1,5 @@
 package org.nazymko.thehomeland.parser.topology;
 
-import java.sql.Timestamp;
-
 /**
  * Created by nazymko.patronus@gmail.com.
  */

@@ -1,16 +1,12 @@
 package org.nazymko.thehomeland.parser.db;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
-import org.hamcrest.CoreMatchers;
 import org.hamcrest.core.IsEqual;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.nazymko.thehomeland.parser.db.dao.PageDao;
 import org.nazymko.thehomeland.parser.db.model.Page;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-
-import java.util.Optional;
 
 /**
  * Created by nazymko.patronus@gmail.com.

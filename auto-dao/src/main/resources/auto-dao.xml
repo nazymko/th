@@ -18,6 +18,8 @@
         <generate>
             <pojos>true</pojos>
             <daos>true</daos>
+            <jpaAnnotations>true</jpaAnnotations>
+            <validationAnnotations>true</validationAnnotations>
         </generate>
         <database>
             <!-- The database type. The format here is:

@@ -2,7 +2,6 @@ package org.nazymko.thehomeland.parser.db.model;
 
 import lombok.Data;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
