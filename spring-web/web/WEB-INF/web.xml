@@ -8,6 +8,21 @@
         <param-value>/WEB-INF/applicationContext.xml</param-value>
     </context-param>
 
+    <context-param>
+        <param-name>light:administration:base-url</param-name>
+        <param-value>/crud</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>light:administration:security</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>light:administration:base-package</param-name>
+        <param-value>org.nazymko.crud.config</param-value>
+    </context-param>
+
     <servlet>
         <servlet-name>dispatcher</servlet-name>
         <servlet-class>
@@ -59,19 +74,6 @@
         </jsp-property-group>
     </jsp-config>
 
-    <context-param>
-        <param-name>light:administration:base-url</param-name>
-        <param-value>/crud</param-value>
-    </context-param>
 
-    <context-param>
-        <param-name>light:administration:security</param-name>
-        <param-value>true</param-value>
-    </context-param>
-
-    <context-param>
-        <param-name>light:administration:base-package</param-name>
-        <param-value>org.nazymko.crud.config</param-value>
-    </context-param>
 
 </web-app>

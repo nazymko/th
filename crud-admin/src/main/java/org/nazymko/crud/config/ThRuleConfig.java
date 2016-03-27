@@ -7,15 +7,15 @@ import org.lightadmin.api.config.builder.ScreenContextConfigurationUnitBuilder;
 import org.lightadmin.api.config.unit.EntityMetadataConfigurationUnit;
 import org.lightadmin.api.config.unit.FieldSetConfigurationUnit;
 import org.lightadmin.api.config.unit.ScreenContextConfigurationUnit;
-import org.springframework.security.core.userdetails.User;
+import org.nazymko.th.parser.autodao.tables.pojos.ThRule;
 
 /**
  * Created by nazymko.patronus@gmail.com.
  */
-public class Config extends AdministrationConfiguration<User> {
+public class ThRuleConfig extends AdministrationConfiguration<ThRule> {
 
     public EntityMetadataConfigurationUnit configuration(EntityMetadataConfigurationUnitBuilder configurationBuilder) {
-        return configurationBuilder.nameField("firstname").build();
+        return configurationBuilder.nameField("site").build();
     }
 
     public ScreenContextConfigurationUnit screenContext(ScreenContextConfigurationUnitBuilder screenContextBuilder) {
@@ -25,8 +25,7 @@ public class Config extends AdministrationConfiguration<User> {
 
     public FieldSetConfigurationUnit listView(final FieldSetConfigurationUnitBuilder fragmentBuilder) {
         return fragmentBuilder
-                .field("firstname").caption("First Name")
-                .field("lastname").caption("Last Name")
+                .field("site").caption("Site Url")
                 .build();
     }
 
