@@ -38,6 +38,7 @@ import java.util.regex.Pattern;
  */
 @Log4j2
 public class ParsingTask implements Runnable, InfoSource {
+    //Houston, we have a problem
     public static String userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36";
     @Setter List<AttrListener> listeners = new ArrayList<>();
     @Setter RuleResolver ruleResolver;
@@ -178,40 +179,8 @@ public class ParsingTask implements Runnable, InfoSource {
     private Document load() throws MalformedURLException {
         log.debug("Init {}", page);
 
-        String siteUrl = simplifier.simplify(this.page);
+        String siteUrl = simplifier.getDomainName(this.page);
 
-
-/*java.util.NoSuchElementException: No value present
-00:09:14.010 [pool-2-thread-1] DEBUG org.nazymko.thehomeland.parser.processors.ParsingTask - Init https://tcb.vn.ua/?p=8118
-	at java.util.Optional.get(Optional.java:135)
-00:09:14.016 [pool-2-thread-1] DEBUG org.nazymko.thehomeland.parser.processors.ParsingTask - Start load..https://tcb.vn.ua/%D0%B4%D1%80%D0%B0%D0%B3%D0%BE%D0%B1%D1%80%D0%B0%D1%824-%D0%B4%D0%BD%D1%96-24-27-%D0%B1%D0%B5%D1%80%D0%B5%D0%B7%D0%BD%D1%8F-2016-%D0%BD%D0%B8%D0%B7%D1%8C%D0%BA%D0%B8%D0%B9-%D1%81%D0%B5%D0%B7/.
-00:09:14.017 [pool-2-thread-1] DEBUG org.nazymko.thehomeland.parser.processors.ParsingTask - Init https://tcb.vn.ua/%D0%B4%D1%80%D0%B0%D0%B3%D0%BE%D0%B1%D1%80%D0%B0%D1%824-%D0%B4%D0%BD%D1%96-24-27-%D0%B1%D0%B5%D1%80%D0%B5%D0%B7%D0%BD%D1%8F-2016-%D0%BD%D0%B8%D0%B7%D1%8C%D0%BA%D0%B8%D0%B9-%D1%81%D0%B5%D0%B7/
-	at org.nazymko.thehomeland.parser.processors.ParsingTask.load(ParsingTask.java:163)
-	at org.nazymko.thehomeland.parser.processors.ParsingTask.run(ParsingTask.java:66)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-java.util.NoSuchElementException: No value present
-	at java.util.Optional.get(Optional.java:135)
-	at org.nazymko.thehomeland.parser.processors.ParsingTask.load(ParsingTask.java:163)
-	at org.nazymko.thehomeland.parser.processors.ParsingTask.run(ParsingTask.java:66)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-java.util.NoSuchElementException: No value present
-	at java.util.Optional.get(Optional.java:135)
-	at org.nazymko.thehomeland.parser.processors.ParsingTask.load(ParsingTask.java:163)
-	at org.nazymko.thehomeland.parser.processors.ParsingTask.run(ParsingTask.java:66)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-
-	*/
         Optional<ThSiteRecord> byUrl = siteDao.getByUrl(siteUrl);
         if (!byUrl.isPresent()) {
             log.error("Not found for {}", siteUrl);
@@ -222,11 +191,11 @@ java.util.NoSuchElementException: No value present
 
         ThPageRecord pageRecord = new ThPageRecord();
 
-        pageRecord.setUrl(page);
+        pageRecord.setPageUrl(page);
         pageRecord.setSourcepage(sourcePage);
         pageRecord.setTaskRunId(sessionKey);
         pageRecord.setType(type);
-        pageRecord.setSiteUrl(site.getUrl());
+        pageRecord.setAuthority(site.getAuthority());
         pageRecord.setSiteId(config.getSiteId());
         pageRecord.setRegisteredAt(TimeStampHelper.now());
 
@@ -240,7 +209,7 @@ java.util.NoSuchElementException: No value present
         Document document = null;
         try {
             log.debug("Connect");
-            String link = makeUrl(siteUrl, page);
+            String link = makeUrl("http://" + siteUrl, page);
             document = Jsoup.connect(link)
                     .userAgent(userAgent)
                     .timeout(config.getTimeout())
@@ -258,16 +227,21 @@ java.util.NoSuchElementException: No value present
     }
 
     private String makeUrl(String site, String page) throws MalformedURLException {
-        String result = page;
-        if (page != null
+
+        if (this.sourcePage == -1) {
+            //Ok, it is root page
+            return site;
+        } else if (page != null
                 && !page.startsWith("http://")
                 && !page.startsWith("https://")
                 && !page.startsWith("www.")
                 ) {
+            String result = page;
             result = new URL(new URL(site), page).toExternalForm();
+            return result;
         }
-
-        return result;
+        //fine, this page url have a nice look
+        return page;
     }
 
     @Override

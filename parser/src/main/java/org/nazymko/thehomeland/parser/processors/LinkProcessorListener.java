@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import org.nazymko.thehomeland.parser.THLParserRunner;
 import org.nazymko.thehomeland.parser.db.dao.SiteDao;
 import org.nazymko.thehomeland.parser.db.model.Attribute;
+import org.nazymko.thehomeland.parser.utils.UrlSimplifier;
 
 import javax.annotation.Resource;
 import java.net.MalformedURLException;
@@ -19,6 +20,8 @@ public class LinkProcessorListener implements AttrListener {
     Set<String> supportedAttrs;
     @Resource
     THLParserRunner instance;
+    @Resource
+    UrlSimplifier simplifier;
     @Setter
     @Resource
     private SiteDao siteDao;
@@ -37,7 +40,7 @@ public class LinkProcessorListener implements AttrListener {
     public void process(Integer sourcePage, Attribute attribute, Integer runId) {
 
         String pageType = attribute.getAttrMeaning();
-        String site = siteDao.getById(attribute.getSiteId()).get().getUrl();
+        String site = siteDao.getById(attribute.getSiteId()).get().getAuthority();
 
         try {
             String page = fixUrlfNeed(site, attribute.getAttrValue());
@@ -49,14 +52,13 @@ public class LinkProcessorListener implements AttrListener {
     }
 
     private String fixUrlfNeed(String site, String page) throws MalformedURLException {
-        String result = page;
         if (page != null
                 && !page.startsWith("http://")
                 && !page.startsWith("https://")
                 && !page.startsWith("www.")) {
-            result = new URL(new URL(site), page).toExternalForm();
+            page = new URL(new URL(simplifier.addProtocol(site)), page).toExternalForm();
         }
 
-        return result;
+        return page;
     }
 }

@@ -6,7 +6,7 @@
     <thead>
     <tr>
         <th>id</th>
-        <th>url</th>
+        <th>domain</th>
         <th>name</th>
         <th>history</th>
         <th>command</th>
@@ -17,10 +17,10 @@
 
         <tr>
             <td>${site.id}</td>
-            <td>${site.url}</td>
+            <td>${site.authority}</td>
             <td><a href="/site/${site.id}/supportedtypes">${site.name}</a></td>
             <td><a href="/site/${site.id}/info">history</a></td>
-            <td><a class="btn" href="/task/submit/${site.id}">start</a></td>
+            <td><a class="btn bgm-teal waves-effect" href="/task/submit/${site.id}">start</a></td>
         </tr>
 
     </c:forEach>

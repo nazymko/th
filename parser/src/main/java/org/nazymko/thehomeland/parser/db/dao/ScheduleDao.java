@@ -26,8 +26,8 @@ public class ScheduleDao extends AbstractDao<Integer, TaskScheduleRecord> {
 
     @Override
     public Integer save(TaskScheduleRecord obj) {
-        getDslContext().attach(obj);
-        return obj.store();
+        store(obj);
+        return obj.getId();
     }
 
     @Override

@@ -2,10 +2,10 @@ package org.nazymko.controller.task;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.nazymko.th.parser.autodao.tables.records.ThPageRecord;
 import org.nazymko.thehomeland.parser.db.dao.AttributeDao;
 import org.nazymko.thehomeland.parser.db.dao.PageDao;
 import org.nazymko.thehomeland.parser.db.model.Attribute;
-import org.nazymko.thehomeland.parser.db.model.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,7 +31,7 @@ public class AttrViewController {
 
     @RequestMapping("attrs/{pageId}")
     public String pageAttrs(Model model, @PathVariable("pageId") Integer pageId) {
-        Optional<Page> byId = pageDao.getById(pageId);
+        Optional<ThPageRecord> byId = pageDao.getById(pageId);
         if (byId.isPresent()) {
 
             List<Attribute> attributes = attributeDao.getByPage(pageId);

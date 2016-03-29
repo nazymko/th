@@ -32,15 +32,15 @@ public class ThSite extends TableImpl<ThSiteRecord> {
 	 * The reference instance of <code>thehomeland.th_site</code>
 	 */
 	public static final ThSite TH_SITE = new ThSite();
-	private static final long serialVersionUID = 1373314345;
+	private static final long serialVersionUID = 1859847677;
 	/**
 	 * The column <code>thehomeland.th_site.id</code>.
 	 */
 	public final TableField<ThSiteRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 	/**
-	 * The column <code>thehomeland.th_site.url</code>.
+	 * The column <code>thehomeland.th_site.authority</code>.
 	 */
-	public final TableField<ThSiteRecord, String> URL = createField("url", org.jooq.impl.SQLDataType.VARCHAR.length(256), this, "");
+	public final TableField<ThSiteRecord, String> AUTHORITY = createField("authority", org.jooq.impl.SQLDataType.VARCHAR.length(256), this, "");
 	/**
 	 * The column <code>thehomeland.th_site.name</code>.
 	 */

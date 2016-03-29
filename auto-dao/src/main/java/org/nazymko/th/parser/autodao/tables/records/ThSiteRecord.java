@@ -35,7 +35,7 @@ import javax.validation.constraints.Size;
 @Table(name = "th_site", schema = "thehomeland")
 public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements Record3<Integer, String, String> {
 
-	private static final long serialVersionUID = -1028952566;
+	private static final long serialVersionUID = 1917932210;
 
 	/**
 	 * Create a detached ThSiteRecord
@@ -47,11 +47,11 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	/**
 	 * Create a detached, initialised ThSiteRecord
 	 */
-	public ThSiteRecord(Integer id, String url, String name) {
+	public ThSiteRecord(Integer id, String authority, String name) {
 		super(ThSite.TH_SITE);
 
 		setValue(0, id);
-		setValue(1, url);
+		setValue(1, authority);
 		setValue(2, name);
 	}
 
@@ -73,18 +73,18 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	}
 
 	/**
-	 * Getter for <code>thehomeland.th_site.url</code>.
+	 * Getter for <code>thehomeland.th_site.authority</code>.
 	 */
-	@Column(name = "url", length = 256)
+	@Column(name = "authority", length = 256)
 	@Size(max = 256)
-	public String getUrl() {
+	public String getAuthority() {
 		return (String) getValue(1);
 	}
 
 	/**
-	 * Setter for <code>thehomeland.th_site.url</code>.
+	 * Setter for <code>thehomeland.th_site.authority</code>.
 	 */
-	public void setUrl(String value) {
+	public void setAuthority(String value) {
 		setValue(1, value);
 	}
 
@@ -149,7 +149,7 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	 */
 	@Override
 	public Field<String> field2() {
-		return ThSite.TH_SITE.URL;
+		return ThSite.TH_SITE.AUTHORITY;
 	}
 
 	/**
@@ -173,7 +173,7 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	 */
 	@Override
 	public String value2() {
-		return getUrl();
+		return getAuthority();
 	}
 
 	/**
@@ -198,7 +198,7 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	 */
 	@Override
 	public ThSiteRecord value2(String value) {
-		setUrl(value);
+		setAuthority(value);
 		return this;
 	}
 

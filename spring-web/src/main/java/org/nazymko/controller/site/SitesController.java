@@ -4,7 +4,6 @@ import org.nazymko.th.parser.autodao.tables.records.ThSiteRecord;
 import org.nazymko.thehomeland.parser.db.dao.PageDao;
 import org.nazymko.thehomeland.parser.db.dao.SiteDao;
 import org.nazymko.thehomeland.parser.db.model.Page;
-import org.nazymko.thehomeland.parser.db.model.Site;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,7 +28,7 @@ public class SitesController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String root(Model model) {
-        List<Site> sites = siteDao.getAll();
+        List<ThSiteRecord> sites = siteDao.getAll();
 
         model.addAttribute("sites", sites);
 

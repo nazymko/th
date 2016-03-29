@@ -1,9 +1,12 @@
+<%--@elvariable id="page" type="java.lang.Integer"--%>
+<%--@elvariable id="size" type="java.lang.Integer"--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <jsp:include page="header.jsp"/>
 <h4>Parser activities</h4>
 <ul>
+    <%--@elvariable id="tasks" type="java.util.List<java.lang.String>"--%>
     <c:forEach items="${tasks}" var="task">
         <li>${task}</li>
     </c:forEach>
@@ -27,17 +30,17 @@
             <th>visited at</th>
             <th>registered at</th>
             <th>page id</th>
-            <th>site url</th>
+            <th>domain</th>
         </tr>
         </thead>
-        <%--@elvariable id="last" type="java.util.List<org.nazymko.th.parser.autodao.tables.records.PageRecord>"--%>
+        <%--@elvariable id="last" type="java.util.List<org.nazymko.th.parser.autodao.tables.records.ThPageRecord>"--%>
         <c:forEach items="${last}" var="row">
             <tr>
                 <td>&nbsp;${row.id}</td>
                 <td>&nbsp;<a href="/task/attrs/${row.id}">${row.visitedAt}</a></td>
                 <td>&nbsp;${row.registeredAt}</td>
                 <td>&nbsp;${row.sourcepage}</td>
-                <td>&nbsp;<a href="/site/${row.siteId}/info">${row.siteUrl}</a></td>
+                <td>&nbsp;<a href="/site/${row.siteId}/info">${row.authority}</a></td>
             </tr>
         </c:forEach>
     </table>

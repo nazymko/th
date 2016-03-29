@@ -3,7 +3,6 @@ package org.nazymko.thehomeland.parser.db.dao;
 import lombok.extern.log4j.Log4j2;
 import org.jooq.Result;
 import org.nazymko.th.parser.autodao.tables.records.ThPageRecord;
-import org.nazymko.th.parser.autodao.tables.records.ThSiteRecord;
 import org.nazymko.thehomeland.parser.db.model.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -26,24 +25,21 @@ import static org.nazymko.th.parser.autodao.Tables.TH_PAGE;
  * Created by nazymko.patronus@gmail.com.
  */
 @Log4j2
-public class PageDao extends AbstractDao<Integer, Page> {
-    public static final String PAGE_BY_ID = "SELECT url,(SELECT url FROM th_site s WHERE s.id=p.site_id) AS site_url,id,type,registered_at,visited_at FROM th_page p WHERE p.id=:id";
-    public static final String NEWEST_PAGE_BY_URL = "SELECT url,(SELECT url FROM th_site s WHERE s.id=p.site_id) AS site_url,id,type,version,visited_at,registered_at FROM th_page p WHERE p.url=:url AND version = (SELECT MAX(version) FROM th_page WHERE url = :url)";
+public class PageDao extends AbstractDao<Integer, ThPageRecord> {
+    public static final String PAGE_BY_ID = "SELECT authority,(SELECT authority FROM th_site s WHERE s.id=p.site_id) AS site_url,id,type,registered_at,visited_at FROM th_page p WHERE p.id=:id";
+    public static final String NEWEST_PAGE_BY_URL = "SELECT authority,(SELECT authority FROM th_site s WHERE s.id=p.site_id) AS site_url,id,type,version,visited_at,registered_at FROM th_page p WHERE p.authority=:url AND version = (SELECT MAX(version) FROM th_page WHERE authority = :url)";
     @Resource
     TaskDao taskDao;
     @Qualifier("siteDao")
     @Autowired
     private SiteDao siteDao;
 
-
     /**
      * Get newest page by URL
      */
-
-
     private Page readPage(ResultSet rs) throws SQLException {
         Integer id = rs.getInt("id");
-        String url = rs.getString("url");
+        String url = rs.getString("authority");
         String siteUrl = rs.getString("site_url");
         String type = rs.getString("type");
         Timestamp visitedAt = rs.getTimestamp("visited_at");
@@ -53,33 +49,8 @@ public class PageDao extends AbstractDao<Integer, Page> {
     }
 
     @Override
-    public Integer save(Page obj) {
-        //TODO : rework
-        MapSqlParameterSource source = new MapSqlParameterSource();
-        int version = getVersion(obj.getPage());
-
-        source.addValue("site", obj.getSite());
-        source.addValue("url", obj.getPage());
-        source.addValue("type", obj.getType());
-        source.addValue("sourcePage", obj.getSourcePage());
-        source.addValue("version", version + 1);
-
-        int update = getJdbcTemplate().update("INSERT INTO th_page(site_id,url,type,version,registered_at,sourcePage) VALUES ((SELECT id FROM th_site s WHERE s.url = :site),:url,:type,:version,now(),:sourcePage)", source);
-
-        return getByUrl(obj.getPage()).get().getId();
-    }
-
-    @Override
-    public Optional<Page> getById(Integer key) {
-        return getJdbcTemplate().query(PAGE_BY_ID, new MapSqlParameterSource("id", key), new ResultSetExtractor<Optional<Page>>() {
-            @Override
-            public Optional<Page> extractData(ResultSet rs) throws SQLException, DataAccessException {
-                if (rs.next())
-                    return Optional.of(readPage(rs));
-                else
-                    return null;
-            }
-        });
+    public Optional<ThPageRecord> getById(Integer key) {
+        return Optional.ofNullable(getDslContext().selectFrom(TH_PAGE).where(TH_PAGE.SITE_ID.eq(key)).fetchOne());
     }
 
     public Optional<Page> getByUrl(String url) {
@@ -102,16 +73,13 @@ public class PageDao extends AbstractDao<Integer, Page> {
      * @return database Id
      */
     public Integer save(ThPageRecord record) {
-
-        getDslContext().attach(record);
-        record.store();
-
+        store(record);
         return record.getId();
     }
 
     private int getVersion(String page) {
 
-        return getJdbcTemplate().query("SELECT MAX(version) max  FROM th_page WHERE url=:url", new MapSqlParameterSource("url", page), new ResultSetExtractor<Integer>() {
+        return getJdbcTemplate().query("SELECT MAX(version) max  FROM th_page WHERE authority=:url", new MapSqlParameterSource("url", page), new ResultSetExtractor<Integer>() {
             @Override
             public Integer extractData(ResultSet resultSet) throws SQLException, DataAccessException {
                 resultSet.next();
@@ -137,7 +105,7 @@ public class PageDao extends AbstractDao<Integer, Page> {
     }
 
     public List<Page> getLatestVersion(Integer siteId) {
-        return getJdbcTemplate().query("SELECT  *,max(version), s.url AS site_url  FROM th_page p JOIN th_site s WHERE s.id=p.site_id AND p.site_id=:siteId AND p.visited_at IS NOT NULL GROUP BY p.url",
+        return getJdbcTemplate().query("SELECT  *,max(version), s.authority AS site_url  FROM th_page p JOIN th_site s WHERE s.id=p.site_id AND p.site_id=:siteId AND p.visited_at IS NOT NULL GROUP BY p.authority",
                 new MapSqlParameterSource("siteId", siteId),
                 new RowMapper<Page>() {
                     @Override
@@ -149,13 +117,10 @@ public class PageDao extends AbstractDao<Integer, Page> {
 
     public ThPageRecord getPageByUrlAndSession(String link, Integer sessionKey) {
         log.debug("session key: {} , link {}", sessionKey, link);
-        ThSiteRecord siteForSession = taskDao.getSiteBySession(sessionKey);
-        //TODO
-        // 22:36:26.237 [pool-2-thread-1] DEBUG org.nazymko.thehomeland.parser.db.dao.PageDao - session url: 183 , link http://tcb.vn.ua/travel/?show=1378
-        //org.jooq.exception.TooManyRowsException: Cursor returned more than one result
-
-        //Actually few pages have same link (link for detail description)
-        ThPageRecord pageRecord = getDslContext().selectFrom(TH_PAGE).where(TH_PAGE.URL.eq(link)).and(TH_PAGE.TASK_RUN_ID.eq(sessionKey)).fetchOne();
+        ThPageRecord pageRecord = getDslContext().selectFrom(TH_PAGE).where(TH_PAGE.PAGE_URL.eq(link))
+                .and(TH_PAGE.TASK_RUN_ID.eq(sessionKey))
+                .limit(1)
+                .fetchOne();
         return pageRecord;
     }
 

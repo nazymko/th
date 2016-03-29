@@ -44,7 +44,7 @@ public class RuleResolver implements ProcessorRegister {
             HashMap<String, PageItem> stringPageItemHashMap = catalogue.get(simplifier.simplify(jsonRule.getUrl()));
             if (stringPageItemHashMap == null) {
                 stringPageItemHashMap = new HashMap<>();
-                catalogue.put(simplifier.simplify(jsonRule.getUrl()), stringPageItemHashMap);
+                catalogue.put(simplifier.authority(jsonRule.getUrl()), stringPageItemHashMap);
             }
 
             List<PageItem> page = jsonRule.getPage();
@@ -58,7 +58,9 @@ public class RuleResolver implements ProcessorRegister {
     @Override
     public Optional<PageItem> resolveByTypeForSite(String site, String type) {
         log.debug("site = {}, type = {}", site, type);
-
+        if (!catalogue.containsKey(site)) {
+            log.warn("Not found {} in {}", site, catalogue);
+        }
         return Optional.ofNullable(catalogue.get(site).get(type));
     }
 

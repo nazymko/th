@@ -30,17 +30,16 @@ public class SubmitController {
     @RequestMapping(value = "submit/{site}", method = RequestMethod.GET)
     public String submitTask(Model model, @PathVariable("site") Integer id) {
 
-//        throw new NotImplementedException();
         ThSiteRecord site = siteDao.getById(id).get();
 
         TaskRunRecord tTaskRecord = parser.getTaskFac().nextRecord(id);
 
-        parser.schedule(site.getUrl(), "front_page", -1, tTaskRecord.getId());
+        parser.schedule(site.getAuthority(), "front_page", -1, tTaskRecord.getId());
 
         model.addAttribute("site", site);
 
 
-        log.debug("SCHEDULED: {}:{}", site.getName(), site.getUrl());
+        log.debug("SCHEDULED: {}:{}", site.getName(), site.getAuthority());
 
         return "/submit/info";
     }

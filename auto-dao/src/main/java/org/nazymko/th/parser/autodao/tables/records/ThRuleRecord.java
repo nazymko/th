@@ -6,8 +6,8 @@ package org.nazymko.th.parser.autodao.tables.records;
 
 import org.jooq.Field;
 import org.jooq.Record1;
-import org.jooq.Record6;
-import org.jooq.Row6;
+import org.jooq.Record5;
+import org.jooq.Row5;
 import org.jooq.impl.UpdatableRecordImpl;
 import org.nazymko.th.parser.autodao.tables.ThRule;
 import utils.support.rule.RuleStatus;
@@ -18,7 +18,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 
 /**
@@ -34,9 +33,9 @@ import javax.validation.constraints.Size;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 @Entity
 @Table(name = "th_rule", schema = "thehomeland")
-public class ThRuleRecord extends UpdatableRecordImpl<ThRuleRecord> implements Record6<Integer, String, String, Integer, RuleStatus, String> {
+public class ThRuleRecord extends UpdatableRecordImpl<ThRuleRecord> implements Record5<Integer, String, Integer, RuleStatus, String> {
 
-	private static final long serialVersionUID = 661460538;
+	private static final long serialVersionUID = 173087809;
 
 	/**
 	 * Create a detached ThRuleRecord
@@ -48,15 +47,14 @@ public class ThRuleRecord extends UpdatableRecordImpl<ThRuleRecord> implements R
 	/**
 	 * Create a detached, initialised ThRuleRecord
 	 */
-	public ThRuleRecord(Integer id, String site, String rule, Integer version, RuleStatus status, String authority) {
+	public ThRuleRecord(Integer id, String rule, Integer version, RuleStatus status, String authority) {
 		super(ThRule.TH_RULE);
 
 		setValue(0, id);
-		setValue(1, site);
-		setValue(2, rule);
-		setValue(3, version);
-		setValue(4, status);
-		setValue(5, authority);
+		setValue(1, rule);
+		setValue(2, version);
+		setValue(3, status);
+		setValue(4, authority);
 	}
 
 	/**
@@ -77,36 +75,19 @@ public class ThRuleRecord extends UpdatableRecordImpl<ThRuleRecord> implements R
 	}
 
 	/**
-	 * Getter for <code>thehomeland.th_rule.site</code>.
-	 */
-	@Column(name = "site", nullable = false, length = 256)
-	@NotNull
-	@Size(max = 256)
-	public String getSite() {
-		return (String) getValue(1);
-	}
-
-	/**
-	 * Setter for <code>thehomeland.th_rule.site</code>.
-	 */
-	public void setSite(String value) {
-		setValue(1, value);
-	}
-
-	/**
 	 * Getter for <code>thehomeland.th_rule.rule</code>.
 	 */
 	@Column(name = "rule", nullable = false)
 	@NotNull
 	public String getRule() {
-		return (String) getValue(2);
+		return (String) getValue(1);
 	}
 
 	/**
 	 * Setter for <code>thehomeland.th_rule.rule</code>.
 	 */
 	public void setRule(String value) {
-		setValue(2, value);
+		setValue(1, value);
 	}
 
 	/**
@@ -115,14 +96,14 @@ public class ThRuleRecord extends UpdatableRecordImpl<ThRuleRecord> implements R
 	@Column(name = "version", nullable = false, precision = 10)
 	@NotNull
 	public Integer getVersion() {
-		return (Integer) getValue(3);
+		return (Integer) getValue(2);
 	}
 
 	/**
 	 * Setter for <code>thehomeland.th_rule.version</code>.
 	 */
 	public void setVersion(Integer value) {
-		setValue(3, value);
+		setValue(2, value);
 	}
 
 	/**
@@ -130,14 +111,14 @@ public class ThRuleRecord extends UpdatableRecordImpl<ThRuleRecord> implements R
 	 */
 	@Column(name = "status", precision = 10)
 	public RuleStatus getStatus() {
-		return (RuleStatus) getValue(4);
+		return (RuleStatus) getValue(3);
 	}
 
 	/**
 	 * Setter for <code>thehomeland.th_rule.status</code>.
 	 */
 	public void setStatus(RuleStatus value) {
-		setValue(4, value);
+		setValue(3, value);
 	}
 
 	// -------------------------------------------------------------------------
@@ -150,18 +131,18 @@ public class ThRuleRecord extends UpdatableRecordImpl<ThRuleRecord> implements R
 	@Column(name = "authority", nullable = false)
 	@NotNull
 	public String getAuthority() {
-		return (String) getValue(5);
+		return (String) getValue(4);
 	}
 
 	// -------------------------------------------------------------------------
-	// Record6 type implementation
+	// Record5 type implementation
 	// -------------------------------------------------------------------------
 
 	/**
 	 * Setter for <code>thehomeland.th_rule.authority</code>.
 	 */
 	public void setAuthority(String value) {
-		setValue(5, value);
+		setValue(4, value);
 	}
 
 	/**
@@ -176,16 +157,16 @@ public class ThRuleRecord extends UpdatableRecordImpl<ThRuleRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Row6<Integer, String, String, Integer, RuleStatus, String> fieldsRow() {
-		return (Row6) super.fieldsRow();
+	public Row5<Integer, String, Integer, RuleStatus, String> fieldsRow() {
+		return (Row5) super.fieldsRow();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Row6<Integer, String, String, Integer, RuleStatus, String> valuesRow() {
-		return (Row6) super.valuesRow();
+	public Row5<Integer, String, Integer, RuleStatus, String> valuesRow() {
+		return (Row5) super.valuesRow();
 	}
 
 	/**
@@ -201,14 +182,6 @@ public class ThRuleRecord extends UpdatableRecordImpl<ThRuleRecord> implements R
 	 */
 	@Override
 	public Field<String> field2() {
-		return ThRule.TH_RULE.SITE;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Field<String> field3() {
 		return ThRule.TH_RULE.RULE;
 	}
 
@@ -216,7 +189,7 @@ public class ThRuleRecord extends UpdatableRecordImpl<ThRuleRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Field<Integer> field4() {
+	public Field<Integer> field3() {
 		return ThRule.TH_RULE.VERSION;
 	}
 
@@ -224,7 +197,7 @@ public class ThRuleRecord extends UpdatableRecordImpl<ThRuleRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Field<RuleStatus> field5() {
+	public Field<RuleStatus> field4() {
 		return ThRule.TH_RULE.STATUS;
 	}
 
@@ -232,7 +205,7 @@ public class ThRuleRecord extends UpdatableRecordImpl<ThRuleRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Field<String> field6() {
+	public Field<String> field5() {
 		return ThRule.TH_RULE.AUTHORITY;
 	}
 
@@ -249,14 +222,6 @@ public class ThRuleRecord extends UpdatableRecordImpl<ThRuleRecord> implements R
 	 */
 	@Override
 	public String value2() {
-		return getSite();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String value3() {
 		return getRule();
 	}
 
@@ -264,7 +229,7 @@ public class ThRuleRecord extends UpdatableRecordImpl<ThRuleRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Integer value4() {
+	public Integer value3() {
 		return getVersion();
 	}
 
@@ -272,7 +237,7 @@ public class ThRuleRecord extends UpdatableRecordImpl<ThRuleRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public RuleStatus value5() {
+	public RuleStatus value4() {
 		return getStatus();
 	}
 
@@ -280,7 +245,7 @@ public class ThRuleRecord extends UpdatableRecordImpl<ThRuleRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String value6() {
+	public String value5() {
 		return getAuthority();
 	}
 
@@ -298,15 +263,6 @@ public class ThRuleRecord extends UpdatableRecordImpl<ThRuleRecord> implements R
 	 */
 	@Override
 	public ThRuleRecord value2(String value) {
-		setSite(value);
-		return this;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public ThRuleRecord value3(String value) {
 		setRule(value);
 		return this;
 	}
@@ -315,7 +271,7 @@ public class ThRuleRecord extends UpdatableRecordImpl<ThRuleRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ThRuleRecord value4(Integer value) {
+	public ThRuleRecord value3(Integer value) {
 		setVersion(value);
 		return this;
 	}
@@ -324,7 +280,7 @@ public class ThRuleRecord extends UpdatableRecordImpl<ThRuleRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ThRuleRecord value5(RuleStatus value) {
+	public ThRuleRecord value4(RuleStatus value) {
 		setStatus(value);
 		return this;
 	}
@@ -337,7 +293,7 @@ public class ThRuleRecord extends UpdatableRecordImpl<ThRuleRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ThRuleRecord value6(String value) {
+	public ThRuleRecord value5(String value) {
 		setAuthority(value);
 		return this;
 	}
@@ -346,13 +302,12 @@ public class ThRuleRecord extends UpdatableRecordImpl<ThRuleRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ThRuleRecord values(Integer value1, String value2, String value3, Integer value4, RuleStatus value5, String value6) {
+	public ThRuleRecord values(Integer value1, String value2, Integer value3, RuleStatus value4, String value5) {
 		value1(value1);
 		value2(value2);
 		value3(value3);
 		value4(value4);
 		value5(value5);
-		value6(value6);
 		return this;
 	}
 }

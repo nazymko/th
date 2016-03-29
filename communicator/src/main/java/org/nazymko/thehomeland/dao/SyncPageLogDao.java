@@ -21,8 +21,7 @@ public class SyncPageLogDao extends AbstractDao<Integer, ConnectorSyncPageLogRec
     }
 
     public Integer save(ConnectorSyncPageLogRecord obj) {
-        getDslContext().attach(obj);
-        obj.store();
+        store(obj);
         return obj.getId();
     }
 

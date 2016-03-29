@@ -21,7 +21,6 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import javax.annotation.Resource;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -60,19 +59,18 @@ public class RuleDao extends AbstractDao<String, ParsingRule> {
     @Override
     public String save(ParsingRule rule) {
         try {
-            String siteUrl = simplifier.simplify(rule.getUrl());
-            saveNewSiteOrIgnore(rule, siteUrl);
+            String authority = simplifier.authority(rule.getUrl());
+            saveNewSiteOrIgnore(rule, authority);
 
             ThRuleRecord ruleRecord = new ThRuleRecord();
 
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             String serialized = gson.toJson(rule);
-            Integer version = ruleMaxVersion(rule.getUrl());
-            ruleRecord.setSite(siteUrl);
+            Integer version = ruleMaxVersion(authority);
             ruleRecord.setRule(serialized);
             ruleRecord.setVersion(version + 1);
             ruleRecord.setStatus(ACTIVE);
-            ruleRecord.setAuthority(simplifier.authority(siteUrl));
+            ruleRecord.setAuthority(authority);
 
             store(ruleRecord);
 
@@ -100,43 +98,20 @@ public class RuleDao extends AbstractDao<String, ParsingRule> {
         return result;
     }
 
-    private void saveNewSiteOrIgnore(JsonRule rule, String siteUrl) throws MalformedURLException, URISyntaxException {
+    private void saveNewSiteOrIgnore(JsonRule rule, String authority) throws MalformedURLException, URISyntaxException {
 
-        Integer idByUrl = siteDao.getIdByUrl(siteUrl);
+        Integer idByUrl = siteDao.getIdByUrl(authority);
         if (idByUrl < 0) {
-            makeHttpVersion(rule, siteUrl);
-            makeHttpsVersion(rule, siteUrl);
-        }
-    }
-
-    private void makeHttpVersion(JsonRule rule, String siteUrl) {
-        try {
             ThSiteRecord site = new ThSiteRecord();
-            URL url = new URL(siteUrl);
-            site.setUrl("http://" + url.getAuthority());
+            site.setAuthority(authority);
             site.setName(rule.getName());
             siteDao.save(site);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         }
     }
 
-    private void makeHttpsVersion(JsonRule rule, String siteUrl) {
-        ThSiteRecord site = new ThSiteRecord();
-        try {
-            URL url = null;
-            url = new URL(siteUrl);
-
-            site.setUrl("https://" + url.getAuthority());
-            site.setName(rule.getName());
-            siteDao.save(site);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-    }
 
     private Integer ruleMaxVersion(String url) {
-        Record1<Integer> currentMaxVersion = getDslContext().select(DSL.max(TH_RULE.VERSION)).from(TH_RULE).where(TH_RULE.SITE.eq(url)).fetchOne();
+        Record1<Integer> currentMaxVersion = getDslContext().select(DSL.max(TH_RULE.VERSION)).from(TH_RULE).where(TH_RULE.AUTHORITY.eq(url)).fetchOne();
         Object value = currentMaxVersion.getValue(0);
         return value == null ? 0 : (Integer) value;
     }
@@ -158,18 +133,23 @@ public class RuleDao extends AbstractDao<String, ParsingRule> {
     }
 
     public List<ThRuleRecord> getLatest() {
-        Result<ThRuleRecord> fetch = getDslContext().selectFrom(TH_RULE).where(TH_RULE.STATUS.isNotNull()).orderBy(TH_RULE.SITE.asc(), TH_RULE.VERSION.desc()).fetch();
+        Result<ThRuleRecord> fetch = getDslContext()
+                .selectFrom(TH_RULE)
+                .where(TH_RULE.STATUS.isNotNull())
+                .orderBy(TH_RULE.VERSION.desc())
+                .fetch();
+
         ArrayList<ThRuleRecord> ruleRecords = new ArrayList<>();
         HashMap<String, ThRuleRecord> latest = new HashMap<>();
         //hardcode to obtain latest rules (with max version)
         for (ThRuleRecord ruleRecord : fetch) {
-            if (latest.containsKey(ruleRecord.getSite())) {
-                ThRuleRecord latestPretentent = latest.get(ruleRecord.getSite());
+            if (latest.containsKey(ruleRecord.getAuthority())) {
+                ThRuleRecord latestPretentent = latest.get(ruleRecord.getAuthority());
                 if (latestPretentent.getVersion() < ruleRecord.getVersion()) {
-                    latest.put(ruleRecord.getSite(), ruleRecord);
+                    latest.put(ruleRecord.getAuthority(), ruleRecord);
                 }
             } else {
-                latest.put(ruleRecord.getSite(), ruleRecord);
+                latest.put(ruleRecord.getAuthority(), ruleRecord);
             }
         }
         ruleRecords.addAll(latest.values());

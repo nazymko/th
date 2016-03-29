@@ -32,10 +32,6 @@ public abstract class AbstractDao<K, T> implements Dao<K, T> {
         return DSL.using(getSource(), SQLDialect.MYSQL);
     }
 
-//    private DSLContext from() {
-//        getDslContext().selectFrom()
-//    }
-
     protected Timestamp currentTimeStamp() {
         return new Timestamp(System.currentTimeMillis());
     }

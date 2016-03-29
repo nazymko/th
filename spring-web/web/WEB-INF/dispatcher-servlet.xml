@@ -65,7 +65,7 @@
                             <bean class="org.springframework.web.accept.PathExtensionContentNegotiationStrategy">
                                 <constructor-arg>
                                     <map>
-                                        <entry url="json" value="application/json"/>
+                                        <entry authority="json" value="application/json"/>
                                     </map>
                                 </constructor-arg>
                             </bean>

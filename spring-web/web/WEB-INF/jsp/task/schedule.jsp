@@ -18,12 +18,12 @@
         <th>submit</th>
     </tr>
     </thead>
-    <%--@elvariable id="sites" type="java.util.List<org.nazymko.thehomeland.parser.db.model.Site>"--%>
+    <%--@elvariable id="sites" type="java.util.List<org.nazymko.th.parser.autodao.tables.records.ThSiteRecord>"--%>
     <c:forEach items="${sites}" var="site">
         <tr>
             <td>${site.id}</td>
             <td>${site.name}</td>
-            <td>${site.url}</td>
+            <td>${site.authority}</td>
             <td>
                 <div class="cron-selector cron-sel-${site.id}"></div>
             </td>
@@ -40,8 +40,6 @@
         </tr>
     </c:forEach>
 </table>
-
-
 
 
 <script type="text/javascript">

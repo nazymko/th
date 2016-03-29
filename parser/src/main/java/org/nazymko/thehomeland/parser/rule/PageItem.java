@@ -14,7 +14,7 @@ public class PageItem {
     @JsonProperty("parent")
     private String parent;
     @JsonProperty("unique_visit")
-    private Boolean uniqueVisit;
+    private Boolean uniqueVisit = false;
     @JsonProperty("type")
     private String type;
     @JsonProperty("attrs")

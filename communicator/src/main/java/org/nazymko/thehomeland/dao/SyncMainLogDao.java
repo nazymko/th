@@ -21,8 +21,7 @@ public class SyncMainLogDao extends AbstractDao<Integer, ConnectorSyncMainLogRec
     }
 
     public Integer save(ConnectorSyncMainLogRecord obj) {
-        getDslContext().attach(obj);
-        obj.store();
+        store(obj);
         return obj.getId();
     }
 

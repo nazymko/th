@@ -33,15 +33,15 @@ public class ThPage extends TableImpl<ThPageRecord> {
 	 * The reference instance of <code>thehomeland.th_page</code>
 	 */
 	public static final ThPage TH_PAGE = new ThPage();
-	private static final long serialVersionUID = 833295593;
+	private static final long serialVersionUID = 1654831307;
 	/**
 	 * The column <code>thehomeland.th_page.id</code>.
 	 */
 	public final TableField<ThPageRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 	/**
-	 * The column <code>thehomeland.th_page.url</code>.
+	 * The column <code>thehomeland.th_page.authority</code>.
 	 */
-	public final TableField<ThPageRecord, String> URL = createField("url", org.jooq.impl.SQLDataType.VARCHAR.length(512), this, "");
+	public final TableField<ThPageRecord, String> AUTHORITY = createField("authority", org.jooq.impl.SQLDataType.VARCHAR.length(512), this, "");
 	/**
 	 * The column <code>thehomeland.th_page.site_id</code>.
 	 */
@@ -71,9 +71,9 @@ public class ThPage extends TableImpl<ThPageRecord> {
 	 */
 	public final TableField<ThPageRecord, Integer> TASK_RUN_ID = createField("task_run_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaulted(true), this, "");
 	/**
-	 * The column <code>thehomeland.th_page.site_url</code>.
+	 * The column <code>thehomeland.th_page.page_url</code>.
 	 */
-	public final TableField<ThPageRecord, String> SITE_URL = createField("site_url", org.jooq.impl.SQLDataType.CLOB, this, "");
+	public final TableField<ThPageRecord, String> PAGE_URL = createField("page_url", org.jooq.impl.SQLDataType.VARCHAR.length(1024).nullable(false), this, "");
 
 	/**
 	 * Create a <code>thehomeland.th_page</code> table reference

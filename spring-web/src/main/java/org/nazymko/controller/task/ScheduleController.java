@@ -2,10 +2,10 @@ package org.nazymko.controller.task;
 
 import lombok.extern.log4j.Log4j2;
 import org.nazymko.th.parser.autodao.tables.records.TaskScheduleRecord;
+import org.nazymko.th.parser.autodao.tables.records.ThSiteRecord;
 import org.nazymko.thehomeland.parser.db.dao.ScheduleDao;
 import org.nazymko.thehomeland.parser.db.dao.SiteDao;
 import org.nazymko.thehomeland.parser.db.dao.TaskDao;
-import org.nazymko.thehomeland.parser.db.model.Site;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.scheduling.support.SimpleTriggerContext;
 import org.springframework.stereotype.Controller;
@@ -37,7 +37,7 @@ public class ScheduleController {
 
     @RequestMapping("schedule")
     String schedule(Model model) {
-        List<Site> all = siteDao.getAll();
+        List<ThSiteRecord> all = siteDao.getAll();
 
         model.addAttribute("sites", all);
 
@@ -63,7 +63,7 @@ public class ScheduleController {
         record.setIsEnabled(true);
         record.setPageType("front_page");
         record.setSiteid(siteId);
-        record.setStartPage(siteDao.getById(siteId).get().getUrl());
+        record.setStartPage(siteDao.getById(siteId).get().getAuthority());
         record.setStartAt(new Timestamp(System.currentTimeMillis()));
 
         scheduleDao.save(record);

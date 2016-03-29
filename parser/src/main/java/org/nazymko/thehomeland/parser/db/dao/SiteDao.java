@@ -1,11 +1,7 @@
 package org.nazymko.thehomeland.parser.db.dao;
 
-import org.jooq.DSLContext;
-import org.jooq.Result;
 import org.nazymko.th.parser.autodao.tables.records.ThSiteRecord;
-import org.nazymko.thehomeland.parser.db.model.Site;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,10 +14,7 @@ public class SiteDao extends AbstractDao<Integer, ThSiteRecord> {
 
     @Override
     public Integer save(ThSiteRecord site) {
-
-        getDslContext().attach(site);
-        site.store();
-
+        store(site);
         return site.getId();
     }
 
@@ -31,20 +24,17 @@ public class SiteDao extends AbstractDao<Integer, ThSiteRecord> {
         return Optional.of(siteRecord);
     }
 
-    public Integer getIdByUrl(String url) {
-        ThSiteRecord siteRecord = getDslContext().selectFrom(TH_SITE).where(TH_SITE.URL.eq(url)).fetchOne();
+    public Integer getIdByUrl(String authority) {
+        ThSiteRecord siteRecord = getDslContext().selectFrom(TH_SITE).where(TH_SITE.AUTHORITY.eq(authority)).fetchOne();
         if (siteRecord != null) {
             return siteRecord.getId();
         }
         return -1;
     }
 
-    public Optional<ThSiteRecord> getByUrl(String url) {
-        ThSiteRecord siteRecord = getDslContext().selectFrom(TH_SITE).where(TH_SITE.URL.eq(url)).fetchOne();
-        if (siteRecord != null) {
-            return Optional.of(siteRecord);
-        }
-        return Optional.empty();
+    public Optional<ThSiteRecord> getByUrl(String authority) {
+        ThSiteRecord siteRecord = getDslContext().selectFrom(TH_SITE).where(TH_SITE.AUTHORITY.eq(authority)).fetchOne();
+        return Optional.ofNullable(siteRecord);
     }
 
     public List<ThSiteRecord> getList(int pageSize, int page) {
@@ -52,25 +42,8 @@ public class SiteDao extends AbstractDao<Integer, ThSiteRecord> {
     }
 
 
-    public List<Site> getAll() {
-
-        DSLContext create = getDslContext();
-        Result<ThSiteRecord> fetch = create.selectFrom(TH_SITE).fetch();
-        return transform(fetch);
+    public List<ThSiteRecord> getAll() {
+        return getDslContext().selectFrom(TH_SITE).fetch();
     }
 
-
-    private List<Site> transform(Result<ThSiteRecord> fetch) {
-
-        ArrayList<Site> list = new ArrayList();
-
-        for (ThSiteRecord siteRecord : fetch) {
-
-            Site transformed = new Site(siteRecord.getValue(TH_SITE.URL), siteRecord.getValue(TH_SITE.NAME));
-            transformed.setId(siteRecord.getValue(TH_SITE.ID));
-            list.add(transformed);
-
-        }
-        return list;
-    }
 }

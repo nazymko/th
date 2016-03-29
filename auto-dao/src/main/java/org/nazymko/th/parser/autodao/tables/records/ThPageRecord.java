@@ -36,7 +36,7 @@ import java.sql.Timestamp;
 @Table(name = "th_page", schema = "thehomeland")
 public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements Record10<Integer, String, Integer, Timestamp, String, Integer, Timestamp, Integer, Integer, String> {
 
-	private static final long serialVersionUID = 1269639432;
+	private static final long serialVersionUID = -1786806523;
 
 	/**
 	 * Create a detached ThPageRecord
@@ -48,11 +48,11 @@ public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements R
 	/**
 	 * Create a detached, initialised ThPageRecord
 	 */
-	public ThPageRecord(Integer id, String url, Integer siteId, Timestamp visitedAt, String type, Integer version, Timestamp registeredAt, Integer sourcepage, Integer taskRunId, String siteUrl) {
+	public ThPageRecord(Integer id, String authority, Integer siteId, Timestamp visitedAt, String type, Integer version, Timestamp registeredAt, Integer sourcepage, Integer taskRunId, String pageUrl) {
 		super(ThPage.TH_PAGE);
 
 		setValue(0, id);
-		setValue(1, url);
+		setValue(1, authority);
 		setValue(2, siteId);
 		setValue(3, visitedAt);
 		setValue(4, type);
@@ -60,7 +60,7 @@ public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements R
 		setValue(6, registeredAt);
 		setValue(7, sourcepage);
 		setValue(8, taskRunId);
-		setValue(9, siteUrl);
+		setValue(9, pageUrl);
 	}
 
 	/**
@@ -81,18 +81,18 @@ public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements R
 	}
 
 	/**
-	 * Getter for <code>thehomeland.th_page.url</code>.
+	 * Getter for <code>thehomeland.th_page.authority</code>.
 	 */
-	@Column(name = "url", length = 512)
+	@Column(name = "authority", length = 512)
 	@Size(max = 512)
-	public String getUrl() {
+	public String getAuthority() {
 		return (String) getValue(1);
 	}
 
 	/**
-	 * Setter for <code>thehomeland.th_page.url</code>.
+	 * Setter for <code>thehomeland.th_page.authority</code>.
 	 */
-	public void setUrl(String value) {
+	public void setAuthority(String value) {
 		setValue(1, value);
 	}
 
@@ -210,10 +210,12 @@ public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements R
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Getter for <code>thehomeland.th_page.site_url</code>.
+	 * Getter for <code>thehomeland.th_page.page_url</code>.
 	 */
-	@Column(name = "site_url")
-	public String getSiteUrl() {
+	@Column(name = "page_url", nullable = false, length = 1024)
+	@NotNull
+	@Size(max = 1024)
+	public String getPageUrl() {
 		return (String) getValue(9);
 	}
 
@@ -222,9 +224,9 @@ public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements R
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Setter for <code>thehomeland.th_page.site_url</code>.
+	 * Setter for <code>thehomeland.th_page.page_url</code>.
 	 */
-	public void setSiteUrl(String value) {
+	public void setPageUrl(String value) {
 		setValue(9, value);
 	}
 
@@ -265,7 +267,7 @@ public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements R
 	 */
 	@Override
 	public Field<String> field2() {
-		return ThPage.TH_PAGE.URL;
+		return ThPage.TH_PAGE.AUTHORITY;
 	}
 
 	/**
@@ -329,7 +331,7 @@ public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements R
 	 */
 	@Override
 	public Field<String> field10() {
-		return ThPage.TH_PAGE.SITE_URL;
+		return ThPage.TH_PAGE.PAGE_URL;
 	}
 
 	/**
@@ -345,7 +347,7 @@ public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements R
 	 */
 	@Override
 	public String value2() {
-		return getUrl();
+		return getAuthority();
 	}
 
 	/**
@@ -409,7 +411,7 @@ public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements R
 	 */
 	@Override
 	public String value10() {
-		return getSiteUrl();
+		return getPageUrl();
 	}
 
 	/**
@@ -426,7 +428,7 @@ public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements R
 	 */
 	@Override
 	public ThPageRecord value2(String value) {
-		setUrl(value);
+		setAuthority(value);
 		return this;
 	}
 
@@ -502,7 +504,7 @@ public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements R
 	 */
 	@Override
 	public ThPageRecord value10(String value) {
-		setSiteUrl(value);
+		setPageUrl(value);
 		return this;
 	}
 

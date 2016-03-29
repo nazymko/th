@@ -30,10 +30,7 @@ public class TaskDao extends AbstractDao<Integer, TaskRunRecord> {
 
     @Override
     public Integer save(TaskRunRecord obj) {
-        getDslContext().attach(obj);
-        if (obj.store() == 0) {
-            log.error("Object didn't was saved {}", obj);
-        }
+        store(obj);
         return obj.getId();
     }
 
