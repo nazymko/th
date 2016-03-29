@@ -64,10 +64,10 @@ public class TaskScheduleDao extends DAOImpl<TaskScheduleRecord, org.nazymko.th.
 	}
 
 	/**
-	 * Fetch records that have <code>siteId IN (values)</code>
+	 * Fetch records that have <code>site_id IN (values)</code>
 	 */
-	public List<org.nazymko.th.parser.autodao.tables.pojos.TaskSchedule> fetchBySiteid(Integer... values) {
-		return fetch(TaskSchedule.TASK_SCHEDULE.SITEID, values);
+	public List<org.nazymko.th.parser.autodao.tables.pojos.TaskSchedule> fetchBySiteId(Integer... values) {
+		return fetch(TaskSchedule.TASK_SCHEDULE.SITE_ID, values);
 	}
 
 	/**

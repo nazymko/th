@@ -1,0 +1,17 @@
+{
+  "title": "article-title",
+  "description": "description...",
+  "type": "trip type text",
+  "price": "price",
+  "targetCity": "Вінниця",
+  "departureCity": "Киев",
+  "dateStart": "2001-04-10 17:16:18",
+  "dateEnd": "2016-05-10 17:16:18",
+  "departureAddress": "departureAddress...",
+  "ticketsTotal": "10",
+  "image": "https://snap-photos.s3.amazona",
+  "firstName": "firstName...",
+  "lastName": "lastName",
+  "phones": "0987777777",
+  "url": "http://...."
+}

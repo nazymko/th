@@ -20,7 +20,7 @@ public class ScheduleDao extends AbstractDao<Integer, TaskScheduleRecord> {
 
 
     public Optional<List<TaskScheduleRecord>> getAllForSite(Integer id) {
-        List<TaskScheduleRecord> fetch = getDslContext().selectFrom(TASK_SCHEDULE).where(TASK_SCHEDULE.SITEID.eq(id)).fetch();
+        List<TaskScheduleRecord> fetch = getDslContext().selectFrom(TASK_SCHEDULE).where(TASK_SCHEDULE.SITE_ID.eq(id)).fetch();
         return Optional.ofNullable(fetch);
     }
 
@@ -37,7 +37,7 @@ public class ScheduleDao extends AbstractDao<Integer, TaskScheduleRecord> {
     }
 
     public List<TaskScheduleRecord> getSchedules(Integer siteId) {
-        return getDslContext().selectFrom(TASK_SCHEDULE).where(TASK_SCHEDULE.SITEID.eq(siteId)).fetch();
+        return getDslContext().selectFrom(TASK_SCHEDULE).where(TASK_SCHEDULE.SITE_ID.eq(siteId)).fetch();
 
     }
 

@@ -17,7 +17,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 
 
@@ -34,9 +33,9 @@ import java.sql.Timestamp;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 @Entity
 @Table(name = "connector_sync_main_log", schema = "thehomeland")
-public class ConnectorSyncMainLogRecord extends UpdatableRecordImpl<ConnectorSyncMainLogRecord> implements Record6<Integer, String, Timestamp, Integer, Integer, Long> {
+public class ConnectorSyncMainLogRecord extends UpdatableRecordImpl<ConnectorSyncMainLogRecord> implements Record6<Integer, Integer, Timestamp, Integer, Integer, Long> {
 
-	private static final long serialVersionUID = -842775036;
+	private static final long serialVersionUID = 58444422;
 
 	/**
 	 * Create a detached ConnectorSyncMainLogRecord
@@ -48,11 +47,11 @@ public class ConnectorSyncMainLogRecord extends UpdatableRecordImpl<ConnectorSyn
 	/**
 	 * Create a detached, initialised ConnectorSyncMainLogRecord
 	 */
-	public ConnectorSyncMainLogRecord(Integer id, String consumer, Timestamp syncDate, Integer countNew, Integer countTotal, Long latestPageId) {
+	public ConnectorSyncMainLogRecord(Integer id, Integer consumerId, Timestamp syncDate, Integer countNew, Integer countTotal, Long latestPageId) {
 		super(ConnectorSyncMainLog.CONNECTOR_SYNC_MAIN_LOG);
 
 		setValue(0, id);
-		setValue(1, consumer);
+		setValue(1, consumerId);
 		setValue(2, syncDate);
 		setValue(3, countNew);
 		setValue(4, countTotal);
@@ -77,19 +76,17 @@ public class ConnectorSyncMainLogRecord extends UpdatableRecordImpl<ConnectorSyn
 	}
 
 	/**
-	 * Getter for <code>thehomeland.connector_sync_main_log.consumer</code>.
+	 * Getter for <code>thehomeland.connector_sync_main_log.consumer_id</code>.
 	 */
-	@Column(name = "consumer", nullable = false, length = 1024)
-	@NotNull
-	@Size(max = 1024)
-	public String getConsumer() {
-		return (String) getValue(1);
+	@Column(name = "consumer_id", precision = 10)
+	public Integer getConsumerId() {
+		return (Integer) getValue(1);
 	}
 
 	/**
-	 * Setter for <code>thehomeland.connector_sync_main_log.consumer</code>.
+	 * Setter for <code>thehomeland.connector_sync_main_log.consumer_id</code>.
 	 */
-	public void setConsumer(String value) {
+	public void setConsumerId(Integer value) {
 		setValue(1, value);
 	}
 
@@ -176,7 +173,7 @@ public class ConnectorSyncMainLogRecord extends UpdatableRecordImpl<ConnectorSyn
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Row6<Integer, String, Timestamp, Integer, Integer, Long> fieldsRow() {
+	public Row6<Integer, Integer, Timestamp, Integer, Integer, Long> fieldsRow() {
 		return (Row6) super.fieldsRow();
 	}
 
@@ -184,7 +181,7 @@ public class ConnectorSyncMainLogRecord extends UpdatableRecordImpl<ConnectorSyn
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Row6<Integer, String, Timestamp, Integer, Integer, Long> valuesRow() {
+	public Row6<Integer, Integer, Timestamp, Integer, Integer, Long> valuesRow() {
 		return (Row6) super.valuesRow();
 	}
 
@@ -200,8 +197,8 @@ public class ConnectorSyncMainLogRecord extends UpdatableRecordImpl<ConnectorSyn
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Field<String> field2() {
-		return ConnectorSyncMainLog.CONNECTOR_SYNC_MAIN_LOG.CONSUMER;
+	public Field<Integer> field2() {
+		return ConnectorSyncMainLog.CONNECTOR_SYNC_MAIN_LOG.CONSUMER_ID;
 	}
 
 	/**
@@ -248,8 +245,8 @@ public class ConnectorSyncMainLogRecord extends UpdatableRecordImpl<ConnectorSyn
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String value2() {
-		return getConsumer();
+	public Integer value2() {
+		return getConsumerId();
 	}
 
 	/**
@@ -297,8 +294,8 @@ public class ConnectorSyncMainLogRecord extends UpdatableRecordImpl<ConnectorSyn
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ConnectorSyncMainLogRecord value2(String value) {
-		setConsumer(value);
+	public ConnectorSyncMainLogRecord value2(Integer value) {
+		setConsumerId(value);
 		return this;
 	}
 
@@ -346,7 +343,7 @@ public class ConnectorSyncMainLogRecord extends UpdatableRecordImpl<ConnectorSyn
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ConnectorSyncMainLogRecord values(Integer value1, String value2, Timestamp value3, Integer value4, Integer value5, Long value6) {
+	public ConnectorSyncMainLogRecord values(Integer value1, Integer value2, Timestamp value3, Integer value4, Integer value5, Long value6) {
 		value1(value1);
 		value2(value2);
 		value3(value3);

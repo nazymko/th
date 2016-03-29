@@ -33,15 +33,15 @@ public class TaskSchedule extends TableImpl<TaskScheduleRecord> {
 	 * The reference instance of <code>thehomeland.task_schedule</code>
 	 */
 	public static final TaskSchedule TASK_SCHEDULE = new TaskSchedule();
-	private static final long serialVersionUID = 2014631991;
+	private static final long serialVersionUID = -1598590663;
 	/**
 	 * The column <code>thehomeland.task_schedule.id</code>.
 	 */
 	public final TableField<TaskScheduleRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 	/**
-	 * The column <code>thehomeland.task_schedule.siteId</code>.
+	 * The column <code>thehomeland.task_schedule.site_id</code>.
 	 */
-	public final TableField<TaskScheduleRecord, Integer> SITEID = createField("siteId", org.jooq.impl.SQLDataType.INTEGER, this, "");
+	public final TableField<TaskScheduleRecord, Integer> SITE_ID = createField("site_id", org.jooq.impl.SQLDataType.INTEGER, this, "");
 	/**
 	 * The column <code>thehomeland.task_schedule.start_page</code>.
 	 */
@@ -115,6 +115,14 @@ public class TaskSchedule extends TableImpl<TaskScheduleRecord> {
 	@Override
 	public List<UniqueKey<TaskScheduleRecord>> getKeys() {
 		return Arrays.<UniqueKey<TaskScheduleRecord>>asList(Keys.KEY_TASK_SCHEDULE_PRIMARY);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<ForeignKey<TaskScheduleRecord, ?>> getReferences() {
+		return Arrays.<ForeignKey<TaskScheduleRecord, ?>>asList(Keys.TASK_SCHEDULE_IBFK_1);
 	}
 
 	/**

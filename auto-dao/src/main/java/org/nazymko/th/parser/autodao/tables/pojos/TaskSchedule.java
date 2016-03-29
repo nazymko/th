@@ -30,10 +30,10 @@ import java.sql.Timestamp;
 @Table(name = "task_schedule", schema = "thehomeland")
 public class TaskSchedule implements Serializable {
 
-	private static final long serialVersionUID = -464974952;
+	private static final long serialVersionUID = 74025461;
 
 	private Integer id;
-	private Integer siteid;
+	private Integer siteId;
 	private String startPage;
 	private String pageType;
 	private Timestamp startAt;
@@ -45,7 +45,7 @@ public class TaskSchedule implements Serializable {
 
 	public TaskSchedule(TaskSchedule value) {
 		this.id = value.id;
-		this.siteid = value.siteid;
+		this.siteId = value.siteId;
 		this.startPage = value.startPage;
 		this.pageType = value.pageType;
 		this.startAt = value.startAt;
@@ -55,7 +55,7 @@ public class TaskSchedule implements Serializable {
 
 	public TaskSchedule(
 			Integer id,
-			Integer siteid,
+			Integer siteId,
 			String startPage,
 			String pageType,
 			Timestamp startAt,
@@ -63,7 +63,7 @@ public class TaskSchedule implements Serializable {
 			Boolean isEnabled
 	) {
 		this.id = id;
-		this.siteid = siteid;
+		this.siteId = siteId;
 		this.startPage = startPage;
 		this.pageType = pageType;
 		this.startAt = startAt;
@@ -82,13 +82,13 @@ public class TaskSchedule implements Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "siteId", precision = 10)
-	public Integer getSiteid() {
-		return this.siteid;
+	@Column(name = "site_id", precision = 10)
+	public Integer getSiteId() {
+		return this.siteId;
 	}
 
-	public void setSiteid(Integer siteid) {
-		this.siteid = siteid;
+	public void setSiteId(Integer siteId) {
+		this.siteId = siteId;
 	}
 
 	@Column(name = "start_page", nullable = false, length = 256)
@@ -147,7 +147,7 @@ public class TaskSchedule implements Serializable {
 		StringBuilder sb = new StringBuilder("TaskSchedule (");
 
 		sb.append(id);
-		sb.append(", ").append(siteid);
+		sb.append(", ").append(siteId);
 		sb.append(", ").append(startPage);
 		sb.append(", ").append(pageType);
 		sb.append(", ").append(startAt);

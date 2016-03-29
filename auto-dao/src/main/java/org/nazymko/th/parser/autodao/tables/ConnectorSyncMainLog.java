@@ -4,10 +4,7 @@
 package org.nazymko.th.parser.autodao.tables;
 
 
-import org.jooq.Field;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
+import org.jooq.*;
 import org.jooq.impl.TableImpl;
 import org.nazymko.th.parser.autodao.Keys;
 import org.nazymko.th.parser.autodao.Thehomeland;
@@ -36,15 +33,15 @@ public class ConnectorSyncMainLog extends TableImpl<ConnectorSyncMainLogRecord> 
 	 * The reference instance of <code>thehomeland.connector_sync_main_log</code>
 	 */
 	public static final ConnectorSyncMainLog CONNECTOR_SYNC_MAIN_LOG = new ConnectorSyncMainLog();
-	private static final long serialVersionUID = -1631729626;
+	private static final long serialVersionUID = -2119350539;
 	/**
 	 * The column <code>thehomeland.connector_sync_main_log.id</code>.
 	 */
 	public final TableField<ConnectorSyncMainLogRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 	/**
-	 * The column <code>thehomeland.connector_sync_main_log.consumer</code>.
+	 * The column <code>thehomeland.connector_sync_main_log.consumer_id</code>.
 	 */
-	public final TableField<ConnectorSyncMainLogRecord, String> CONSUMER = createField("consumer", org.jooq.impl.SQLDataType.VARCHAR.length(1024).nullable(false), this, "");
+	public final TableField<ConnectorSyncMainLogRecord, Integer> CONSUMER_ID = createField("consumer_id", org.jooq.impl.SQLDataType.INTEGER, this, "");
 	/**
 	 * The column <code>thehomeland.connector_sync_main_log.sync_date</code>.
 	 */
@@ -106,6 +103,14 @@ public class ConnectorSyncMainLog extends TableImpl<ConnectorSyncMainLogRecord> 
 	@Override
 	public List<UniqueKey<ConnectorSyncMainLogRecord>> getKeys() {
 		return Arrays.<UniqueKey<ConnectorSyncMainLogRecord>>asList(Keys.KEY_CONNECTOR_SYNC_MAIN_LOG_PRIMARY);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<ForeignKey<ConnectorSyncMainLogRecord, ?>> getReferences() {
+		return Arrays.<ForeignKey<ConnectorSyncMainLogRecord, ?>>asList(Keys.CONNECTOR_SYNC_MAIN_LOG_IBFK_1);
 	}
 
 	/**

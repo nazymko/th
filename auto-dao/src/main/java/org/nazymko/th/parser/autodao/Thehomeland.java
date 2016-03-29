@@ -31,7 +31,7 @@ public class Thehomeland extends SchemaImpl {
 	 * The reference instance of <code>thehomeland</code>
 	 */
 	public static final Thehomeland THEHOMELAND = new Thehomeland();
-	private static final long serialVersionUID = -1622830624;
+	private static final long serialVersionUID = -1903129009;
 
 	/**
 	 * No further instances allowed
@@ -49,6 +49,7 @@ public class Thehomeland extends SchemaImpl {
 
 	private final List<Table<?>> getTables0() {
 		return Arrays.<Table<?>>asList(
+				ConnectorConsumer.CONNECTOR_CONSUMER,
 				ConnectorSyncMainLog.CONNECTOR_SYNC_MAIN_LOG,
 				ConnectorSyncPageLog.CONNECTOR_SYNC_PAGE_LOG,
 				TaskRun.TASK_RUN,

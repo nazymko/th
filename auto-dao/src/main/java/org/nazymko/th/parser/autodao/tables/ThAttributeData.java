@@ -35,7 +35,7 @@ public class ThAttributeData extends TableImpl<ThAttributeDataRecord> {
 	 * The reference instance of <code>thehomeland.th_attribute_data</code>
 	 */
 	public static final ThAttributeData TH_ATTRIBUTE_DATA = new ThAttributeData();
-	private static final long serialVersionUID = 917934614;
+	private static final long serialVersionUID = -2113038185;
 	/**
 	 * The column <code>thehomeland.th_attribute_data.site_id</code>.
 	 */
@@ -104,7 +104,7 @@ public class ThAttributeData extends TableImpl<ThAttributeDataRecord> {
 	 */
 	@Override
 	public List<ForeignKey<ThAttributeDataRecord, ?>> getReferences() {
-		return Arrays.<ForeignKey<ThAttributeDataRecord, ?>>asList(Keys.TH_ATTRIBUTE_DATA_IBFK_1);
+		return Arrays.<ForeignKey<ThAttributeDataRecord, ?>>asList(Keys.TH_ATTRIBUTE_DATA_IBFK_2, Keys.TH_ATTRIBUTE_DATA_IBFK_3, Keys.TH_ATTRIBUTE_DATA_IBFK_1);
 	}
 
 	/**

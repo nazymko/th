@@ -36,7 +36,7 @@ import java.sql.Timestamp;
 @Table(name = "task_schedule", schema = "thehomeland")
 public class TaskScheduleRecord extends UpdatableRecordImpl<TaskScheduleRecord> implements Record7<Integer, Integer, String, String, Timestamp, String, Boolean> {
 
-	private static final long serialVersionUID = 1139188500;
+	private static final long serialVersionUID = -409667150;
 
 	/**
 	 * Create a detached TaskScheduleRecord
@@ -48,11 +48,11 @@ public class TaskScheduleRecord extends UpdatableRecordImpl<TaskScheduleRecord> 
 	/**
 	 * Create a detached, initialised TaskScheduleRecord
 	 */
-	public TaskScheduleRecord(Integer id, Integer siteid, String startPage, String pageType, Timestamp startAt, String cron, Boolean isEnabled) {
+	public TaskScheduleRecord(Integer id, Integer siteId, String startPage, String pageType, Timestamp startAt, String cron, Boolean isEnabled) {
 		super(TaskSchedule.TASK_SCHEDULE);
 
 		setValue(0, id);
-		setValue(1, siteid);
+		setValue(1, siteId);
 		setValue(2, startPage);
 		setValue(3, pageType);
 		setValue(4, startAt);
@@ -78,17 +78,17 @@ public class TaskScheduleRecord extends UpdatableRecordImpl<TaskScheduleRecord> 
 	}
 
 	/**
-	 * Getter for <code>thehomeland.task_schedule.siteId</code>.
+	 * Getter for <code>thehomeland.task_schedule.site_id</code>.
 	 */
-	@Column(name = "siteId", precision = 10)
-	public Integer getSiteid() {
+	@Column(name = "site_id", precision = 10)
+	public Integer getSiteId() {
 		return (Integer) getValue(1);
 	}
 
 	/**
-	 * Setter for <code>thehomeland.task_schedule.siteId</code>.
+	 * Setter for <code>thehomeland.task_schedule.site_id</code>.
 	 */
-	public void setSiteid(Integer value) {
+	public void setSiteId(Integer value) {
 		setValue(1, value);
 	}
 
@@ -218,7 +218,7 @@ public class TaskScheduleRecord extends UpdatableRecordImpl<TaskScheduleRecord> 
 	 */
 	@Override
 	public Field<Integer> field2() {
-		return TaskSchedule.TASK_SCHEDULE.SITEID;
+		return TaskSchedule.TASK_SCHEDULE.SITE_ID;
 	}
 
 	/**
@@ -274,7 +274,7 @@ public class TaskScheduleRecord extends UpdatableRecordImpl<TaskScheduleRecord> 
 	 */
 	@Override
 	public Integer value2() {
-		return getSiteid();
+		return getSiteId();
 	}
 
 	/**
@@ -331,7 +331,7 @@ public class TaskScheduleRecord extends UpdatableRecordImpl<TaskScheduleRecord> 
 	 */
 	@Override
 	public TaskScheduleRecord value2(Integer value) {
-		setSiteid(value);
+		setSiteId(value);
 		return this;
 	}
 

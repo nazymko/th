@@ -33,7 +33,7 @@ public class ThPage extends TableImpl<ThPageRecord> {
 	 * The reference instance of <code>thehomeland.th_page</code>
 	 */
 	public static final ThPage TH_PAGE = new ThPage();
-	private static final long serialVersionUID = 1654831307;
+	private static final long serialVersionUID = 1240592217;
 	/**
 	 * The column <code>thehomeland.th_page.id</code>.
 	 */
@@ -134,7 +134,7 @@ public class ThPage extends TableImpl<ThPageRecord> {
 	 */
 	@Override
 	public List<ForeignKey<ThPageRecord, ?>> getReferences() {
-		return Arrays.<ForeignKey<ThPageRecord, ?>>asList(Keys.TH_PAGE_IBFK_1);
+		return Arrays.<ForeignKey<ThPageRecord, ?>>asList(Keys.TH_PAGE_IBFK_1, Keys.TH_PAGE_IBFK_2);
 	}
 
 	/**

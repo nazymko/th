@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -30,10 +29,10 @@ import java.sql.Timestamp;
 @Table(name = "connector_sync_main_log", schema = "thehomeland")
 public class ConnectorSyncMainLog implements Serializable {
 
-	private static final long serialVersionUID = 1931892618;
+	private static final long serialVersionUID = -733524966;
 
 	private Integer id;
-	private String consumer;
+	private Integer consumerId;
 	private Timestamp syncDate;
 	private Integer countNew;
 	private Integer countTotal;
@@ -44,7 +43,7 @@ public class ConnectorSyncMainLog implements Serializable {
 
 	public ConnectorSyncMainLog(ConnectorSyncMainLog value) {
 		this.id = value.id;
-		this.consumer = value.consumer;
+		this.consumerId = value.consumerId;
 		this.syncDate = value.syncDate;
 		this.countNew = value.countNew;
 		this.countTotal = value.countTotal;
@@ -53,14 +52,14 @@ public class ConnectorSyncMainLog implements Serializable {
 
 	public ConnectorSyncMainLog(
 			Integer id,
-			String consumer,
+			Integer consumerId,
 			Timestamp syncDate,
 			Integer countNew,
 			Integer countTotal,
 			Long latestPageId
 	) {
 		this.id = id;
-		this.consumer = consumer;
+		this.consumerId = consumerId;
 		this.syncDate = syncDate;
 		this.countNew = countNew;
 		this.countTotal = countTotal;
@@ -78,15 +77,13 @@ public class ConnectorSyncMainLog implements Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "consumer", nullable = false, length = 1024)
-	@NotNull
-	@Size(max = 1024)
-	public String getConsumer() {
-		return this.consumer;
+	@Column(name = "consumer_id", precision = 10)
+	public Integer getConsumerId() {
+		return this.consumerId;
 	}
 
-	public void setConsumer(String consumer) {
-		this.consumer = consumer;
+	public void setConsumerId(Integer consumerId) {
+		this.consumerId = consumerId;
 	}
 
 	@Column(name = "sync_date", nullable = false)
@@ -133,7 +130,7 @@ public class ConnectorSyncMainLog implements Serializable {
 		StringBuilder sb = new StringBuilder("ConnectorSyncMainLog (");
 
 		sb.append(id);
-		sb.append(", ").append(consumer);
+		sb.append(", ").append(consumerId);
 		sb.append(", ").append(syncDate);
 		sb.append(", ").append(countNew);
 		sb.append(", ").append(countTotal);

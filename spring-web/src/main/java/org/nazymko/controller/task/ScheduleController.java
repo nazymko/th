@@ -62,7 +62,7 @@ public class ScheduleController {
         record.setCron(cron);
         record.setIsEnabled(true);
         record.setPageType("front_page");
-        record.setSiteid(siteId);
+        record.setSiteId(siteId);
         record.setStartPage(siteDao.getById(siteId).get().getAuthority());
         record.setStartAt(new Timestamp(System.currentTimeMillis()));
 

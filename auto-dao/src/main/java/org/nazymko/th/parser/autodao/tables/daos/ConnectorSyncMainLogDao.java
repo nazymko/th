@@ -64,10 +64,10 @@ public class ConnectorSyncMainLogDao extends DAOImpl<ConnectorSyncMainLogRecord,
 	}
 
 	/**
-	 * Fetch records that have <code>consumer IN (values)</code>
+	 * Fetch records that have <code>consumer_id IN (values)</code>
 	 */
-	public List<org.nazymko.th.parser.autodao.tables.pojos.ConnectorSyncMainLog> fetchByConsumer(String... values) {
-		return fetch(ConnectorSyncMainLog.CONNECTOR_SYNC_MAIN_LOG.CONSUMER, values);
+	public List<org.nazymko.th.parser.autodao.tables.pojos.ConnectorSyncMainLog> fetchByConsumerId(Integer... values) {
+		return fetch(ConnectorSyncMainLog.CONNECTOR_SYNC_MAIN_LOG.CONSUMER_ID, values);
 	}
 
 	/**

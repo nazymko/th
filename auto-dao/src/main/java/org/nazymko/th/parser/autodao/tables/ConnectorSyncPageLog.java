@@ -4,10 +4,7 @@
 package org.nazymko.th.parser.autodao.tables;
 
 
-import org.jooq.Field;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
+import org.jooq.*;
 import org.jooq.impl.TableImpl;
 import org.nazymko.th.parser.autodao.Keys;
 import org.nazymko.th.parser.autodao.Thehomeland;
@@ -36,7 +33,7 @@ public class ConnectorSyncPageLog extends TableImpl<ConnectorSyncPageLogRecord> 
 	 * The reference instance of <code>thehomeland.connector_sync_page_log</code>
 	 */
 	public static final ConnectorSyncPageLog CONNECTOR_SYNC_PAGE_LOG = new ConnectorSyncPageLog();
-	private static final long serialVersionUID = 672770865;
+	private static final long serialVersionUID = 1249045077;
 	/**
 	 * The column <code>thehomeland.connector_sync_page_log.id</code>.
 	 */
@@ -98,6 +95,14 @@ public class ConnectorSyncPageLog extends TableImpl<ConnectorSyncPageLogRecord> 
 	@Override
 	public List<UniqueKey<ConnectorSyncPageLogRecord>> getKeys() {
 		return Arrays.<UniqueKey<ConnectorSyncPageLogRecord>>asList(Keys.KEY_CONNECTOR_SYNC_PAGE_LOG_PRIMARY);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<ForeignKey<ConnectorSyncPageLogRecord, ?>> getReferences() {
+		return Arrays.<ForeignKey<ConnectorSyncPageLogRecord, ?>>asList(Keys.CONNECTOR_SYNC_PAGE_LOG_IBFK_1);
 	}
 
 	/**

@@ -23,6 +23,11 @@ import javax.annotation.Generated;
 public class Tables {
 
 	/**
+	 * The table thehomeland.connector_consumer
+	 */
+	public static final ConnectorConsumer CONNECTOR_CONSUMER = org.nazymko.th.parser.autodao.tables.ConnectorConsumer.CONNECTOR_CONSUMER;
+
+	/**
 	 * The table thehomeland.connector_sync_main_log
 	 */
 	public static final ConnectorSyncMainLog CONNECTOR_SYNC_MAIN_LOG = org.nazymko.th.parser.autodao.tables.ConnectorSyncMainLog.CONNECTOR_SYNC_MAIN_LOG;

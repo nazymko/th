@@ -82,7 +82,7 @@ public class ParsingTriger {
     }
 
     private void executeRecord(TaskScheduleRecord scheduleRecord, TaskRunRecord tTaskRecord) {
-        Optional<ThSiteRecord> site = siteDao.getById(scheduleRecord.getSiteid());
+        Optional<ThSiteRecord> site = siteDao.getById(scheduleRecord.getSiteId());
         if (site.isPresent()) {
             //Ok, lets start the job
             Runnable runnable = taskFac.makeScheduledTask(scheduleRecord.getStartPage(), scheduleRecord.getPageType(), -1, tTaskRecord.getId());
@@ -92,7 +92,7 @@ public class ParsingTriger {
             tTaskRecord.store();
 
         } else {
-            log.error("Site with id {} doesn't exist ! Task starting interrupted", scheduleRecord.getSiteid());
+            log.error("Site with id {} doesn't exist ! Task starting interrupted", scheduleRecord.getSiteId());
         }
     }
 
@@ -108,7 +108,7 @@ public class ParsingTriger {
         TaskRunRecord newRecord = new TaskRunRecord();
         newRecord.setStatus(NEW);
         newRecord.setRunType(CRON);
-        newRecord.setSiteId(scheduleRecord.getSiteid());
+        newRecord.setSiteId(scheduleRecord.getSiteId());
         newRecord.setScheduleSourceId(scheduleRecord.getId());
         newRecord.setStartAt(timestamp);
         newRecord.setIsEnabled(true);

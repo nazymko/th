@@ -37,7 +37,7 @@ public class TaskRun extends TableImpl<TaskRunRecord> {
 	 * The reference instance of <code>thehomeland.task_run</code>
 	 */
 	public static final TaskRun TASK_RUN = new TaskRun();
-	private static final long serialVersionUID = 613285162;
+	private static final long serialVersionUID = -484429167;
 	/**
 	 * The column <code>thehomeland.task_run.id</code>.
 	 */
@@ -134,7 +134,7 @@ public class TaskRun extends TableImpl<TaskRunRecord> {
 	 */
 	@Override
 	public List<ForeignKey<TaskRunRecord, ?>> getReferences() {
-		return Arrays.<ForeignKey<TaskRunRecord, ?>>asList(Keys.TASK_RUN_IBFK_1);
+		return Arrays.<ForeignKey<TaskRunRecord, ?>>asList(Keys.TASK_RUN_IBFK_1, Keys.TASK_RUN_IBFK_2);
 	}
 
 	/**
