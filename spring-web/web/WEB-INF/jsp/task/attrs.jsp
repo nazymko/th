@@ -1,3 +1,6 @@
+<%--@elvariable id="attrs" type="java.util.List<org.nazymko.th.parser.autodao.tables.records.ThAttributeDataRecord>"--%>
+<%--@elvariable id="page" type="org.nazymko.th.parser.autodao.tables.records.ThPageRecord"--%>
+<%--@elvariable id="gson" type="com.google.gson.Gson"--%>
 <%@ page import="com.google.gson.Gson" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -17,11 +20,11 @@
 
     <tr>
         <td>${page.id}</td>
-        <td>${page.site}</td>
-        <td>${page.page}&nbsp;<a target="_blank" href="${page.page}">open</a></td>
+        <td>${page.siteId}</td>
+        <td>${page.pageUrl}&nbsp;<a target="_blank" href="${page.pageUrl}">open</a></td>
         <td>${page.type}</td>
-        <td>${page.sourcePage}</td>
-        <td>${page.visited}</td>
+        <td>${page.sourcepage}</td>
+        <td>${page.visitedAt}</td>
     </tr>
 </table>
 <div>

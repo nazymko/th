@@ -30,18 +30,14 @@
             {
               "type": "trip-price",
               "expression": ".*ќрг\\.зб≥р:\\s(\\d*)\\s(\\S*)\\..*",
+              "persist": true,
+              "format": "YYYY-MM-DD hh:mm:ss",
               "group": [
                 {
                   "order": 1,
                   "nature": "number",
                   "type": "price",
                   "format": "nnnnn.nn",
-                  "persist": true
-                },
-                {
-                  "order": 2,
-                  "nature": "enum",
-                  "type": "currency",
                   "persist": true
                 }
               ]

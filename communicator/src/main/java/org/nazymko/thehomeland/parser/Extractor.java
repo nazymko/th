@@ -10,7 +10,10 @@ import org.nazymko.thehomeland.dao.SyncPageLogDao;
 import org.nazymko.thehomeland.parser.db.dao.AttributeDao;
 import org.nazymko.thehomeland.parser.db.dao.PageDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +21,7 @@ import java.util.List;
  * Created by nazymko.patronus@gmail.com.
  */
 public class Extractor {
-
-    Integer BATCH_SIZE = 10;
+    private static final Integer BATCH_SIZE = 10;
     @Autowired private PageDao pageDao;
     @Autowired private AttributeDao attributeDao;
     @Autowired private SyncPageLogDao logDao;

@@ -4,6 +4,8 @@
 package org.nazymko.th.parser.autodao.tables.records;
 
 
+import java.sql.Timestamp;
+
 import javax.annotation.Generated;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,7 +19,7 @@ import org.jooq.Record1;
 import org.jooq.Record3;
 import org.jooq.Row3;
 import org.jooq.impl.UpdatableRecordImpl;
-import org.nazymko.th.parser.autodao.tables.ThSite;
+import org.nazymko.th.parser.autodao.tables.ConnectorConsumer;
 
 
 /**
@@ -32,20 +34,20 @@ import org.nazymko.th.parser.autodao.tables.ThSite;
 )
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Entity
-@Table(name = "th_site", schema = "thehomeland")
-public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements Record3<Integer, String, String> {
+@Table(name = "connector_consumer", schema = "thehomeland")
+public class ConnectorConsumerRecord extends UpdatableRecordImpl<ConnectorConsumerRecord> implements Record3<Integer, String, Timestamp> {
 
-	private static final long serialVersionUID = 1917932210;
+	private static final long serialVersionUID = -1635766750;
 
 	/**
-	 * Setter for <code>thehomeland.th_site.id</code>.
+	 * Setter for <code>thehomeland.connector_consumer.id</code>.
 	 */
 	public void setId(Integer value) {
 		setValue(0, value);
 	}
 
 	/**
-	 * Getter for <code>thehomeland.th_site.id</code>.
+	 * Getter for <code>thehomeland.connector_consumer.id</code>.
 	 */
 	@Id
 	@Column(name = "id", unique = true, nullable = false, precision = 10)
@@ -55,35 +57,36 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	}
 
 	/**
-	 * Setter for <code>thehomeland.th_site.authority</code>.
+	 * Setter for <code>thehomeland.connector_consumer.domain</code>.
 	 */
-	public void setAuthority(String value) {
+	public void setDomain(String value) {
 		setValue(1, value);
 	}
 
 	/**
-	 * Getter for <code>thehomeland.th_site.authority</code>.
+	 * Getter for <code>thehomeland.connector_consumer.domain</code>.
 	 */
-	@Column(name = "authority", length = 256)
-	@Size(max = 256)
-	public String getAuthority() {
+	@Column(name = "domain", nullable = false, length = 1024)
+	@NotNull
+	@Size(max = 1024)
+	public String getDomain() {
 		return (String) getValue(1);
 	}
 
 	/**
-	 * Setter for <code>thehomeland.th_site.name</code>.
+	 * Setter for <code>thehomeland.connector_consumer.time</code>.
 	 */
-	public void setName(String value) {
+	public void setTime(Timestamp value) {
 		setValue(2, value);
 	}
 
 	/**
-	 * Getter for <code>thehomeland.th_site.name</code>.
+	 * Getter for <code>thehomeland.connector_consumer.time</code>.
 	 */
-	@Column(name = "name", length = 128)
-	@Size(max = 128)
-	public String getName() {
-		return (String) getValue(2);
+	@Column(name = "time", nullable = false)
+	@NotNull
+	public Timestamp getTime() {
+		return (Timestamp) getValue(2);
 	}
 
 	// -------------------------------------------------------------------------
@@ -106,7 +109,7 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Row3<Integer, String, String> fieldsRow() {
+	public Row3<Integer, String, Timestamp> fieldsRow() {
 		return (Row3) super.fieldsRow();
 	}
 
@@ -114,7 +117,7 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Row3<Integer, String, String> valuesRow() {
+	public Row3<Integer, String, Timestamp> valuesRow() {
 		return (Row3) super.valuesRow();
 	}
 
@@ -123,7 +126,7 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	 */
 	@Override
 	public Field<Integer> field1() {
-		return ThSite.TH_SITE.ID;
+		return ConnectorConsumer.CONNECTOR_CONSUMER.ID;
 	}
 
 	/**
@@ -131,15 +134,15 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	 */
 	@Override
 	public Field<String> field2() {
-		return ThSite.TH_SITE.AUTHORITY;
+		return ConnectorConsumer.CONNECTOR_CONSUMER.DOMAIN;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Field<String> field3() {
-		return ThSite.TH_SITE.NAME;
+	public Field<Timestamp> field3() {
+		return ConnectorConsumer.CONNECTOR_CONSUMER.TIME;
 	}
 
 	/**
@@ -155,22 +158,22 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	 */
 	@Override
 	public String value2() {
-		return getAuthority();
+		return getDomain();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String value3() {
-		return getName();
+	public Timestamp value3() {
+		return getTime();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ThSiteRecord value1(Integer value) {
+	public ConnectorConsumerRecord value1(Integer value) {
 		setId(value);
 		return this;
 	}
@@ -179,8 +182,8 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ThSiteRecord value2(String value) {
-		setAuthority(value);
+	public ConnectorConsumerRecord value2(String value) {
+		setDomain(value);
 		return this;
 	}
 
@@ -188,8 +191,8 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ThSiteRecord value3(String value) {
-		setName(value);
+	public ConnectorConsumerRecord value3(Timestamp value) {
+		setTime(value);
 		return this;
 	}
 
@@ -197,7 +200,7 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ThSiteRecord values(Integer value1, String value2, String value3) {
+	public ConnectorConsumerRecord values(Integer value1, String value2, Timestamp value3) {
 		value1(value1);
 		value2(value2);
 		value3(value3);
@@ -209,20 +212,20 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Create a detached ThSiteRecord
+	 * Create a detached ConnectorConsumerRecord
 	 */
-	public ThSiteRecord() {
-		super(ThSite.TH_SITE);
+	public ConnectorConsumerRecord() {
+		super(ConnectorConsumer.CONNECTOR_CONSUMER);
 	}
 
 	/**
-	 * Create a detached, initialised ThSiteRecord
+	 * Create a detached, initialised ConnectorConsumerRecord
 	 */
-	public ThSiteRecord(Integer id, String authority, String name) {
-		super(ThSite.TH_SITE);
+	public ConnectorConsumerRecord(Integer id, String domain, Timestamp time) {
+		super(ConnectorConsumer.CONNECTOR_CONSUMER);
 
 		setValue(0, id);
-		setValue(1, authority);
-		setValue(2, name);
+		setValue(1, domain);
+		setValue(2, time);
 	}
 }

@@ -4,9 +4,17 @@
 package org.nazymko.th.parser.autodao;
 
 
-import org.nazymko.th.parser.autodao.tables.*;
-
 import javax.annotation.Generated;
+
+import org.nazymko.th.parser.autodao.tables.ConnectorConsumer;
+import org.nazymko.th.parser.autodao.tables.ConnectorSyncMainLog;
+import org.nazymko.th.parser.autodao.tables.ConnectorSyncPageLog;
+import org.nazymko.th.parser.autodao.tables.TaskRun;
+import org.nazymko.th.parser.autodao.tables.TaskSchedule;
+import org.nazymko.th.parser.autodao.tables.ThAttributeData;
+import org.nazymko.th.parser.autodao.tables.ThPage;
+import org.nazymko.th.parser.autodao.tables.ThRule;
+import org.nazymko.th.parser.autodao.tables.ThSite;
 
 
 /**

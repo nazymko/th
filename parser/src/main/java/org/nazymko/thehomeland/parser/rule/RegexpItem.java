@@ -17,4 +17,8 @@ public class RegexpItem {
     private String type;
     @JsonProperty("group")
     private List<GroupItem> group;
+    @JsonProperty("persist")
+    private boolean persist;
+    @JsonProperty("format")
+    private String format;
 }

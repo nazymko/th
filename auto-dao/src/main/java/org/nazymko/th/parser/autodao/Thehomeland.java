@@ -4,14 +4,23 @@
 package org.nazymko.th.parser.autodao;
 
 
-import org.jooq.Table;
-import org.jooq.impl.SchemaImpl;
-import org.nazymko.th.parser.autodao.tables.*;
-
-import javax.annotation.Generated;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.annotation.Generated;
+
+import org.jooq.Table;
+import org.jooq.impl.SchemaImpl;
+import org.nazymko.th.parser.autodao.tables.ConnectorConsumer;
+import org.nazymko.th.parser.autodao.tables.ConnectorSyncMainLog;
+import org.nazymko.th.parser.autodao.tables.ConnectorSyncPageLog;
+import org.nazymko.th.parser.autodao.tables.TaskRun;
+import org.nazymko.th.parser.autodao.tables.TaskSchedule;
+import org.nazymko.th.parser.autodao.tables.ThAttributeData;
+import org.nazymko.th.parser.autodao.tables.ThPage;
+import org.nazymko.th.parser.autodao.tables.ThRule;
+import org.nazymko.th.parser.autodao.tables.ThSite;
 
 
 /**
@@ -27,11 +36,12 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Thehomeland extends SchemaImpl {
 
+	private static final long serialVersionUID = -1903129009;
+
 	/**
 	 * The reference instance of <code>thehomeland</code>
 	 */
 	public static final Thehomeland THEHOMELAND = new Thehomeland();
-	private static final long serialVersionUID = -1903129009;
 
 	/**
 	 * No further instances allowed
@@ -49,14 +59,14 @@ public class Thehomeland extends SchemaImpl {
 
 	private final List<Table<?>> getTables0() {
 		return Arrays.<Table<?>>asList(
-				ConnectorConsumer.CONNECTOR_CONSUMER,
-				ConnectorSyncMainLog.CONNECTOR_SYNC_MAIN_LOG,
-				ConnectorSyncPageLog.CONNECTOR_SYNC_PAGE_LOG,
-				TaskRun.TASK_RUN,
-				TaskSchedule.TASK_SCHEDULE,
-				ThAttributeData.TH_ATTRIBUTE_DATA,
-				ThPage.TH_PAGE,
-				ThRule.TH_RULE,
-				ThSite.TH_SITE);
+			ConnectorConsumer.CONNECTOR_CONSUMER,
+			ConnectorSyncMainLog.CONNECTOR_SYNC_MAIN_LOG,
+			ConnectorSyncPageLog.CONNECTOR_SYNC_PAGE_LOG,
+			TaskRun.TASK_RUN,
+			TaskSchedule.TASK_SCHEDULE,
+			ThAttributeData.TH_ATTRIBUTE_DATA,
+			ThPage.TH_PAGE,
+			ThRule.TH_RULE,
+			ThSite.TH_SITE);
 	}
 }

@@ -50,7 +50,7 @@ public class PageDao extends AbstractDao<Integer, ThPageRecord> {
 
     @Override
     public Optional<ThPageRecord> getById(Integer key) {
-        return Optional.ofNullable(getDslContext().selectFrom(TH_PAGE).where(TH_PAGE.SITE_ID.eq(key)).fetchOne());
+        return Optional.ofNullable(getDslContext().selectFrom(TH_PAGE).where(TH_PAGE.ID.eq(key)).fetchOne());
     }
 
     public Optional<Page> getByUrl(String url) {

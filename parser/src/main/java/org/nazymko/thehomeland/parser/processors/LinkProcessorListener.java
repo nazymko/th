@@ -2,6 +2,7 @@ package org.nazymko.thehomeland.parser.processors;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
+import org.nazymko.th.parser.autodao.tables.records.ThAttributeDataRecord;
 import org.nazymko.thehomeland.parser.THLParserRunner;
 import org.nazymko.thehomeland.parser.db.dao.SiteDao;
 import org.nazymko.thehomeland.parser.db.model.Attribute;
@@ -30,27 +31,6 @@ public class LinkProcessorListener implements AttrListener {
         this.supportedAttrs = supportedAttrs;
     }
 
-    @Override
-    public boolean support(String type, String attr) {
-        log.debug("type = [" + type + "], attr = [" + attr + "]");
-        return "href".equalsIgnoreCase(attr);
-    }
-
-    @Override
-    public void process(Integer sourcePage, Attribute attribute, Integer runId) {
-
-        String pageType = attribute.getAttrMeaning();
-        String site = siteDao.getById(attribute.getSiteId()).get().getAuthority();
-
-        try {
-            String page = fixUrlfNeed(site, attribute.getAttrValue());
-
-            instance.schedule(page, pageType, sourcePage, runId);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-    }
-
     private String fixUrlfNeed(String site, String page) throws MalformedURLException {
         if (page != null
                 && !page.startsWith("http://")
@@ -61,4 +41,25 @@ public class LinkProcessorListener implements AttrListener {
 
         return page;
     }
+
+    @Override
+    public boolean support(ThAttributeDataRecord attribute, Integer runId, boolean persist) {
+        log.debug("attribute = \n[" + attribute + "]");
+        return "href".equals(attribute.getAttributeType());
+    }
+
+    @Override
+    public void process(ThAttributeDataRecord attribute, Integer runId) {
+        String pageType = attribute.getAttributeName();
+        String site = siteDao.getById(attribute.getSiteId()).get().getAuthority();
+
+        try {
+            String page = fixUrlfNeed(site, attribute.getAttributeValue());
+
+            instance.schedule(page, pageType, attribute.getPageId(), runId);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

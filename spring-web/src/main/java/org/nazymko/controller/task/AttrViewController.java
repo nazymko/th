@@ -2,6 +2,7 @@ package org.nazymko.controller.task;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.nazymko.th.parser.autodao.tables.records.ThAttributeDataRecord;
 import org.nazymko.th.parser.autodao.tables.records.ThPageRecord;
 import org.nazymko.thehomeland.parser.db.dao.AttributeDao;
 import org.nazymko.thehomeland.parser.db.dao.PageDao;
@@ -34,7 +35,7 @@ public class AttrViewController {
         Optional<ThPageRecord> byId = pageDao.getById(pageId);
         if (byId.isPresent()) {
 
-            List<Attribute> attributes = attributeDao.getByPage(pageId);
+            List<ThAttributeDataRecord> attributes = attributeDao.getByPage(pageId);
 
             model.addAttribute("page", byId.get());
             model.addAttribute("attrs", attributes);

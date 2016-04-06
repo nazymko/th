@@ -7,6 +7,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.nazymko.th.parser.autodao.tables.records.ThAttributeDataRecord;
 import org.nazymko.th.parser.autodao.tables.records.ThPageRecord;
 import org.nazymko.th.parser.autodao.tables.records.ThSiteRecord;
 import org.nazymko.thehomeland.parser.db.dao.PageDao;
@@ -69,31 +70,37 @@ public class ParsingTask implements Runnable, InfoSource {
                 return;
             }
             log.debug("After load...");
-            String name = "[" + Thread.currentThread().getName() + "] : threadId " + Thread.currentThread().getId();
             log.debug("USED : {}", thisPageRule);
+            //TODO : make this logic more clear/rework
+            if (thisPageRule.getParent() != null) {
+                config.setPageId(pageDao.getById(config.getPageId()).get().getSourcepage());
+            }
+
             for (AttrsItem attr : thisPageRule.getAttrs()) {
                 Elements select = document.select(attr.getPath());
-                log.debug(String.format(name + ": " + "Processing '%s'", attr.getPath()));
+                log.debug("Processing '{}'", attr.getPath());
 
                 if (select.size() == 0) {
-                    log.debug(String.format(name + ": " + "Element not found '%s'", attr.getPath()));
+                    log.debug("Element not found '{}'", attr.getPath());
                     continue;
                 } else {
+                    //TODO : rework this messy code
                     select.forEach(new Consumer<Element>() {
                                        int index = 0;
 
                                        @Override
                                        public void accept(Element item) {
                                            String value = getElementValue(item, attr);
-                                           processMainAttr(item, value);
-                                           if (hasCompositeAttrs()) {
-                                               processCompositeAttr(item, value);
+                                           processMainAttr(value, attr.isPersist());
+                                           if (hasCompositeAttrs(attr)) {
+                                               processCompositeAttr(value);
                                            }
                                            index++;
                                        }
 
-                                       private void processCompositeAttr(Element attribute, String value) {
+                                       private void processCompositeAttr(String value) {
                                            for (RegexpItem regexpItem : attr.getRegexp()) {
+                                               log.info("Matching {} : {}", regexpItem.getType(), regexpItem.getExpression());
                                                //can optimize it
                                                //and refactor this
                                                String expression = regexpItem.getExpression();
@@ -101,52 +108,61 @@ public class ParsingTask implements Runnable, InfoSource {
                                                Pattern compile = Pattern.compile(expression);
                                                Matcher matcher = compile.matcher(value);
                                                if (matcher.find()) {
+                                                   log.info("Matching found for {}", regexpItem.getType());
                                                    MatchResult matchResult = matcher.toMatchResult();
                                                    if (regexpItem.getGroup() == null) {
+                                                       log.info("Doing single matching for {}, persist :{}", regexpItem.getType(), regexpItem.isPersist());
                                                        String type = regexpItem.getType();
-                                                       Attribute attribute1 = makeAttrFromConfig(value, attr.isPersist(), type, null);
-                                                       publish(attribute1);
+                                                       ThAttributeDataRecord attribute1 = makeAttrFromConfig(value, null, regexpItem.isPersist(), type, attr.getType());
+                                                       log.info("Single matching for {}", regexpItem.getType());
+                                                       publish(attribute1, attr.isPersist());
                                                    } else {
+                                                       log.info("Doing groups: {}", regexpItem.getType());
+                                                       log.info("For value   : {}", value);
                                                        for (GroupItem regExpGroup : regexpItem.getGroup()) {
-                                                           String group = matchResult.group(regExpGroup.getOrder());
-                                                           Attribute compositeAttr = makeAttrFromConfig(group, regExpGroup.isPersist(), regExpGroup.getType(), regExpGroup.getFormat());
-                                                           publish(compositeAttr);
+                                                           String groupValue = matchResult.group(regExpGroup.getOrder());
+                                                           log.info("Matched group for {}: {} ", regExpGroup.getType(), groupValue);
+                                                           log.info("Persist group : {}", regExpGroup.isPersist());
+
+                                                           ThAttributeDataRecord compositeAttr = makeAttrFromConfig(groupValue, regExpGroup.getFormat(), regExpGroup.isPersist(), regExpGroup.getType(), regExpGroup.getType());
+                                                           publish(compositeAttr, regExpGroup.isPersist());
                                                        }
                                                    }
                                                }
                                            }
                                        }
 
-                                       private Attribute makeAttrFromConfig(String group, boolean persist, String tag, String format) {
-                                           return Attribute.builder()
-                                                   .siteId(config.siteId)
-                                                   .attrIndex(index)
-                                                   .attrValue(group)
-                                                   .attrFormat(format)
-                                                   .attrTag(tag)
-                                                   .attrMeaning(attr.getType())
-                                                   .pageId(config.getPageId())
-                                                   .ruleId(config.getRuleId())
-                                                   .persistable(persist)
-                                                   .build();
+                                       private ThAttributeDataRecord makeAttrFromConfig(String value, String attributeFormat, boolean needPersist, String attributeType, String attributeName) {
+                                           ThAttributeDataRecord record = new ThAttributeDataRecord();
+                                           record.setPageId(config.getPageId());
+                                           record.setRuleId(config.getRuleId());
+                                           record.setSiteId(config.getSiteId());
+
+                                           record.setAttributeValue(value);
+                                           record.setAttributeType(attributeType);
+                                           record.setAttributeName(attributeName);
+                                           record.setAttributeFormat(attributeFormat);
+
+                                           record.setAttributeIndex(index);
+                                           return record;
+
                                        }
 
-                                       private boolean hasCompositeAttrs() {
+                                       private boolean hasCompositeAttrs(AttrsItem attr) {
                                            return attr.getRegexp() != null && !attr.getRegexp().isEmpty();
                                        }
 
-                                       private void processMainAttr(Element item, String value) {
+                                       private void processMainAttr(String value, boolean persist) {
                                            String _attr = attr.getAttr();
 
-                                           boolean persist = attr.isPersist();
-                                           Attribute attribute = makeAttrFromConfig(value, persist, _attr, null);
-                                           publish(attribute);
+                                           ThAttributeDataRecord attribute = makeAttrFromConfig(value, null, persist, _attr, attr.getType());
+                                           publish(attribute, persist);
                                        }
 
-                                       private void publish(Attribute attribute) {
+                                       private void publish(ThAttributeDataRecord attribute, boolean persist) {
                                            for (AttrListener listener : listeners) {
-                                               if (listener.support(attr.getType(), attr.getAttr())) {
-                                                   listener.process(config.getPageId(), attribute, sessionKey);
+                                               if (listener.support(attribute, sessionKey, persist)) {
+                                                   listener.process(attribute, sessionKey);
                                                }
                                            }
                                        }
@@ -183,7 +199,7 @@ public class ParsingTask implements Runnable, InfoSource {
 
         Optional<ThSiteRecord> byUrl = siteDao.getByUrl(siteUrl);
         if (!byUrl.isPresent()) {
-            log.error("Not found for {}", siteUrl);
+            log.error("Site Record not found for {}", siteUrl);
 
         }
         ThSiteRecord site = byUrl.get();
@@ -256,7 +272,7 @@ public class ParsingTask implements Runnable, InfoSource {
 
     @Data
     class Config {
-        Integer siteId, pageId, ruleId;
         int timeout = 10_000;
+        private Integer siteId, pageId, ruleId;
     }
 }

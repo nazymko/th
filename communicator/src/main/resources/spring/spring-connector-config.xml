@@ -9,5 +9,6 @@
     <import resource="connector-int-common.xml"/>
     <import resource="connector-dao.xml"/>
     <import resource="spring-connector-integration-config.xml"/>
+    <import resource="classpath*:spring/connector-properties.xml"/>
 
 </beans>

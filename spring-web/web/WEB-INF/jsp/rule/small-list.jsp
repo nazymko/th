@@ -4,7 +4,7 @@
 <table border="1px" cellspacing="3px" >
     <jsp:include page="parts/rule-header-table.jsp"/>
 
-    <%--@elvariable id="rules" type="java.util.List<org.nazymko.thehomeland.parser.rule.ParsingRule>"--%>
+    <%--@elvariable id="rules" type="java.util.List<org.nazymko.th.parser.autodao.tables.records.ThRuleRecord>"--%>
     <c:forEach items="${rules}" var="mRule">
         <c:set var="rule" value="${mRule}" scope="request"/>
         <jsp:include page="parts/rule-short-view.jsp"/>
