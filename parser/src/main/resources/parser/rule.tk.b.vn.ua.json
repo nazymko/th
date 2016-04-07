@@ -61,6 +61,49 @@
           "persist": false
         },
         {
+          "path": ".newcontent",
+          "attr": "text",
+          "type": "contacts",
+          "persist": false,
+          "regexp": [
+            {
+              "type": "contact-phone",
+              "expression": "(\\s*\\d{10})+",
+              "group": [
+                {
+                  "order": 1,
+                  "nature": "string",
+                  "type": "phone",
+                  "persist": true
+                },
+                {
+                  "order": 2,
+                  "nature": "string",
+                  "type": "phone",
+                  "persist": true
+                }
+              ]
+            },
+            {
+              "type": "category",
+              "expression": "Тип поїздки:\\s(\\S*)\\s",
+              "persist": true
+            },
+            {
+              "type": "contact-name",
+              "expression": "Відповідальний:\\s*(.*)\\s[Контакты|Контакти]",
+              "group": [
+                {
+                  "order": 1,
+                  "nature": "string",
+                  "type": "name",
+                  "persist": true
+                }
+              ]
+            }
+          ]
+        },
+        {
           "path": ".inforr",
           "attr": "text",
           "type": "parser#info-block",
@@ -87,12 +130,7 @@
             {
               "type": "date",
               "format": "YYYY-MM-DD hh:mm:ss",
-              "expression": "Дата:\\s*(((\\d\\d)(([02468][048])|([13579][26]))-02-29)|(((\\d\\d)(\\d\\d)))-((((0\\d)|(1[0-2]))-((0\\d)|(1\\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))\\s([01]\\d|2[0-3]):([0-5]\\d):([0-5]\\d)",
-              "persist": true
-            },
-            {
-              "type": "phone",
-              "expression": "([-.\\s]?\\(?\\d{1,3}?\\)?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9})",
+              "expression": "Дата:\\s*((((\\d\\d)(([02468][048])|([13579][26]))-02-29)|(((\\d\\d)(\\d\\d)))-((((0\\d)|(1[0-2]))-((0\\d)|(1\\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))\\s([01]\\d|2[0-3]):([0-5]\\d):([0-5]\\d))",
               "persist": true
             }
           ]

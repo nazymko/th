@@ -13,7 +13,6 @@ import org.nazymko.th.parser.autodao.tables.records.ThSiteRecord;
 import org.nazymko.thehomeland.parser.db.dao.PageDao;
 import org.nazymko.thehomeland.parser.db.dao.RuleDao;
 import org.nazymko.thehomeland.parser.db.dao.SiteDao;
-import org.nazymko.thehomeland.parser.db.model.Attribute;
 import org.nazymko.thehomeland.parser.rule.AttrsItem;
 import org.nazymko.thehomeland.parser.rule.GroupItem;
 import org.nazymko.thehomeland.parser.rule.PageItem;
@@ -41,16 +40,25 @@ import java.util.regex.Pattern;
 public class ParsingTask implements Runnable, InfoSource {
     //Houston, we have a problem
     public static String userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36";
-    @Setter List<AttrListener> listeners = new ArrayList<>();
-    @Setter RuleResolver ruleResolver;
+    @Setter
+    List<AttrListener> listeners = new ArrayList<>();
+    @Setter
+    RuleResolver ruleResolver;
     UrlSimplifier simplifier = new UrlSimplifier();
-    @Setter private String page, type;
-    @Setter private Integer sourcePage, sessionKey;
-    @Setter private History historyDao;
-    @Setter private SiteDao siteDao;
-    @Setter private PageDao pageDao;
-    @Setter private RuleDao ruleDao;
-    @Setter private Document document;
+    @Setter
+    private String page, type;
+    @Setter
+    private Integer sourcePage, sessionKey;
+    @Setter
+    private History historyDao;
+    @Setter
+    private SiteDao siteDao;
+    @Setter
+    private PageDao pageDao;
+    @Setter
+    private RuleDao ruleDao;
+    @Setter
+    private Document document;
     private Config config = new Config();
     private PageItem thisPageRule;
 
@@ -113,26 +121,33 @@ public class ParsingTask implements Runnable, InfoSource {
                                                    if (regexpItem.getGroup() == null) {
                                                        log.info("Doing single matching for {}, persist :{}", regexpItem.getType(), regexpItem.isPersist());
                                                        String type = regexpItem.getType();
-                                                       ThAttributeDataRecord attribute1 = makeAttrFromConfig(value, null, regexpItem.isPersist(), type, attr.getType());
-                                                       log.info("Single matching for {}", regexpItem.getType());
-                                                       publish(attribute1, attr.isPersist());
+                                                       String groupValue = matchResult.group(1);
+                                                       ThAttributeDataRecord attribute = makeAttrFromConfig(groupValue, null, type, regexpItem.getType(), 0);
+                                                       log.info("Single matching for {}:{}", regexpItem.getType(), groupValue);
+                                                       publish(attribute, regexpItem.isPersist());
                                                    } else {
                                                        log.info("Doing groups: {}", regexpItem.getType());
                                                        log.info("For value   : {}", value);
                                                        for (GroupItem regExpGroup : regexpItem.getGroup()) {
+                                                           if (matchResult.groupCount() < regExpGroup.getOrder()) {
+                                                               log.info("Group {} not found in {}", regExpGroup.getOrder(), value);
+                                                               continue;
+                                                           }
                                                            String groupValue = matchResult.group(regExpGroup.getOrder());
                                                            log.info("Matched group for {}: {} ", regExpGroup.getType(), groupValue);
                                                            log.info("Persist group : {}", regExpGroup.isPersist());
 
-                                                           ThAttributeDataRecord compositeAttr = makeAttrFromConfig(groupValue, regExpGroup.getFormat(), regExpGroup.isPersist(), regExpGroup.getType(), regExpGroup.getType());
+                                                           ThAttributeDataRecord compositeAttr = makeAttrFromConfig(groupValue, regExpGroup.getFormat(), regExpGroup.getType(), regExpGroup.getType(), regExpGroup.getOrder());
                                                            publish(compositeAttr, regExpGroup.isPersist());
                                                        }
                                                    }
+                                               } else {
+                                                   log.info("Nothing found for {}", regexpItem.getType());
                                                }
                                            }
                                        }
 
-                                       private ThAttributeDataRecord makeAttrFromConfig(String value, String attributeFormat, boolean needPersist, String attributeType, String attributeName) {
+                        private ThAttributeDataRecord makeAttrFromConfig(String value, String attributeFormat, String attributeType, String attributeName, Integer order) {
                                            ThAttributeDataRecord record = new ThAttributeDataRecord();
                                            record.setPageId(config.getPageId());
                                            record.setRuleId(config.getRuleId());
@@ -142,6 +157,7 @@ public class ParsingTask implements Runnable, InfoSource {
                                            record.setAttributeType(attributeType);
                                            record.setAttributeName(attributeName);
                                            record.setAttributeFormat(attributeFormat);
+                            record.setAttributeIndex(order);
 
                                            record.setAttributeIndex(index);
                                            return record;
@@ -155,7 +171,7 @@ public class ParsingTask implements Runnable, InfoSource {
                                        private void processMainAttr(String value, boolean persist) {
                                            String _attr = attr.getAttr();
 
-                                           ThAttributeDataRecord attribute = makeAttrFromConfig(value, null, persist, _attr, attr.getType());
+                                           ThAttributeDataRecord attribute = makeAttrFromConfig(value, null, _attr, attr.getType(), 0);
                                            publish(attribute, persist);
                                        }
 
