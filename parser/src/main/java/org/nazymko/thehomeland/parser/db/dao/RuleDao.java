@@ -105,6 +105,7 @@ public class RuleDao extends AbstractDao<String, ParsingRule> {
             ThSiteRecord site = new ThSiteRecord();
             site.setAuthority(authority);
             site.setName(rule.getName());
+            site.setDefaultUrl(rule.getUrl());
             siteDao.save(site);
         }
     }

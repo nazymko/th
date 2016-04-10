@@ -4,7 +4,7 @@
 package org.nazymko.th.parser.autodao.tables.pojos;
 
 
-import java.io.Serializable;
+import utils.support.rule.RuleStatus;
 
 import javax.annotation.Generated;
 import javax.persistence.Column;
@@ -12,8 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
-import utils.support.rule.RuleStatus;
+import java.io.Serializable;
 
 
 /**

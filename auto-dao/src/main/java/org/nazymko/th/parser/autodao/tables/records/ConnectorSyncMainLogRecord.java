@@ -4,7 +4,12 @@
 package org.nazymko.th.parser.autodao.tables.records;
 
 
-import java.sql.Timestamp;
+import org.jooq.Field;
+import org.jooq.Record1;
+import org.jooq.Record6;
+import org.jooq.Row6;
+import org.jooq.impl.UpdatableRecordImpl;
+import org.nazymko.th.parser.autodao.tables.ConnectorSyncMainLog;
 
 import javax.annotation.Generated;
 import javax.persistence.Column;
@@ -12,13 +17,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
-import org.jooq.Field;
-import org.jooq.Record1;
-import org.jooq.Record6;
-import org.jooq.Row6;
-import org.jooq.impl.UpdatableRecordImpl;
-import org.nazymko.th.parser.autodao.tables.ConnectorSyncMainLog;
+import java.sql.Timestamp;
 
 
 /**
@@ -34,15 +33,29 @@ import org.nazymko.th.parser.autodao.tables.ConnectorSyncMainLog;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Entity
 @Table(name = "connector_sync_main_log", schema = "thehomeland")
-public class ConnectorSyncMainLogRecord extends UpdatableRecordImpl<ConnectorSyncMainLogRecord> implements Record6<Integer, Integer, Timestamp, Integer, Integer, Long> {
+public class ConnectorSyncMainLogRecord extends UpdatableRecordImpl<ConnectorSyncMainLogRecord> implements Record6<Integer, Integer, Timestamp, Integer, Integer, Integer> {
 
-	private static final long serialVersionUID = 58444422;
+	private static final long serialVersionUID = 1866485953;
 
 	/**
-	 * Setter for <code>thehomeland.connector_sync_main_log.id</code>.
+	 * Create a detached ConnectorSyncMainLogRecord
 	 */
-	public void setId(Integer value) {
-		setValue(0, value);
+	public ConnectorSyncMainLogRecord() {
+		super(ConnectorSyncMainLog.CONNECTOR_SYNC_MAIN_LOG);
+	}
+
+	/**
+	 * Create a detached, initialised ConnectorSyncMainLogRecord
+	 */
+	public ConnectorSyncMainLogRecord(Integer id, Integer consumerId, Timestamp syncDate, Integer countNew, Integer countTotal, Integer latestPageId) {
+		super(ConnectorSyncMainLog.CONNECTOR_SYNC_MAIN_LOG);
+
+		setValue(0, id);
+		setValue(1, consumerId);
+		setValue(2, syncDate);
+		setValue(3, countNew);
+		setValue(4, countTotal);
+		setValue(5, latestPageId);
 	}
 
 	/**
@@ -56,10 +69,10 @@ public class ConnectorSyncMainLogRecord extends UpdatableRecordImpl<ConnectorSyn
 	}
 
 	/**
-	 * Setter for <code>thehomeland.connector_sync_main_log.consumer_id</code>.
+	 * Setter for <code>thehomeland.connector_sync_main_log.id</code>.
 	 */
-	public void setConsumerId(Integer value) {
-		setValue(1, value);
+	public void setId(Integer value) {
+		setValue(0, value);
 	}
 
 	/**
@@ -71,10 +84,10 @@ public class ConnectorSyncMainLogRecord extends UpdatableRecordImpl<ConnectorSyn
 	}
 
 	/**
-	 * Setter for <code>thehomeland.connector_sync_main_log.sync_date</code>.
+	 * Setter for <code>thehomeland.connector_sync_main_log.consumer_id</code>.
 	 */
-	public void setSyncDate(Timestamp value) {
-		setValue(2, value);
+	public void setConsumerId(Integer value) {
+		setValue(1, value);
 	}
 
 	/**
@@ -87,10 +100,10 @@ public class ConnectorSyncMainLogRecord extends UpdatableRecordImpl<ConnectorSyn
 	}
 
 	/**
-	 * Setter for <code>thehomeland.connector_sync_main_log.count_new</code>.
+	 * Setter for <code>thehomeland.connector_sync_main_log.sync_date</code>.
 	 */
-	public void setCountNew(Integer value) {
-		setValue(3, value);
+	public void setSyncDate(Timestamp value) {
+		setValue(2, value);
 	}
 
 	/**
@@ -103,10 +116,10 @@ public class ConnectorSyncMainLogRecord extends UpdatableRecordImpl<ConnectorSyn
 	}
 
 	/**
-	 * Setter for <code>thehomeland.connector_sync_main_log.count_total</code>.
+	 * Setter for <code>thehomeland.connector_sync_main_log.count_new</code>.
 	 */
-	public void setCountTotal(Integer value) {
-		setValue(4, value);
+	public void setCountNew(Integer value) {
+		setValue(3, value);
 	}
 
 	/**
@@ -119,23 +132,34 @@ public class ConnectorSyncMainLogRecord extends UpdatableRecordImpl<ConnectorSyn
 	}
 
 	/**
-	 * Setter for <code>thehomeland.connector_sync_main_log.latest_page_id</code>.
+	 * Setter for <code>thehomeland.connector_sync_main_log.count_total</code>.
 	 */
-	public void setLatestPageId(Long value) {
-		setValue(5, value);
-	}
-
-	/**
-	 * Getter for <code>thehomeland.connector_sync_main_log.latest_page_id</code>.
-	 */
-	@Column(name = "latest_page_id", precision = 19)
-	public Long getLatestPageId() {
-		return (Long) getValue(5);
+	public void setCountTotal(Integer value) {
+		setValue(4, value);
 	}
 
 	// -------------------------------------------------------------------------
 	// Primary key information
 	// -------------------------------------------------------------------------
+
+	/**
+	 * Getter for <code>thehomeland.connector_sync_main_log.latest_page_id</code>.
+	 */
+	@Column(name = "latest_page_id", precision = 10)
+	public Integer getLatestPageId() {
+		return (Integer) getValue(5);
+	}
+
+	// -------------------------------------------------------------------------
+	// Record6 type implementation
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Setter for <code>thehomeland.connector_sync_main_log.latest_page_id</code>.
+	 */
+	public void setLatestPageId(Integer value) {
+		setValue(5, value);
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -145,15 +169,11 @@ public class ConnectorSyncMainLogRecord extends UpdatableRecordImpl<ConnectorSyn
 		return (Record1) super.key();
 	}
 
-	// -------------------------------------------------------------------------
-	// Record6 type implementation
-	// -------------------------------------------------------------------------
-
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Row6<Integer, Integer, Timestamp, Integer, Integer, Long> fieldsRow() {
+	public Row6<Integer, Integer, Timestamp, Integer, Integer, Integer> fieldsRow() {
 		return (Row6) super.fieldsRow();
 	}
 
@@ -161,7 +181,7 @@ public class ConnectorSyncMainLogRecord extends UpdatableRecordImpl<ConnectorSyn
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Row6<Integer, Integer, Timestamp, Integer, Integer, Long> valuesRow() {
+	public Row6<Integer, Integer, Timestamp, Integer, Integer, Integer> valuesRow() {
 		return (Row6) super.valuesRow();
 	}
 
@@ -209,7 +229,7 @@ public class ConnectorSyncMainLogRecord extends UpdatableRecordImpl<ConnectorSyn
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Field<Long> field6() {
+	public Field<Integer> field6() {
 		return ConnectorSyncMainLog.CONNECTOR_SYNC_MAIN_LOG.LATEST_PAGE_ID;
 	}
 
@@ -257,7 +277,7 @@ public class ConnectorSyncMainLogRecord extends UpdatableRecordImpl<ConnectorSyn
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Long value6() {
+	public Integer value6() {
 		return getLatestPageId();
 	}
 
@@ -306,11 +326,15 @@ public class ConnectorSyncMainLogRecord extends UpdatableRecordImpl<ConnectorSyn
 		return this;
 	}
 
+	// -------------------------------------------------------------------------
+	// Constructors
+	// -------------------------------------------------------------------------
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ConnectorSyncMainLogRecord value6(Long value) {
+	public ConnectorSyncMainLogRecord value6(Integer value) {
 		setLatestPageId(value);
 		return this;
 	}
@@ -319,7 +343,7 @@ public class ConnectorSyncMainLogRecord extends UpdatableRecordImpl<ConnectorSyn
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ConnectorSyncMainLogRecord values(Integer value1, Integer value2, Timestamp value3, Integer value4, Integer value5, Long value6) {
+	public ConnectorSyncMainLogRecord values(Integer value1, Integer value2, Timestamp value3, Integer value4, Integer value5, Integer value6) {
 		value1(value1);
 		value2(value2);
 		value3(value3);
@@ -327,30 +351,5 @@ public class ConnectorSyncMainLogRecord extends UpdatableRecordImpl<ConnectorSyn
 		value5(value5);
 		value6(value6);
 		return this;
-	}
-
-	// -------------------------------------------------------------------------
-	// Constructors
-	// -------------------------------------------------------------------------
-
-	/**
-	 * Create a detached ConnectorSyncMainLogRecord
-	 */
-	public ConnectorSyncMainLogRecord() {
-		super(ConnectorSyncMainLog.CONNECTOR_SYNC_MAIN_LOG);
-	}
-
-	/**
-	 * Create a detached, initialised ConnectorSyncMainLogRecord
-	 */
-	public ConnectorSyncMainLogRecord(Integer id, Integer consumerId, Timestamp syncDate, Integer countNew, Integer countTotal, Long latestPageId) {
-		super(ConnectorSyncMainLog.CONNECTOR_SYNC_MAIN_LOG);
-
-		setValue(0, id);
-		setValue(1, consumerId);
-		setValue(2, syncDate);
-		setValue(3, countNew);
-		setValue(4, countTotal);
-		setValue(5, latestPageId);
 	}
 }

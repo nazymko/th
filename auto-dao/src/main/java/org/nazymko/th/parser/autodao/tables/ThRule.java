@@ -4,23 +4,17 @@
 package org.nazymko.th.parser.autodao.tables;
 
 
-import java.util.Arrays;
-import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
+import org.jooq.*;
 import org.jooq.impl.TableImpl;
 import org.nazymko.th.parser.autodao.Keys;
 import org.nazymko.th.parser.autodao.Thehomeland;
 import org.nazymko.th.parser.autodao.tables.records.ThRuleRecord;
-
 import utils.support.rule.RuleStatus;
 import utils.support.rule.RuleStatusConverter;
+
+import javax.annotation.Generated;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -36,41 +30,27 @@ import utils.support.rule.RuleStatusConverter;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ThRule extends TableImpl<ThRuleRecord> {
 
-	private static final long serialVersionUID = 1294365993;
-
 	/**
 	 * The reference instance of <code>thehomeland.th_rule</code>
 	 */
 	public static final ThRule TH_RULE = new ThRule();
-
-	/**
-	 * The class holding records for this type
-	 */
-	@Override
-	public Class<ThRuleRecord> getRecordType() {
-		return ThRuleRecord.class;
-	}
-
+	private static final long serialVersionUID = 1294365993;
 	/**
 	 * The column <code>thehomeland.th_rule.id</code>.
 	 */
 	public final TableField<ThRuleRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
-
 	/**
 	 * The column <code>thehomeland.th_rule.rule</code>.
 	 */
 	public final TableField<ThRuleRecord, String> RULE = createField("rule", org.jooq.impl.SQLDataType.CLOB.nullable(false), this, "");
-
 	/**
 	 * The column <code>thehomeland.th_rule.version</code>.
 	 */
 	public final TableField<ThRuleRecord, Integer> VERSION = createField("version", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaulted(true), this, "");
-
 	/**
 	 * The column <code>thehomeland.th_rule.status</code>.
 	 */
 	public final TableField<ThRuleRecord, RuleStatus> STATUS = createField("status", org.jooq.impl.SQLDataType.INTEGER, this, "", new RuleStatusConverter());
-
 	/**
 	 * The column <code>thehomeland.th_rule.authority</code>.
 	 */
@@ -96,6 +76,14 @@ public class ThRule extends TableImpl<ThRuleRecord> {
 
 	private ThRule(String alias, Table<ThRuleRecord> aliased, Field<?>[] parameters) {
 		super(alias, Thehomeland.THEHOMELAND, aliased, parameters, "");
+	}
+
+	/**
+	 * The class holding records for this type
+	 */
+	@Override
+	public Class<ThRuleRecord> getRecordType() {
+		return ThRuleRecord.class;
 	}
 
 	/**

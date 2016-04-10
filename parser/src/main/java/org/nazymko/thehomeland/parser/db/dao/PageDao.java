@@ -124,15 +124,12 @@ public class PageDao extends AbstractDao<Integer, ThPageRecord> {
         return pageRecord;
     }
 
-    //TODO: how to identify consumer - authority ?
-    public Result<ThPageRecord> getAfter(Integer lastPage, String consumer) {
-        Integer siteId = siteDao.getIdByUrl(consumer);
-
+    public Result<ThPageRecord> getAfter(Integer lastPage) {
         Result<ThPageRecord> records = getDslContext()
                 .selectFrom(TH_PAGE)
-                .where(TH_PAGE.SITE_ID.eq(siteId))
-                .and(TH_PAGE.ID.gt(lastPage))
+                .where(TH_PAGE.ID.gt(lastPage))
                 .fetch();
+
         return records;
     }
 }

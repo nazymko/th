@@ -4,7 +4,14 @@
 package org.nazymko.th.parser.autodao.tables.records;
 
 
-import java.sql.Timestamp;
+import org.jooq.Field;
+import org.jooq.Record1;
+import org.jooq.Record9;
+import org.jooq.Row9;
+import org.jooq.impl.UpdatableRecordImpl;
+import org.nazymko.th.parser.autodao.tables.TaskRun;
+import utils.support.runtype.RunType;
+import utils.support.task.TaskStatus;
 
 import javax.annotation.Generated;
 import javax.persistence.Column;
@@ -12,16 +19,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
-import org.jooq.Field;
-import org.jooq.Record1;
-import org.jooq.Record9;
-import org.jooq.Row9;
-import org.jooq.impl.UpdatableRecordImpl;
-import org.nazymko.th.parser.autodao.tables.TaskRun;
-
-import utils.support.runtype.RunType;
-import utils.support.task.TaskStatus;
+import java.sql.Timestamp;
 
 
 /**
@@ -42,10 +40,27 @@ public class TaskRunRecord extends UpdatableRecordImpl<TaskRunRecord> implements
 	private static final long serialVersionUID = -585062670;
 
 	/**
-	 * Setter for <code>thehomeland.task_run.id</code>.
+	 * Create a detached TaskRunRecord
 	 */
-	public void setId(Integer value) {
-		setValue(0, value);
+	public TaskRunRecord() {
+		super(TaskRun.TASK_RUN);
+	}
+
+	/**
+	 * Create a detached, initialised TaskRunRecord
+	 */
+	public TaskRunRecord(Integer id, Timestamp startAt, Integer scheduleSourceId, TaskStatus status, String message, Boolean isEnabled, Timestamp finishAt, RunType runType, Integer siteId) {
+		super(TaskRun.TASK_RUN);
+
+		setValue(0, id);
+		setValue(1, startAt);
+		setValue(2, scheduleSourceId);
+		setValue(3, status);
+		setValue(4, message);
+		setValue(5, isEnabled);
+		setValue(6, finishAt);
+		setValue(7, runType);
+		setValue(8, siteId);
 	}
 
 	/**
@@ -59,10 +74,10 @@ public class TaskRunRecord extends UpdatableRecordImpl<TaskRunRecord> implements
 	}
 
 	/**
-	 * Setter for <code>thehomeland.task_run.start_at</code>.
+	 * Setter for <code>thehomeland.task_run.id</code>.
 	 */
-	public void setStartAt(Timestamp value) {
-		setValue(1, value);
+	public void setId(Integer value) {
+		setValue(0, value);
 	}
 
 	/**
@@ -75,10 +90,10 @@ public class TaskRunRecord extends UpdatableRecordImpl<TaskRunRecord> implements
 	}
 
 	/**
-	 * Setter for <code>thehomeland.task_run.schedule_source_id</code>.
+	 * Setter for <code>thehomeland.task_run.start_at</code>.
 	 */
-	public void setScheduleSourceId(Integer value) {
-		setValue(2, value);
+	public void setStartAt(Timestamp value) {
+		setValue(1, value);
 	}
 
 	/**
@@ -90,10 +105,10 @@ public class TaskRunRecord extends UpdatableRecordImpl<TaskRunRecord> implements
 	}
 
 	/**
-	 * Setter for <code>thehomeland.task_run.status</code>.
+	 * Setter for <code>thehomeland.task_run.schedule_source_id</code>.
 	 */
-	public void setStatus(TaskStatus value) {
-		setValue(3, value);
+	public void setScheduleSourceId(Integer value) {
+		setValue(2, value);
 	}
 
 	/**
@@ -105,10 +120,10 @@ public class TaskRunRecord extends UpdatableRecordImpl<TaskRunRecord> implements
 	}
 
 	/**
-	 * Setter for <code>thehomeland.task_run.message</code>.
+	 * Setter for <code>thehomeland.task_run.status</code>.
 	 */
-	public void setMessage(String value) {
-		setValue(4, value);
+	public void setStatus(TaskStatus value) {
+		setValue(3, value);
 	}
 
 	/**
@@ -120,10 +135,10 @@ public class TaskRunRecord extends UpdatableRecordImpl<TaskRunRecord> implements
 	}
 
 	/**
-	 * Setter for <code>thehomeland.task_run.is_enabled</code>.
+	 * Setter for <code>thehomeland.task_run.message</code>.
 	 */
-	public void setIsEnabled(Boolean value) {
-		setValue(5, value);
+	public void setMessage(String value) {
+		setValue(4, value);
 	}
 
 	/**
@@ -135,10 +150,10 @@ public class TaskRunRecord extends UpdatableRecordImpl<TaskRunRecord> implements
 	}
 
 	/**
-	 * Setter for <code>thehomeland.task_run.finish_at</code>.
+	 * Setter for <code>thehomeland.task_run.is_enabled</code>.
 	 */
-	public void setFinishAt(Timestamp value) {
-		setValue(6, value);
+	public void setIsEnabled(Boolean value) {
+		setValue(5, value);
 	}
 
 	/**
@@ -150,10 +165,10 @@ public class TaskRunRecord extends UpdatableRecordImpl<TaskRunRecord> implements
 	}
 
 	/**
-	 * Setter for <code>thehomeland.task_run.run_type</code>.
+	 * Setter for <code>thehomeland.task_run.finish_at</code>.
 	 */
-	public void setRunType(RunType value) {
-		setValue(7, value);
+	public void setFinishAt(Timestamp value) {
+		setValue(6, value);
 	}
 
 	/**
@@ -166,11 +181,15 @@ public class TaskRunRecord extends UpdatableRecordImpl<TaskRunRecord> implements
 	}
 
 	/**
-	 * Setter for <code>thehomeland.task_run.site_id</code>.
+	 * Setter for <code>thehomeland.task_run.run_type</code>.
 	 */
-	public void setSiteId(Integer value) {
-		setValue(8, value);
+	public void setRunType(RunType value) {
+		setValue(7, value);
 	}
+
+	// -------------------------------------------------------------------------
+	// Primary key information
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Getter for <code>thehomeland.task_run.site_id</code>.
@@ -182,8 +201,15 @@ public class TaskRunRecord extends UpdatableRecordImpl<TaskRunRecord> implements
 	}
 
 	// -------------------------------------------------------------------------
-	// Primary key information
+	// Record9 type implementation
 	// -------------------------------------------------------------------------
+
+	/**
+	 * Setter for <code>thehomeland.task_run.site_id</code>.
+	 */
+	public void setSiteId(Integer value) {
+		setValue(8, value);
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -192,10 +218,6 @@ public class TaskRunRecord extends UpdatableRecordImpl<TaskRunRecord> implements
 	public Record1<Integer> key() {
 		return (Record1) super.key();
 	}
-
-	// -------------------------------------------------------------------------
-	// Record9 type implementation
-	// -------------------------------------------------------------------------
 
 	/**
 	 * {@inheritDoc}
@@ -429,6 +451,10 @@ public class TaskRunRecord extends UpdatableRecordImpl<TaskRunRecord> implements
 		return this;
 	}
 
+	// -------------------------------------------------------------------------
+	// Constructors
+	// -------------------------------------------------------------------------
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -453,33 +479,5 @@ public class TaskRunRecord extends UpdatableRecordImpl<TaskRunRecord> implements
 		value8(value8);
 		value9(value9);
 		return this;
-	}
-
-	// -------------------------------------------------------------------------
-	// Constructors
-	// -------------------------------------------------------------------------
-
-	/**
-	 * Create a detached TaskRunRecord
-	 */
-	public TaskRunRecord() {
-		super(TaskRun.TASK_RUN);
-	}
-
-	/**
-	 * Create a detached, initialised TaskRunRecord
-	 */
-	public TaskRunRecord(Integer id, Timestamp startAt, Integer scheduleSourceId, TaskStatus status, String message, Boolean isEnabled, Timestamp finishAt, RunType runType, Integer siteId) {
-		super(TaskRun.TASK_RUN);
-
-		setValue(0, id);
-		setValue(1, startAt);
-		setValue(2, scheduleSourceId);
-		setValue(3, status);
-		setValue(4, message);
-		setValue(5, isEnabled);
-		setValue(6, finishAt);
-		setValue(7, runType);
-		setValue(8, siteId);
 	}
 }

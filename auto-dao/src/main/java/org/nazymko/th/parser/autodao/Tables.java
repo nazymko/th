@@ -4,17 +4,9 @@
 package org.nazymko.th.parser.autodao;
 
 
-import javax.annotation.Generated;
+import org.nazymko.th.parser.autodao.tables.*;
 
-import org.nazymko.th.parser.autodao.tables.ConnectorConsumer;
-import org.nazymko.th.parser.autodao.tables.ConnectorSyncMainLog;
-import org.nazymko.th.parser.autodao.tables.ConnectorSyncPageLog;
-import org.nazymko.th.parser.autodao.tables.TaskRun;
-import org.nazymko.th.parser.autodao.tables.TaskSchedule;
-import org.nazymko.th.parser.autodao.tables.ThAttributeData;
-import org.nazymko.th.parser.autodao.tables.ThPage;
-import org.nazymko.th.parser.autodao.tables.ThRule;
-import org.nazymko.th.parser.autodao.tables.ThSite;
+import javax.annotation.Generated;
 
 
 /**
@@ -34,6 +26,11 @@ public class Tables {
 	 * The table thehomeland.connector_consumer
 	 */
 	public static final ConnectorConsumer CONNECTOR_CONSUMER = org.nazymko.th.parser.autodao.tables.ConnectorConsumer.CONNECTOR_CONSUMER;
+
+	/**
+	 * The table thehomeland.connector_rules
+	 */
+	public static final ConnectorRules CONNECTOR_RULES = org.nazymko.th.parser.autodao.tables.ConnectorRules.CONNECTOR_RULES;
 
 	/**
 	 * The table thehomeland.connector_sync_main_log

@@ -4,15 +4,14 @@
 package org.nazymko.th.parser.autodao.tables.daos;
 
 
-import java.sql.Timestamp;
-import java.util.List;
-
-import javax.annotation.Generated;
-
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
 import org.nazymko.th.parser.autodao.tables.ThPage;
 import org.nazymko.th.parser.autodao.tables.records.ThPageRecord;
+
+import javax.annotation.Generated;
+import java.sql.Timestamp;
+import java.util.List;
 
 
 /**
@@ -65,6 +64,20 @@ public class ThPageDao extends DAOImpl<ThPageRecord, org.nazymko.th.parser.autod
 	}
 
 	/**
+	 * Fetch records that have <code>page_url IN (values)</code>
+	 */
+	public List<org.nazymko.th.parser.autodao.tables.pojos.ThPage> fetchByPageUrl(String... values) {
+		return fetch(ThPage.TH_PAGE.PAGE_URL, values);
+	}
+
+	/**
+	 * Fetch records that have <code>version IN (values)</code>
+	 */
+	public List<org.nazymko.th.parser.autodao.tables.pojos.ThPage> fetchByVersion(Integer... values) {
+		return fetch(ThPage.TH_PAGE.VERSION, values);
+	}
+
+	/**
 	 * Fetch records that have <code>authority IN (values)</code>
 	 */
 	public List<org.nazymko.th.parser.autodao.tables.pojos.ThPage> fetchByAuthority(String... values) {
@@ -93,13 +106,6 @@ public class ThPageDao extends DAOImpl<ThPageRecord, org.nazymko.th.parser.autod
 	}
 
 	/**
-	 * Fetch records that have <code>version IN (values)</code>
-	 */
-	public List<org.nazymko.th.parser.autodao.tables.pojos.ThPage> fetchByVersion(Integer... values) {
-		return fetch(ThPage.TH_PAGE.VERSION, values);
-	}
-
-	/**
 	 * Fetch records that have <code>registered_at IN (values)</code>
 	 */
 	public List<org.nazymko.th.parser.autodao.tables.pojos.ThPage> fetchByRegisteredAt(Timestamp... values) {
@@ -118,12 +124,5 @@ public class ThPageDao extends DAOImpl<ThPageRecord, org.nazymko.th.parser.autod
 	 */
 	public List<org.nazymko.th.parser.autodao.tables.pojos.ThPage> fetchByTaskRunId(Integer... values) {
 		return fetch(ThPage.TH_PAGE.TASK_RUN_ID, values);
-	}
-
-	/**
-	 * Fetch records that have <code>page_url IN (values)</code>
-	 */
-	public List<org.nazymko.th.parser.autodao.tables.pojos.ThPage> fetchByPageUrl(String... values) {
-		return fetch(ThPage.TH_PAGE.PAGE_URL, values);
 	}
 }

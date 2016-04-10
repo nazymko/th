@@ -4,15 +4,14 @@
 package org.nazymko.th.parser.autodao.tables.daos;
 
 
-import java.sql.Timestamp;
-import java.util.List;
-
-import javax.annotation.Generated;
-
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
 import org.nazymko.th.parser.autodao.tables.ConnectorSyncMainLog;
 import org.nazymko.th.parser.autodao.tables.records.ConnectorSyncMainLogRecord;
+
+import javax.annotation.Generated;
+import java.sql.Timestamp;
+import java.util.List;
 
 
 /**
@@ -95,7 +94,7 @@ public class ConnectorSyncMainLogDao extends DAOImpl<ConnectorSyncMainLogRecord,
 	/**
 	 * Fetch records that have <code>latest_page_id IN (values)</code>
 	 */
-	public List<org.nazymko.th.parser.autodao.tables.pojos.ConnectorSyncMainLog> fetchByLatestPageId(Long... values) {
+	public List<org.nazymko.th.parser.autodao.tables.pojos.ConnectorSyncMainLog> fetchByLatestPageId(Integer... values) {
 		return fetch(ConnectorSyncMainLog.CONNECTOR_SYNC_MAIN_LOG.LATEST_PAGE_ID, values);
 	}
 }

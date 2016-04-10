@@ -4,14 +4,13 @@
 package org.nazymko.th.parser.autodao.tables.daos;
 
 
-import java.util.List;
-
-import javax.annotation.Generated;
-
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
 import org.nazymko.th.parser.autodao.tables.ThSite;
 import org.nazymko.th.parser.autodao.tables.records.ThSiteRecord;
+
+import javax.annotation.Generated;
+import java.util.List;
 
 
 /**
@@ -75,5 +74,12 @@ public class ThSiteDao extends DAOImpl<ThSiteRecord, org.nazymko.th.parser.autod
 	 */
 	public List<org.nazymko.th.parser.autodao.tables.pojos.ThSite> fetchByName(String... values) {
 		return fetch(ThSite.TH_SITE.NAME, values);
+	}
+
+	/**
+	 * Fetch records that have <code>default_url IN (values)</code>
+	 */
+	public List<org.nazymko.th.parser.autodao.tables.pojos.ThSite> fetchByDefaultUrl(String... values) {
+		return fetch(ThSite.TH_SITE.DEFAULT_URL, values);
 	}
 }

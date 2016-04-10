@@ -4,8 +4,6 @@
 package org.nazymko.th.parser.autodao.tables.pojos;
 
 
-import java.io.Serializable;
-
 import javax.annotation.Generated;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 
 /**
@@ -30,11 +29,12 @@ import javax.validation.constraints.Size;
 @Table(name = "th_site", schema = "thehomeland")
 public class ThSite implements Serializable {
 
-	private static final long serialVersionUID = 431478550;
+	private static final long serialVersionUID = 1926795167;
 
 	private Integer id;
 	private String  authority;
 	private String  name;
+	private String defaultUrl;
 
 	public ThSite() {}
 
@@ -42,16 +42,19 @@ public class ThSite implements Serializable {
 		this.id = value.id;
 		this.authority = value.authority;
 		this.name = value.name;
+		this.defaultUrl = value.defaultUrl;
 	}
 
 	public ThSite(
-		Integer id,
-		String  authority,
-		String  name
+			Integer id,
+			String  authority,
+			String name,
+			String defaultUrl
 	) {
 		this.id = id;
 		this.authority = authority;
 		this.name = name;
+		this.defaultUrl = defaultUrl;
 	}
 
 	@Id
@@ -85,6 +88,17 @@ public class ThSite implements Serializable {
 		this.name = name;
 	}
 
+	@Column(name = "default_url", nullable = false, length = 1024)
+	@NotNull
+	@Size(max = 1024)
+	public String getDefaultUrl() {
+		return this.defaultUrl;
+	}
+
+	public void setDefaultUrl(String defaultUrl) {
+		this.defaultUrl = defaultUrl;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder("ThSite (");
@@ -92,6 +106,7 @@ public class ThSite implements Serializable {
 		sb.append(id);
 		sb.append(", ").append(authority);
 		sb.append(", ").append(name);
+		sb.append(", ").append(defaultUrl);
 
 		sb.append(")");
 		return sb.toString();

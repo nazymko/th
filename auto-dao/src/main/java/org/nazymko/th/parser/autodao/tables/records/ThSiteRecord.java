@@ -4,6 +4,13 @@
 package org.nazymko.th.parser.autodao.tables.records;
 
 
+import org.jooq.Field;
+import org.jooq.Record1;
+import org.jooq.Record4;
+import org.jooq.Row4;
+import org.jooq.impl.UpdatableRecordImpl;
+import org.nazymko.th.parser.autodao.tables.ThSite;
+
 import javax.annotation.Generated;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,13 +18,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import org.jooq.Field;
-import org.jooq.Record1;
-import org.jooq.Record3;
-import org.jooq.Row3;
-import org.jooq.impl.UpdatableRecordImpl;
-import org.nazymko.th.parser.autodao.tables.ThSite;
 
 
 /**
@@ -33,15 +33,27 @@ import org.nazymko.th.parser.autodao.tables.ThSite;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Entity
 @Table(name = "th_site", schema = "thehomeland")
-public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements Record3<Integer, String, String> {
+public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements Record4<Integer, String, String, String> {
 
-	private static final long serialVersionUID = 1917932210;
+	private static final long serialVersionUID = 160987920;
 
 	/**
-	 * Setter for <code>thehomeland.th_site.id</code>.
+	 * Create a detached ThSiteRecord
 	 */
-	public void setId(Integer value) {
-		setValue(0, value);
+	public ThSiteRecord() {
+		super(ThSite.TH_SITE);
+	}
+
+	/**
+	 * Create a detached, initialised ThSiteRecord
+	 */
+	public ThSiteRecord(Integer id, String authority, String name, String defaultUrl) {
+		super(ThSite.TH_SITE);
+
+		setValue(0, id);
+		setValue(1, authority);
+		setValue(2, name);
+		setValue(3, defaultUrl);
 	}
 
 	/**
@@ -55,10 +67,10 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	}
 
 	/**
-	 * Setter for <code>thehomeland.th_site.authority</code>.
+	 * Setter for <code>thehomeland.th_site.id</code>.
 	 */
-	public void setAuthority(String value) {
-		setValue(1, value);
+	public void setId(Integer value) {
+		setValue(0, value);
 	}
 
 	/**
@@ -71,10 +83,10 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	}
 
 	/**
-	 * Setter for <code>thehomeland.th_site.name</code>.
+	 * Setter for <code>thehomeland.th_site.authority</code>.
 	 */
-	public void setName(String value) {
-		setValue(2, value);
+	public void setAuthority(String value) {
+		setValue(1, value);
 	}
 
 	/**
@@ -86,9 +98,37 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 		return (String) getValue(2);
 	}
 
+	/**
+	 * Setter for <code>thehomeland.th_site.name</code>.
+	 */
+	public void setName(String value) {
+		setValue(2, value);
+	}
+
 	// -------------------------------------------------------------------------
 	// Primary key information
 	// -------------------------------------------------------------------------
+
+	/**
+	 * Getter for <code>thehomeland.th_site.default_url</code>.
+	 */
+	@Column(name = "default_url", nullable = false, length = 1024)
+	@NotNull
+	@Size(max = 1024)
+	public String getDefaultUrl() {
+		return (String) getValue(3);
+	}
+
+	// -------------------------------------------------------------------------
+	// Record4 type implementation
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Setter for <code>thehomeland.th_site.default_url</code>.
+	 */
+	public void setDefaultUrl(String value) {
+		setValue(3, value);
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -98,24 +138,20 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 		return (Record1) super.key();
 	}
 
-	// -------------------------------------------------------------------------
-	// Record3 type implementation
-	// -------------------------------------------------------------------------
-
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Row3<Integer, String, String> fieldsRow() {
-		return (Row3) super.fieldsRow();
+	public Row4<Integer, String, String, String> fieldsRow() {
+		return (Row4) super.fieldsRow();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Row3<Integer, String, String> valuesRow() {
-		return (Row3) super.valuesRow();
+	public Row4<Integer, String, String, String> valuesRow() {
+		return (Row4) super.valuesRow();
 	}
 
 	/**
@@ -146,6 +182,14 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
+	public Field<String> field4() {
+		return ThSite.TH_SITE.DEFAULT_URL;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public Integer value1() {
 		return getId();
 	}
@@ -164,6 +208,14 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	@Override
 	public String value3() {
 		return getName();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String value4() {
+		return getDefaultUrl();
 	}
 
 	/**
@@ -193,36 +245,28 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 		return this;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public ThSiteRecord values(Integer value1, String value2, String value3) {
-		value1(value1);
-		value2(value2);
-		value3(value3);
-		return this;
-	}
-
 	// -------------------------------------------------------------------------
 	// Constructors
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Create a detached ThSiteRecord
+	 * {@inheritDoc}
 	 */
-	public ThSiteRecord() {
-		super(ThSite.TH_SITE);
+	@Override
+	public ThSiteRecord value4(String value) {
+		setDefaultUrl(value);
+		return this;
 	}
 
 	/**
-	 * Create a detached, initialised ThSiteRecord
+	 * {@inheritDoc}
 	 */
-	public ThSiteRecord(Integer id, String authority, String name) {
-		super(ThSite.TH_SITE);
-
-		setValue(0, id);
-		setValue(1, authority);
-		setValue(2, name);
+	@Override
+	public ThSiteRecord values(Integer value1, String value2, String value3, String value4) {
+		value1(value1);
+		value2(value2);
+		value3(value3);
+		value4(value4);
+		return this;
 	}
 }

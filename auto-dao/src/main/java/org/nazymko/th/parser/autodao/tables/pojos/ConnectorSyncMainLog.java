@@ -4,15 +4,14 @@
 package org.nazymko.th.parser.autodao.tables.pojos;
 
 
-import java.io.Serializable;
-import java.sql.Timestamp;
-
 import javax.annotation.Generated;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.sql.Timestamp;
 
 
 /**
@@ -30,14 +29,14 @@ import javax.validation.constraints.NotNull;
 @Table(name = "connector_sync_main_log", schema = "thehomeland")
 public class ConnectorSyncMainLog implements Serializable {
 
-	private static final long serialVersionUID = -733524966;
+	private static final long serialVersionUID = 206123561;
 
 	private Integer   id;
 	private Integer   consumerId;
 	private Timestamp syncDate;
 	private Integer   countNew;
 	private Integer   countTotal;
-	private Long      latestPageId;
+	private Integer latestPageId;
 
 	public ConnectorSyncMainLog() {}
 
@@ -51,12 +50,12 @@ public class ConnectorSyncMainLog implements Serializable {
 	}
 
 	public ConnectorSyncMainLog(
-		Integer   id,
-		Integer   consumerId,
-		Timestamp syncDate,
-		Integer   countNew,
-		Integer   countTotal,
-		Long      latestPageId
+			Integer   id,
+			Integer   consumerId,
+			Timestamp syncDate,
+			Integer   countNew,
+			Integer   countTotal,
+			Integer latestPageId
 	) {
 		this.id = id;
 		this.consumerId = consumerId;
@@ -116,12 +115,12 @@ public class ConnectorSyncMainLog implements Serializable {
 		this.countTotal = countTotal;
 	}
 
-	@Column(name = "latest_page_id", precision = 19)
-	public Long getLatestPageId() {
+	@Column(name = "latest_page_id", precision = 10)
+	public Integer getLatestPageId() {
 		return this.latestPageId;
 	}
 
-	public void setLatestPageId(Long latestPageId) {
+	public void setLatestPageId(Integer latestPageId) {
 		this.latestPageId = latestPageId;
 	}
 

@@ -4,9 +4,6 @@
 package org.nazymko.th.parser.autodao.tables.pojos;
 
 
-import java.io.Serializable;
-import java.sql.Timestamp;
-
 import javax.annotation.Generated;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.sql.Timestamp;
 
 
 /**
@@ -31,56 +30,56 @@ import javax.validation.constraints.Size;
 @Table(name = "th_page", schema = "thehomeland")
 public class ThPage implements Serializable {
 
-	private static final long serialVersionUID = -757743504;
+	private static final long serialVersionUID = 407309876;
 
 	private Integer   id;
+	private String pageUrl;
+	private Integer version;
 	private String    authority;
 	private Integer   siteId;
 	private Timestamp visitedAt;
 	private String    type;
-	private Integer   version;
 	private Timestamp registeredAt;
 	private Integer   sourcepage;
 	private Integer   taskRunId;
-	private String    pageUrl;
 
 	public ThPage() {}
 
 	public ThPage(ThPage value) {
 		this.id = value.id;
+		this.pageUrl = value.pageUrl;
+		this.version = value.version;
 		this.authority = value.authority;
 		this.siteId = value.siteId;
 		this.visitedAt = value.visitedAt;
 		this.type = value.type;
-		this.version = value.version;
 		this.registeredAt = value.registeredAt;
 		this.sourcepage = value.sourcepage;
 		this.taskRunId = value.taskRunId;
-		this.pageUrl = value.pageUrl;
 	}
 
 	public ThPage(
-		Integer   id,
-		String    authority,
-		Integer   siteId,
-		Timestamp visitedAt,
-		String    type,
-		Integer   version,
-		Timestamp registeredAt,
-		Integer   sourcepage,
-		Integer   taskRunId,
-		String    pageUrl
+			Integer   id,
+			String pageUrl,
+			Integer version,
+			String    authority,
+			Integer   siteId,
+			Timestamp visitedAt,
+			String    type,
+			Timestamp registeredAt,
+			Integer   sourcepage,
+			Integer taskRunId
 	) {
 		this.id = id;
+		this.pageUrl = pageUrl;
+		this.version = version;
 		this.authority = authority;
 		this.siteId = siteId;
 		this.visitedAt = visitedAt;
 		this.type = type;
-		this.version = version;
 		this.registeredAt = registeredAt;
 		this.sourcepage = sourcepage;
 		this.taskRunId = taskRunId;
-		this.pageUrl = pageUrl;
 	}
 
 	@Id
@@ -92,6 +91,27 @@ public class ThPage implements Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	@Column(name = "page_url", nullable = false, length = 1024)
+	@NotNull
+	@Size(max = 1024)
+	public String getPageUrl() {
+		return this.pageUrl;
+	}
+
+	public void setPageUrl(String pageUrl) {
+		this.pageUrl = pageUrl;
+	}
+
+	@Column(name = "version", nullable = false, precision = 10)
+	@NotNull
+	public Integer getVersion() {
+		return this.version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 
 	@Column(name = "authority", length = 512)
@@ -132,16 +152,6 @@ public class ThPage implements Serializable {
 		this.type = type;
 	}
 
-	@Column(name = "version", nullable = false, precision = 10)
-	@NotNull
-	public Integer getVersion() {
-		return this.version;
-	}
-
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
-
 	@Column(name = "registered_at")
 	public Timestamp getRegisteredAt() {
 		return this.registeredAt;
@@ -171,31 +181,20 @@ public class ThPage implements Serializable {
 		this.taskRunId = taskRunId;
 	}
 
-	@Column(name = "page_url", nullable = false, length = 1024)
-	@NotNull
-	@Size(max = 1024)
-	public String getPageUrl() {
-		return this.pageUrl;
-	}
-
-	public void setPageUrl(String pageUrl) {
-		this.pageUrl = pageUrl;
-	}
-
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder("ThPage (");
 
 		sb.append(id);
+		sb.append(", ").append(pageUrl);
+		sb.append(", ").append(version);
 		sb.append(", ").append(authority);
 		sb.append(", ").append(siteId);
 		sb.append(", ").append(visitedAt);
 		sb.append(", ").append(type);
-		sb.append(", ").append(version);
 		sb.append(", ").append(registeredAt);
 		sb.append(", ").append(sourcepage);
 		sb.append(", ").append(taskRunId);
-		sb.append(", ").append(pageUrl);
 
 		sb.append(")");
 		return sb.toString();

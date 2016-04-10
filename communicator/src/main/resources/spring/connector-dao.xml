@@ -5,4 +5,5 @@
     <bean id="pageLogDao" class="org.nazymko.thehomeland.dao.SyncPageLogDao"/>
     <bean id="mainLogDao" class="org.nazymko.thehomeland.dao.SyncMainLogDao"/>
     <bean id="consumerDao" class="org.nazymko.thehomeland.dao.SyncConsumerDao"/>
+    <bean id="connectorRuleDao" class="org.nazymko.thehomeland.dao.SyncRuleDao"/>
 </beans>

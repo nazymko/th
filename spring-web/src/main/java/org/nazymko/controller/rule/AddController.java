@@ -21,9 +21,9 @@ import java.util.HashMap;
 /**
  * Created by nazymko.patronus@gmail.com. on 17.01.2016.
  */
+@Log4j2
 @Controller
 @RequestMapping("rule")
-@Log4j2
 public class AddController {
     @Autowired
     RuleDao ruleDao;

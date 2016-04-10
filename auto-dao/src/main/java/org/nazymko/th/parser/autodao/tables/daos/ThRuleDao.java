@@ -4,16 +4,14 @@
 package org.nazymko.th.parser.autodao.tables.daos;
 
 
-import java.util.List;
-
-import javax.annotation.Generated;
-
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
 import org.nazymko.th.parser.autodao.tables.ThRule;
 import org.nazymko.th.parser.autodao.tables.records.ThRuleRecord;
-
 import utils.support.rule.RuleStatus;
+
+import javax.annotation.Generated;
+import java.util.List;
 
 
 /**

@@ -4,6 +4,13 @@
 package org.nazymko.th.parser.autodao.tables.records;
 
 
+import org.jooq.Field;
+import org.jooq.Record1;
+import org.jooq.Record9;
+import org.jooq.Row9;
+import org.jooq.impl.UpdatableRecordImpl;
+import org.nazymko.th.parser.autodao.tables.ThAttributeData;
+
 import javax.annotation.Generated;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,13 +18,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import org.jooq.Field;
-import org.jooq.Record1;
-import org.jooq.Record9;
-import org.jooq.Row9;
-import org.jooq.impl.UpdatableRecordImpl;
-import org.nazymko.th.parser.autodao.tables.ThAttributeData;
 
 
 /**
@@ -38,10 +38,27 @@ public class ThAttributeDataRecord extends UpdatableRecordImpl<ThAttributeDataRe
 	private static final long serialVersionUID = -1150623274;
 
 	/**
-	 * Setter for <code>thehomeland.th_attribute_data.id</code>.
+	 * Create a detached ThAttributeDataRecord
 	 */
-	public void setId(Integer value) {
-		setValue(0, value);
+	public ThAttributeDataRecord() {
+		super(ThAttributeData.TH_ATTRIBUTE_DATA);
+	}
+
+	/**
+	 * Create a detached, initialised ThAttributeDataRecord
+	 */
+	public ThAttributeDataRecord(Integer id, Integer siteId, Integer pageId, String attributeName, String attributeValue, Integer attributeIndex, String attributeType, String attributeFormat, Integer ruleId) {
+		super(ThAttributeData.TH_ATTRIBUTE_DATA);
+
+		setValue(0, id);
+		setValue(1, siteId);
+		setValue(2, pageId);
+		setValue(3, attributeName);
+		setValue(4, attributeValue);
+		setValue(5, attributeIndex);
+		setValue(6, attributeType);
+		setValue(7, attributeFormat);
+		setValue(8, ruleId);
 	}
 
 	/**
@@ -55,10 +72,10 @@ public class ThAttributeDataRecord extends UpdatableRecordImpl<ThAttributeDataRe
 	}
 
 	/**
-	 * Setter for <code>thehomeland.th_attribute_data.site_id</code>.
+	 * Setter for <code>thehomeland.th_attribute_data.id</code>.
 	 */
-	public void setSiteId(Integer value) {
-		setValue(1, value);
+	public void setId(Integer value) {
+		setValue(0, value);
 	}
 
 	/**
@@ -70,10 +87,10 @@ public class ThAttributeDataRecord extends UpdatableRecordImpl<ThAttributeDataRe
 	}
 
 	/**
-	 * Setter for <code>thehomeland.th_attribute_data.page_id</code>.
+	 * Setter for <code>thehomeland.th_attribute_data.site_id</code>.
 	 */
-	public void setPageId(Integer value) {
-		setValue(2, value);
+	public void setSiteId(Integer value) {
+		setValue(1, value);
 	}
 
 	/**
@@ -85,10 +102,10 @@ public class ThAttributeDataRecord extends UpdatableRecordImpl<ThAttributeDataRe
 	}
 
 	/**
-	 * Setter for <code>thehomeland.th_attribute_data.attribute_name</code>.
+	 * Setter for <code>thehomeland.th_attribute_data.page_id</code>.
 	 */
-	public void setAttributeName(String value) {
-		setValue(3, value);
+	public void setPageId(Integer value) {
+		setValue(2, value);
 	}
 
 	/**
@@ -102,10 +119,10 @@ public class ThAttributeDataRecord extends UpdatableRecordImpl<ThAttributeDataRe
 	}
 
 	/**
-	 * Setter for <code>thehomeland.th_attribute_data.attribute_value</code>.
+	 * Setter for <code>thehomeland.th_attribute_data.attribute_name</code>.
 	 */
-	public void setAttributeValue(String value) {
-		setValue(4, value);
+	public void setAttributeName(String value) {
+		setValue(3, value);
 	}
 
 	/**
@@ -117,10 +134,10 @@ public class ThAttributeDataRecord extends UpdatableRecordImpl<ThAttributeDataRe
 	}
 
 	/**
-	 * Setter for <code>thehomeland.th_attribute_data.attribute_index</code>.
+	 * Setter for <code>thehomeland.th_attribute_data.attribute_value</code>.
 	 */
-	public void setAttributeIndex(Integer value) {
-		setValue(5, value);
+	public void setAttributeValue(String value) {
+		setValue(4, value);
 	}
 
 	/**
@@ -132,10 +149,10 @@ public class ThAttributeDataRecord extends UpdatableRecordImpl<ThAttributeDataRe
 	}
 
 	/**
-	 * Setter for <code>thehomeland.th_attribute_data.attribute_type</code>.
+	 * Setter for <code>thehomeland.th_attribute_data.attribute_index</code>.
 	 */
-	public void setAttributeType(String value) {
-		setValue(6, value);
+	public void setAttributeIndex(Integer value) {
+		setValue(5, value);
 	}
 
 	/**
@@ -148,10 +165,10 @@ public class ThAttributeDataRecord extends UpdatableRecordImpl<ThAttributeDataRe
 	}
 
 	/**
-	 * Setter for <code>thehomeland.th_attribute_data.attribute_format</code>.
+	 * Setter for <code>thehomeland.th_attribute_data.attribute_type</code>.
 	 */
-	public void setAttributeFormat(String value) {
-		setValue(7, value);
+	public void setAttributeType(String value) {
+		setValue(6, value);
 	}
 
 	/**
@@ -164,11 +181,15 @@ public class ThAttributeDataRecord extends UpdatableRecordImpl<ThAttributeDataRe
 	}
 
 	/**
-	 * Setter for <code>thehomeland.th_attribute_data.rule_id</code>.
+	 * Setter for <code>thehomeland.th_attribute_data.attribute_format</code>.
 	 */
-	public void setRuleId(Integer value) {
-		setValue(8, value);
+	public void setAttributeFormat(String value) {
+		setValue(7, value);
 	}
+
+	// -------------------------------------------------------------------------
+	// Primary key information
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Getter for <code>thehomeland.th_attribute_data.rule_id</code>.
@@ -179,8 +200,15 @@ public class ThAttributeDataRecord extends UpdatableRecordImpl<ThAttributeDataRe
 	}
 
 	// -------------------------------------------------------------------------
-	// Primary key information
+	// Record9 type implementation
 	// -------------------------------------------------------------------------
+
+	/**
+	 * Setter for <code>thehomeland.th_attribute_data.rule_id</code>.
+	 */
+	public void setRuleId(Integer value) {
+		setValue(8, value);
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -189,10 +217,6 @@ public class ThAttributeDataRecord extends UpdatableRecordImpl<ThAttributeDataRe
 	public Record1<Integer> key() {
 		return (Record1) super.key();
 	}
-
-	// -------------------------------------------------------------------------
-	// Record9 type implementation
-	// -------------------------------------------------------------------------
 
 	/**
 	 * {@inheritDoc}
@@ -426,6 +450,10 @@ public class ThAttributeDataRecord extends UpdatableRecordImpl<ThAttributeDataRe
 		return this;
 	}
 
+	// -------------------------------------------------------------------------
+	// Constructors
+	// -------------------------------------------------------------------------
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -450,33 +478,5 @@ public class ThAttributeDataRecord extends UpdatableRecordImpl<ThAttributeDataRe
 		value8(value8);
 		value9(value9);
 		return this;
-	}
-
-	// -------------------------------------------------------------------------
-	// Constructors
-	// -------------------------------------------------------------------------
-
-	/**
-	 * Create a detached ThAttributeDataRecord
-	 */
-	public ThAttributeDataRecord() {
-		super(ThAttributeData.TH_ATTRIBUTE_DATA);
-	}
-
-	/**
-	 * Create a detached, initialised ThAttributeDataRecord
-	 */
-	public ThAttributeDataRecord(Integer id, Integer siteId, Integer pageId, String attributeName, String attributeValue, Integer attributeIndex, String attributeType, String attributeFormat, Integer ruleId) {
-		super(ThAttributeData.TH_ATTRIBUTE_DATA);
-
-		setValue(0, id);
-		setValue(1, siteId);
-		setValue(2, pageId);
-		setValue(3, attributeName);
-		setValue(4, attributeValue);
-		setValue(5, attributeIndex);
-		setValue(6, attributeType);
-		setValue(7, attributeFormat);
-		setValue(8, ruleId);
 	}
 }

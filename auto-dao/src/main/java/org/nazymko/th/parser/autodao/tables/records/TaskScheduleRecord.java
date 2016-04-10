@@ -4,7 +4,12 @@
 package org.nazymko.th.parser.autodao.tables.records;
 
 
-import java.sql.Timestamp;
+import org.jooq.Field;
+import org.jooq.Record1;
+import org.jooq.Record7;
+import org.jooq.Row7;
+import org.jooq.impl.UpdatableRecordImpl;
+import org.nazymko.th.parser.autodao.tables.TaskSchedule;
 
 import javax.annotation.Generated;
 import javax.persistence.Column;
@@ -13,13 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import org.jooq.Field;
-import org.jooq.Record1;
-import org.jooq.Record7;
-import org.jooq.Row7;
-import org.jooq.impl.UpdatableRecordImpl;
-import org.nazymko.th.parser.autodao.tables.TaskSchedule;
+import java.sql.Timestamp;
 
 
 /**
@@ -40,10 +39,25 @@ public class TaskScheduleRecord extends UpdatableRecordImpl<TaskScheduleRecord> 
 	private static final long serialVersionUID = -409667150;
 
 	/**
-	 * Setter for <code>thehomeland.task_schedule.id</code>.
+	 * Create a detached TaskScheduleRecord
 	 */
-	public void setId(Integer value) {
-		setValue(0, value);
+	public TaskScheduleRecord() {
+		super(TaskSchedule.TASK_SCHEDULE);
+	}
+
+	/**
+	 * Create a detached, initialised TaskScheduleRecord
+	 */
+	public TaskScheduleRecord(Integer id, Integer siteId, String startPage, String pageType, Timestamp startAt, String cron, Boolean isEnabled) {
+		super(TaskSchedule.TASK_SCHEDULE);
+
+		setValue(0, id);
+		setValue(1, siteId);
+		setValue(2, startPage);
+		setValue(3, pageType);
+		setValue(4, startAt);
+		setValue(5, cron);
+		setValue(6, isEnabled);
 	}
 
 	/**
@@ -57,10 +71,10 @@ public class TaskScheduleRecord extends UpdatableRecordImpl<TaskScheduleRecord> 
 	}
 
 	/**
-	 * Setter for <code>thehomeland.task_schedule.site_id</code>.
+	 * Setter for <code>thehomeland.task_schedule.id</code>.
 	 */
-	public void setSiteId(Integer value) {
-		setValue(1, value);
+	public void setId(Integer value) {
+		setValue(0, value);
 	}
 
 	/**
@@ -72,10 +86,10 @@ public class TaskScheduleRecord extends UpdatableRecordImpl<TaskScheduleRecord> 
 	}
 
 	/**
-	 * Setter for <code>thehomeland.task_schedule.start_page</code>.
+	 * Setter for <code>thehomeland.task_schedule.site_id</code>.
 	 */
-	public void setStartPage(String value) {
-		setValue(2, value);
+	public void setSiteId(Integer value) {
+		setValue(1, value);
 	}
 
 	/**
@@ -89,10 +103,10 @@ public class TaskScheduleRecord extends UpdatableRecordImpl<TaskScheduleRecord> 
 	}
 
 	/**
-	 * Setter for <code>thehomeland.task_schedule.page_type</code>.
+	 * Setter for <code>thehomeland.task_schedule.start_page</code>.
 	 */
-	public void setPageType(String value) {
-		setValue(3, value);
+	public void setStartPage(String value) {
+		setValue(2, value);
 	}
 
 	/**
@@ -106,10 +120,10 @@ public class TaskScheduleRecord extends UpdatableRecordImpl<TaskScheduleRecord> 
 	}
 
 	/**
-	 * Setter for <code>thehomeland.task_schedule.start_at</code>.
+	 * Setter for <code>thehomeland.task_schedule.page_type</code>.
 	 */
-	public void setStartAt(Timestamp value) {
-		setValue(4, value);
+	public void setPageType(String value) {
+		setValue(3, value);
 	}
 
 	/**
@@ -122,10 +136,10 @@ public class TaskScheduleRecord extends UpdatableRecordImpl<TaskScheduleRecord> 
 	}
 
 	/**
-	 * Setter for <code>thehomeland.task_schedule.cron</code>.
+	 * Setter for <code>thehomeland.task_schedule.start_at</code>.
 	 */
-	public void setCron(String value) {
-		setValue(5, value);
+	public void setStartAt(Timestamp value) {
+		setValue(4, value);
 	}
 
 	/**
@@ -138,11 +152,15 @@ public class TaskScheduleRecord extends UpdatableRecordImpl<TaskScheduleRecord> 
 	}
 
 	/**
-	 * Setter for <code>thehomeland.task_schedule.is_enabled</code>.
+	 * Setter for <code>thehomeland.task_schedule.cron</code>.
 	 */
-	public void setIsEnabled(Boolean value) {
-		setValue(6, value);
+	public void setCron(String value) {
+		setValue(5, value);
 	}
+
+	// -------------------------------------------------------------------------
+	// Primary key information
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Getter for <code>thehomeland.task_schedule.is_enabled</code>.
@@ -153,8 +171,15 @@ public class TaskScheduleRecord extends UpdatableRecordImpl<TaskScheduleRecord> 
 	}
 
 	// -------------------------------------------------------------------------
-	// Primary key information
+	// Record7 type implementation
 	// -------------------------------------------------------------------------
+
+	/**
+	 * Setter for <code>thehomeland.task_schedule.is_enabled</code>.
+	 */
+	public void setIsEnabled(Boolean value) {
+		setValue(6, value);
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -163,10 +188,6 @@ public class TaskScheduleRecord extends UpdatableRecordImpl<TaskScheduleRecord> 
 	public Record1<Integer> key() {
 		return (Record1) super.key();
 	}
-
-	// -------------------------------------------------------------------------
-	// Record7 type implementation
-	// -------------------------------------------------------------------------
 
 	/**
 	 * {@inheritDoc}
@@ -350,6 +371,10 @@ public class TaskScheduleRecord extends UpdatableRecordImpl<TaskScheduleRecord> 
 		return this;
 	}
 
+	// -------------------------------------------------------------------------
+	// Constructors
+	// -------------------------------------------------------------------------
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -372,31 +397,5 @@ public class TaskScheduleRecord extends UpdatableRecordImpl<TaskScheduleRecord> 
 		value6(value6);
 		value7(value7);
 		return this;
-	}
-
-	// -------------------------------------------------------------------------
-	// Constructors
-	// -------------------------------------------------------------------------
-
-	/**
-	 * Create a detached TaskScheduleRecord
-	 */
-	public TaskScheduleRecord() {
-		super(TaskSchedule.TASK_SCHEDULE);
-	}
-
-	/**
-	 * Create a detached, initialised TaskScheduleRecord
-	 */
-	public TaskScheduleRecord(Integer id, Integer siteId, String startPage, String pageType, Timestamp startAt, String cron, Boolean isEnabled) {
-		super(TaskSchedule.TASK_SCHEDULE);
-
-		setValue(0, id);
-		setValue(1, siteId);
-		setValue(2, startPage);
-		setValue(3, pageType);
-		setValue(4, startAt);
-		setValue(5, cron);
-		setValue(6, isEnabled);
 	}
 }

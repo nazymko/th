@@ -4,12 +4,6 @@
 package org.nazymko.th.parser.autodao.tables;
 
 
-import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.annotation.Generated;
-
 import org.jooq.Field;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -18,6 +12,11 @@ import org.jooq.impl.TableImpl;
 import org.nazymko.th.parser.autodao.Keys;
 import org.nazymko.th.parser.autodao.Thehomeland;
 import org.nazymko.th.parser.autodao.tables.records.ConnectorConsumerRecord;
+
+import javax.annotation.Generated;
+import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -33,31 +32,19 @@ import org.nazymko.th.parser.autodao.tables.records.ConnectorConsumerRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ConnectorConsumer extends TableImpl<ConnectorConsumerRecord> {
 
-	private static final long serialVersionUID = -448159697;
-
 	/**
 	 * The reference instance of <code>thehomeland.connector_consumer</code>
 	 */
 	public static final ConnectorConsumer CONNECTOR_CONSUMER = new ConnectorConsumer();
-
-	/**
-	 * The class holding records for this type
-	 */
-	@Override
-	public Class<ConnectorConsumerRecord> getRecordType() {
-		return ConnectorConsumerRecord.class;
-	}
-
+	private static final long serialVersionUID = -448159697;
 	/**
 	 * The column <code>thehomeland.connector_consumer.id</code>.
 	 */
 	public final TableField<ConnectorConsumerRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
-
 	/**
 	 * The column <code>thehomeland.connector_consumer.domain</code>.
 	 */
 	public final TableField<ConnectorConsumerRecord, String> DOMAIN = createField("domain", org.jooq.impl.SQLDataType.VARCHAR.length(1024).nullable(false), this, "");
-
 	/**
 	 * The column <code>thehomeland.connector_consumer.time</code>.
 	 */
@@ -83,6 +70,14 @@ public class ConnectorConsumer extends TableImpl<ConnectorConsumerRecord> {
 
 	private ConnectorConsumer(String alias, Table<ConnectorConsumerRecord> aliased, Field<?>[] parameters) {
 		super(alias, Thehomeland.THEHOMELAND, aliased, parameters, "");
+	}
+
+	/**
+	 * The class holding records for this type
+	 */
+	@Override
+	public Class<ConnectorConsumerRecord> getRecordType() {
+		return ConnectorConsumerRecord.class;
 	}
 
 	/**

@@ -40,17 +40,21 @@ public class SyncMainLogDao extends AbstractDao<Integer, ConnectorSyncMainLogRec
     }
 
 
-    public Long getLastPage(String consumer) {
+    public Integer getLastPage(String consumer) {
         ConnectorConsumerRecord consumerRecord = consumerDao.getByDomain(consumer).get();
-        Record1<Long> stringRecord1 = getDslContext()
-                .select(DSL.max(CONNECTOR_SYNC_MAIN_LOG.LATEST_PAGE_ID))
-                .from(CONNECTOR_SYNC_MAIN_LOG)
-                .where(CONNECTOR_SYNC_MAIN_LOG.CONSUMER_ID.eq(consumerRecord.getId()))
-                .fetchOne();
-        return stringRecord1.getValue(0) == null ? -1 : (Long) stringRecord1.getValue(0);
+        return getLastPage(consumerRecord.getId());
     }
 
-    public void logSync(String domain, Integer added, Long latestId) {
+    public Integer getLastPage(Integer consumerId) {
+        Record1<Integer> stringRecord1 = getDslContext()
+                .select(DSL.max(CONNECTOR_SYNC_MAIN_LOG.LATEST_PAGE_ID))
+                .from(CONNECTOR_SYNC_MAIN_LOG)
+                .where(CONNECTOR_SYNC_MAIN_LOG.CONSUMER_ID.eq(consumerId))
+                .fetchOne();
+        return stringRecord1.getValue(0) == null ? -1 : (Integer) stringRecord1.getValue(0);
+    }
+
+    public void logSync(String domain, Integer added, Integer latestId) {
         ConnectorSyncMainLogRecord _old = getLastLog(domain);
         ConnectorSyncMainLogRecord _new = new ConnectorSyncMainLogRecord();
         getDslContext().attach(_new);
@@ -78,4 +82,6 @@ public class SyncMainLogDao extends AbstractDao<Integer, ConnectorSyncMainLogRec
     public Optional<ConnectorSyncMainLogRecord> getById(int key) {
         return null;
     }
+
+
 }

@@ -4,20 +4,15 @@
 package org.nazymko.th.parser.autodao.tables;
 
 
-import java.util.Arrays;
-import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
+import org.jooq.*;
 import org.jooq.impl.TableImpl;
 import org.nazymko.th.parser.autodao.Keys;
 import org.nazymko.th.parser.autodao.Thehomeland;
 import org.nazymko.th.parser.autodao.tables.records.ThSiteRecord;
+
+import javax.annotation.Generated;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -33,35 +28,27 @@ import org.nazymko.th.parser.autodao.tables.records.ThSiteRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ThSite extends TableImpl<ThSiteRecord> {
 
-	private static final long serialVersionUID = 1859847677;
-
 	/**
 	 * The reference instance of <code>thehomeland.th_site</code>
 	 */
 	public static final ThSite TH_SITE = new ThSite();
-
-	/**
-	 * The class holding records for this type
-	 */
-	@Override
-	public Class<ThSiteRecord> getRecordType() {
-		return ThSiteRecord.class;
-	}
-
+	private static final long serialVersionUID = 1331146007;
 	/**
 	 * The column <code>thehomeland.th_site.id</code>.
 	 */
 	public final TableField<ThSiteRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
-
 	/**
 	 * The column <code>thehomeland.th_site.authority</code>.
 	 */
 	public final TableField<ThSiteRecord, String> AUTHORITY = createField("authority", org.jooq.impl.SQLDataType.VARCHAR.length(256), this, "");
-
 	/**
 	 * The column <code>thehomeland.th_site.name</code>.
 	 */
 	public final TableField<ThSiteRecord, String> NAME = createField("name", org.jooq.impl.SQLDataType.VARCHAR.length(128), this, "");
+	/**
+	 * The column <code>thehomeland.th_site.default_url</code>.
+	 */
+	public final TableField<ThSiteRecord, String> DEFAULT_URL = createField("default_url", org.jooq.impl.SQLDataType.VARCHAR.length(1024).nullable(false), this, "");
 
 	/**
 	 * Create a <code>thehomeland.th_site</code> table reference
@@ -83,6 +70,14 @@ public class ThSite extends TableImpl<ThSiteRecord> {
 
 	private ThSite(String alias, Table<ThSiteRecord> aliased, Field<?>[] parameters) {
 		super(alias, Thehomeland.THEHOMELAND, aliased, parameters, "");
+	}
+
+	/**
+	 * The class holding records for this type
+	 */
+	@Override
+	public Class<ThSiteRecord> getRecordType() {
+		return ThSiteRecord.class;
 	}
 
 	/**

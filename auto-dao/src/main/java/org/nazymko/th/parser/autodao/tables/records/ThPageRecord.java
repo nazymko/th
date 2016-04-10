@@ -4,7 +4,12 @@
 package org.nazymko.th.parser.autodao.tables.records;
 
 
-import java.sql.Timestamp;
+import org.jooq.Field;
+import org.jooq.Record1;
+import org.jooq.Record10;
+import org.jooq.Row10;
+import org.jooq.impl.UpdatableRecordImpl;
+import org.nazymko.th.parser.autodao.tables.ThPage;
 
 import javax.annotation.Generated;
 import javax.persistence.Column;
@@ -13,13 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import org.jooq.Field;
-import org.jooq.Record1;
-import org.jooq.Record10;
-import org.jooq.Row10;
-import org.jooq.impl.UpdatableRecordImpl;
-import org.nazymko.th.parser.autodao.tables.ThPage;
+import java.sql.Timestamp;
 
 
 /**
@@ -35,15 +34,33 @@ import org.nazymko.th.parser.autodao.tables.ThPage;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Entity
 @Table(name = "th_page", schema = "thehomeland")
-public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements Record10<Integer, String, Integer, Timestamp, String, Integer, Timestamp, Integer, Integer, String> {
+public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements Record10<Integer, String, Integer, String, Integer, Timestamp, String, Timestamp, Integer, Integer> {
 
-	private static final long serialVersionUID = -1786806523;
+	private static final long serialVersionUID = -1305456269;
 
 	/**
-	 * Setter for <code>thehomeland.th_page.id</code>.
+	 * Create a detached ThPageRecord
 	 */
-	public void setId(Integer value) {
-		setValue(0, value);
+	public ThPageRecord() {
+		super(ThPage.TH_PAGE);
+	}
+
+	/**
+	 * Create a detached, initialised ThPageRecord
+	 */
+	public ThPageRecord(Integer id, String pageUrl, Integer version, String authority, Integer siteId, Timestamp visitedAt, String type, Timestamp registeredAt, Integer sourcepage, Integer taskRunId) {
+		super(ThPage.TH_PAGE);
+
+		setValue(0, id);
+		setValue(1, pageUrl);
+		setValue(2, version);
+		setValue(3, authority);
+		setValue(4, siteId);
+		setValue(5, visitedAt);
+		setValue(6, type);
+		setValue(7, registeredAt);
+		setValue(8, sourcepage);
+		setValue(9, taskRunId);
 	}
 
 	/**
@@ -57,135 +74,10 @@ public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements R
 	}
 
 	/**
-	 * Setter for <code>thehomeland.th_page.authority</code>.
+	 * Setter for <code>thehomeland.th_page.id</code>.
 	 */
-	public void setAuthority(String value) {
-		setValue(1, value);
-	}
-
-	/**
-	 * Getter for <code>thehomeland.th_page.authority</code>.
-	 */
-	@Column(name = "authority", length = 512)
-	@Size(max = 512)
-	public String getAuthority() {
-		return (String) getValue(1);
-	}
-
-	/**
-	 * Setter for <code>thehomeland.th_page.site_id</code>.
-	 */
-	public void setSiteId(Integer value) {
-		setValue(2, value);
-	}
-
-	/**
-	 * Getter for <code>thehomeland.th_page.site_id</code>.
-	 */
-	@Column(name = "site_id", precision = 10)
-	public Integer getSiteId() {
-		return (Integer) getValue(2);
-	}
-
-	/**
-	 * Setter for <code>thehomeland.th_page.visited_at</code>.
-	 */
-	public void setVisitedAt(Timestamp value) {
-		setValue(3, value);
-	}
-
-	/**
-	 * Getter for <code>thehomeland.th_page.visited_at</code>.
-	 */
-	@Column(name = "visited_at")
-	public Timestamp getVisitedAt() {
-		return (Timestamp) getValue(3);
-	}
-
-	/**
-	 * Setter for <code>thehomeland.th_page.type</code>.
-	 */
-	public void setType(String value) {
-		setValue(4, value);
-	}
-
-	/**
-	 * Getter for <code>thehomeland.th_page.type</code>.
-	 */
-	@Column(name = "type", length = 32)
-	@Size(max = 32)
-	public String getType() {
-		return (String) getValue(4);
-	}
-
-	/**
-	 * Setter for <code>thehomeland.th_page.version</code>.
-	 */
-	public void setVersion(Integer value) {
-		setValue(5, value);
-	}
-
-	/**
-	 * Getter for <code>thehomeland.th_page.version</code>.
-	 */
-	@Column(name = "version", nullable = false, precision = 10)
-	@NotNull
-	public Integer getVersion() {
-		return (Integer) getValue(5);
-	}
-
-	/**
-	 * Setter for <code>thehomeland.th_page.registered_at</code>.
-	 */
-	public void setRegisteredAt(Timestamp value) {
-		setValue(6, value);
-	}
-
-	/**
-	 * Getter for <code>thehomeland.th_page.registered_at</code>.
-	 */
-	@Column(name = "registered_at")
-	public Timestamp getRegisteredAt() {
-		return (Timestamp) getValue(6);
-	}
-
-	/**
-	 * Setter for <code>thehomeland.th_page.sourcePage</code>.
-	 */
-	public void setSourcepage(Integer value) {
-		setValue(7, value);
-	}
-
-	/**
-	 * Getter for <code>thehomeland.th_page.sourcePage</code>.
-	 */
-	@Column(name = "sourcePage", nullable = false, precision = 10)
-	@NotNull
-	public Integer getSourcepage() {
-		return (Integer) getValue(7);
-	}
-
-	/**
-	 * Setter for <code>thehomeland.th_page.task_run_id</code>.
-	 */
-	public void setTaskRunId(Integer value) {
-		setValue(8, value);
-	}
-
-	/**
-	 * Getter for <code>thehomeland.th_page.task_run_id</code>.
-	 */
-	@Column(name = "task_run_id", nullable = false, precision = 10)
-	@NotNull
-	public Integer getTaskRunId() {
-		return (Integer) getValue(8);
-	}
-
-	/**
-	 * Setter for <code>thehomeland.th_page.page_url</code>.
-	 */
-	public void setPageUrl(String value) {
-		setValue(9, value);
+	public void setId(Integer value) {
+		setValue(0, value);
 	}
 
 	/**
@@ -195,12 +87,148 @@ public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements R
 	@NotNull
 	@Size(max = 1024)
 	public String getPageUrl() {
-		return (String) getValue(9);
+		return (String) getValue(1);
+	}
+
+	/**
+	 * Setter for <code>thehomeland.th_page.page_url</code>.
+	 */
+	public void setPageUrl(String value) {
+		setValue(1, value);
+	}
+
+	/**
+	 * Getter for <code>thehomeland.th_page.version</code>.
+	 */
+	@Column(name = "version", nullable = false, precision = 10)
+	@NotNull
+	public Integer getVersion() {
+		return (Integer) getValue(2);
+	}
+
+	/**
+	 * Setter for <code>thehomeland.th_page.version</code>.
+	 */
+	public void setVersion(Integer value) {
+		setValue(2, value);
+	}
+
+	/**
+	 * Getter for <code>thehomeland.th_page.authority</code>.
+	 */
+	@Column(name = "authority", length = 512)
+	@Size(max = 512)
+	public String getAuthority() {
+		return (String) getValue(3);
+	}
+
+	/**
+	 * Setter for <code>thehomeland.th_page.authority</code>.
+	 */
+	public void setAuthority(String value) {
+		setValue(3, value);
+	}
+
+	/**
+	 * Getter for <code>thehomeland.th_page.site_id</code>.
+	 */
+	@Column(name = "site_id", precision = 10)
+	public Integer getSiteId() {
+		return (Integer) getValue(4);
+	}
+
+	/**
+	 * Setter for <code>thehomeland.th_page.site_id</code>.
+	 */
+	public void setSiteId(Integer value) {
+		setValue(4, value);
+	}
+
+	/**
+	 * Getter for <code>thehomeland.th_page.visited_at</code>.
+	 */
+	@Column(name = "visited_at")
+	public Timestamp getVisitedAt() {
+		return (Timestamp) getValue(5);
+	}
+
+	/**
+	 * Setter for <code>thehomeland.th_page.visited_at</code>.
+	 */
+	public void setVisitedAt(Timestamp value) {
+		setValue(5, value);
+	}
+
+	/**
+	 * Getter for <code>thehomeland.th_page.type</code>.
+	 */
+	@Column(name = "type", length = 32)
+	@Size(max = 32)
+	public String getType() {
+		return (String) getValue(6);
+	}
+
+	/**
+	 * Setter for <code>thehomeland.th_page.type</code>.
+	 */
+	public void setType(String value) {
+		setValue(6, value);
+	}
+
+	/**
+	 * Getter for <code>thehomeland.th_page.registered_at</code>.
+	 */
+	@Column(name = "registered_at")
+	public Timestamp getRegisteredAt() {
+		return (Timestamp) getValue(7);
+	}
+
+	/**
+	 * Setter for <code>thehomeland.th_page.registered_at</code>.
+	 */
+	public void setRegisteredAt(Timestamp value) {
+		setValue(7, value);
+	}
+
+	/**
+	 * Getter for <code>thehomeland.th_page.sourcePage</code>.
+	 */
+	@Column(name = "sourcePage", nullable = false, precision = 10)
+	@NotNull
+	public Integer getSourcepage() {
+		return (Integer) getValue(8);
+	}
+
+	/**
+	 * Setter for <code>thehomeland.th_page.sourcePage</code>.
+	 */
+	public void setSourcepage(Integer value) {
+		setValue(8, value);
 	}
 
 	// -------------------------------------------------------------------------
 	// Primary key information
 	// -------------------------------------------------------------------------
+
+	/**
+	 * Getter for <code>thehomeland.th_page.task_run_id</code>.
+	 */
+	@Column(name = "task_run_id", nullable = false, precision = 10)
+	@NotNull
+	public Integer getTaskRunId() {
+		return (Integer) getValue(9);
+	}
+
+	// -------------------------------------------------------------------------
+	// Record10 type implementation
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Setter for <code>thehomeland.th_page.task_run_id</code>.
+	 */
+	public void setTaskRunId(Integer value) {
+		setValue(9, value);
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -210,15 +238,11 @@ public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements R
 		return (Record1) super.key();
 	}
 
-	// -------------------------------------------------------------------------
-	// Record10 type implementation
-	// -------------------------------------------------------------------------
-
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Row10<Integer, String, Integer, Timestamp, String, Integer, Timestamp, Integer, Integer, String> fieldsRow() {
+	public Row10<Integer, String, Integer, String, Integer, Timestamp, String, Timestamp, Integer, Integer> fieldsRow() {
 		return (Row10) super.fieldsRow();
 	}
 
@@ -226,7 +250,7 @@ public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Row10<Integer, String, Integer, Timestamp, String, Integer, Timestamp, Integer, Integer, String> valuesRow() {
+	public Row10<Integer, String, Integer, String, Integer, Timestamp, String, Timestamp, Integer, Integer> valuesRow() {
 		return (Row10) super.valuesRow();
 	}
 
@@ -243,7 +267,7 @@ public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements R
 	 */
 	@Override
 	public Field<String> field2() {
-		return ThPage.TH_PAGE.AUTHORITY;
+		return ThPage.TH_PAGE.PAGE_URL;
 	}
 
 	/**
@@ -251,30 +275,6 @@ public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements R
 	 */
 	@Override
 	public Field<Integer> field3() {
-		return ThPage.TH_PAGE.SITE_ID;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Field<Timestamp> field4() {
-		return ThPage.TH_PAGE.VISITED_AT;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Field<String> field5() {
-		return ThPage.TH_PAGE.TYPE;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Field<Integer> field6() {
 		return ThPage.TH_PAGE.VERSION;
 	}
 
@@ -282,7 +282,39 @@ public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Field<Timestamp> field7() {
+	public Field<String> field4() {
+		return ThPage.TH_PAGE.AUTHORITY;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Field<Integer> field5() {
+		return ThPage.TH_PAGE.SITE_ID;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Field<Timestamp> field6() {
+		return ThPage.TH_PAGE.VISITED_AT;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Field<String> field7() {
+		return ThPage.TH_PAGE.TYPE;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Field<Timestamp> field8() {
 		return ThPage.TH_PAGE.REGISTERED_AT;
 	}
 
@@ -290,7 +322,7 @@ public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Field<Integer> field8() {
+	public Field<Integer> field9() {
 		return ThPage.TH_PAGE.SOURCEPAGE;
 	}
 
@@ -298,16 +330,8 @@ public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Field<Integer> field9() {
+	public Field<Integer> field10() {
 		return ThPage.TH_PAGE.TASK_RUN_ID;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Field<String> field10() {
-		return ThPage.TH_PAGE.PAGE_URL;
 	}
 
 	/**
@@ -323,7 +347,7 @@ public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements R
 	 */
 	@Override
 	public String value2() {
-		return getAuthority();
+		return getPageUrl();
 	}
 
 	/**
@@ -331,30 +355,6 @@ public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements R
 	 */
 	@Override
 	public Integer value3() {
-		return getSiteId();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Timestamp value4() {
-		return getVisitedAt();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String value5() {
-		return getType();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Integer value6() {
 		return getVersion();
 	}
 
@@ -362,7 +362,39 @@ public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Timestamp value7() {
+	public String value4() {
+		return getAuthority();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Integer value5() {
+		return getSiteId();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Timestamp value6() {
+		return getVisitedAt();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String value7() {
+		return getType();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Timestamp value8() {
 		return getRegisteredAt();
 	}
 
@@ -370,7 +402,7 @@ public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Integer value8() {
+	public Integer value9() {
 		return getSourcepage();
 	}
 
@@ -378,16 +410,8 @@ public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Integer value9() {
+	public Integer value10() {
 		return getTaskRunId();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String value10() {
-		return getPageUrl();
 	}
 
 	/**
@@ -404,78 +428,6 @@ public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements R
 	 */
 	@Override
 	public ThPageRecord value2(String value) {
-		setAuthority(value);
-		return this;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public ThPageRecord value3(Integer value) {
-		setSiteId(value);
-		return this;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public ThPageRecord value4(Timestamp value) {
-		setVisitedAt(value);
-		return this;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public ThPageRecord value5(String value) {
-		setType(value);
-		return this;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public ThPageRecord value6(Integer value) {
-		setVersion(value);
-		return this;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public ThPageRecord value7(Timestamp value) {
-		setRegisteredAt(value);
-		return this;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public ThPageRecord value8(Integer value) {
-		setSourcepage(value);
-		return this;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public ThPageRecord value9(Integer value) {
-		setTaskRunId(value);
-		return this;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public ThPageRecord value10(String value) {
 		setPageUrl(value);
 		return this;
 	}
@@ -484,7 +436,83 @@ public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ThPageRecord values(Integer value1, String value2, Integer value3, Timestamp value4, String value5, Integer value6, Timestamp value7, Integer value8, Integer value9, String value10) {
+	public ThPageRecord value3(Integer value) {
+		setVersion(value);
+		return this;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ThPageRecord value4(String value) {
+		setAuthority(value);
+		return this;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ThPageRecord value5(Integer value) {
+		setSiteId(value);
+		return this;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ThPageRecord value6(Timestamp value) {
+		setVisitedAt(value);
+		return this;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ThPageRecord value7(String value) {
+		setType(value);
+		return this;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ThPageRecord value8(Timestamp value) {
+		setRegisteredAt(value);
+		return this;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ThPageRecord value9(Integer value) {
+		setSourcepage(value);
+		return this;
+	}
+
+	// -------------------------------------------------------------------------
+	// Constructors
+	// -------------------------------------------------------------------------
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ThPageRecord value10(Integer value) {
+		setTaskRunId(value);
+		return this;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ThPageRecord values(Integer value1, String value2, Integer value3, String value4, Integer value5, Timestamp value6, String value7, Timestamp value8, Integer value9, Integer value10) {
 		value1(value1);
 		value2(value2);
 		value3(value3);
@@ -496,34 +524,5 @@ public class ThPageRecord extends UpdatableRecordImpl<ThPageRecord> implements R
 		value9(value9);
 		value10(value10);
 		return this;
-	}
-
-	// -------------------------------------------------------------------------
-	// Constructors
-	// -------------------------------------------------------------------------
-
-	/**
-	 * Create a detached ThPageRecord
-	 */
-	public ThPageRecord() {
-		super(ThPage.TH_PAGE);
-	}
-
-	/**
-	 * Create a detached, initialised ThPageRecord
-	 */
-	public ThPageRecord(Integer id, String authority, Integer siteId, Timestamp visitedAt, String type, Integer version, Timestamp registeredAt, Integer sourcepage, Integer taskRunId, String pageUrl) {
-		super(ThPage.TH_PAGE);
-
-		setValue(0, id);
-		setValue(1, authority);
-		setValue(2, siteId);
-		setValue(3, visitedAt);
-		setValue(4, type);
-		setValue(5, version);
-		setValue(6, registeredAt);
-		setValue(7, sourcepage);
-		setValue(8, taskRunId);
-		setValue(9, pageUrl);
 	}
 }
