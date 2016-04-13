@@ -10,23 +10,28 @@
        http://www.springframework.org/schema/integration/http
        http://www.springframework.org/schema/integration/http/spring-integration-http.xsd">
 
+    <!--Message Gateway to send POST data -->
+    <int:gateway id="postMessageGateway" default-request-channel="internalPostChannel"
+                 service-interface="org.nazymko.thehomeland.integration.PostMessageChannel">
+    </int:gateway>
 
-    <int-http:inbound-gateway request-channel="commonInputChannel" path="/input_path">
+    <int:header-enricher input-channel="internalPostChannel" output-channel="objToJsonChannel">
+        <int:header name="content-type" value="application/json"/>
+        <int:header name="Authorization" value="Basic cDgxdmstOFpvRUNZc1VOZlg4bGE4cUt3czZJdXFOVUogIEdlbmVyYXRlOg=="/>
+    </int:header-enricher>
 
-    </int-http:inbound-gateway>
+    <int:object-to-json-transformer input-channel="objToJsonChannel" output-channel="outputPostChannel"/>
 
-    <!--<int-http:outbound-channel-adapter url="/goaway" channel="getInputChannel" http-method="POST"/>-->
-
-    <int-http:inbound-gateway request-channel="commonInputChannel"
-                              reply-channel="commonOutputChannel"
-                              supported-methods="GET"
-                              path="/int/site/{personId}"
-                              payload-expression="#pathVariables.personId"
-                              request-payload-type="java.lang.Integer"/>
-
-    <int:service-activator input-channel="commonInputChannel"
-                           output-channel="commonOutputChannel"
-                           expression="@siteConverter.covert(@siteDao.get(payload).get())">
-
-    </int:service-activator>
+    <int-http:outbound-gateway id="outboundPost"
+                               request-channel="outputPostChannel"
+                               url="http://thehomeland.com.ua/api/trip/create"
+                               http-method="POST"
+                               extract-request-payload="true"
+                               expected-response-type="java.lang.String"
+                               charset="UTF-8"
+                               reply-timeout="1000"
+                               reply-channel="logChannel">
+    </int-http:outbound-gateway>
+    <int:channel id="logChannel"/>
+    <int:logging-channel-adapter channel="logChannel" level="INFO"/>
 </beans>

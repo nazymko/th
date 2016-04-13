@@ -35,6 +35,7 @@ public abstract class AbstractConverter implements Converter<ThPageRecord> {
         List<ThAttributeDataRecord> page = attributeDao.getByPage(record.getId());
         HashMap<String, String> result = new HashMap<>();
 
+
         for (ThAttributeDataRecord thAttributeDataRecord : page) {
             revertedMap.put(thAttributeDataRecord.getAttributeName(), thAttributeDataRecord);
         }
@@ -46,12 +47,13 @@ public abstract class AbstractConverter implements Converter<ThPageRecord> {
             } else if (entryValue.startsWith("$")) {
                 putHostRelatedUrl(revertedMap, result, entryValue);
             } else if (entryValue.startsWith("%page_url")) {
-                String pageUrl = pageDao.getById(page.get(0).getPageId()).get().getPageUrl();
-                result.put(entry.getKey(), pageUrl);
+                result.put(entry.getKey(), record.getPageUrl());
             } else {
                 ThAttributeDataRecord dataRecord = revertedMap.get(entryValue);
                 if (dataRecord != null) {
                     result.put(entryValue, dataRecord.getAttributeValue());
+                } else {
+                    result.put(entry.getKey(), entryValue);
                 }
             }
         }

@@ -1,10 +1,12 @@
 package org.nazymko.thehomeland.scheduler;
 
+import com.google.gson.Gson;
 import lombok.extern.log4j.Log4j2;
 import org.jooq.Result;
 import org.nazymko.th.parser.autodao.tables.records.ConnectorRulesRecord;
 import org.nazymko.th.parser.autodao.tables.records.ThPageRecord;
 import org.nazymko.thehomeland.dao.SyncRuleDao;
+import org.nazymko.thehomeland.integration.PostMessageChannel;
 import org.nazymko.thehomeland.parser.Repository;
 import org.nazymko.thehomeland.parser.ThRecordConverter;
 import org.nazymko.thehomeland.utils.RuleConverter;
@@ -24,6 +26,8 @@ import java.util.Map;
 public class HourlyScheduler implements Scheduler {
 
 
+    @Autowired
+    PostMessageChannel messageChannel;
     @Qualifier("connectorRuleDao")
     @Autowired
     private SyncRuleDao ruleDao;
@@ -34,7 +38,6 @@ public class HourlyScheduler implements Scheduler {
     @Autowired
     private Repository repository;
 
-
     //    @Scheduled(cron = "0 */1 * * *") - every hour
     @Scheduled(cron = "0 */1 * * * *") //every minute
     public void doIt() {
@@ -44,6 +47,9 @@ public class HourlyScheduler implements Scheduler {
         Result<ThPageRecord> latest = repository.latest();
         for (ThPageRecord thPageRecord : latest) {
             Map convert = thRecordConverter.convert(thPageRecord);
+            String string = new Gson().toJson(convert);
+            System.out.println("json = " + string);
+            messageChannel.send(convert);
         }
         log.info("Finished");
     }
@@ -53,6 +59,7 @@ public class HourlyScheduler implements Scheduler {
         for (ConnectorRulesRecord connectorRulesRecord : all) {
             rules.put(connectorRulesRecord.getSiteId(), RuleConverter.makeMap(connectorRulesRecord.getRule()));
         }
+
 
         return rules;
     }

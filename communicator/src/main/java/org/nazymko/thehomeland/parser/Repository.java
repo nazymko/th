@@ -26,7 +26,7 @@ public class Repository {
 
             Integer page = mainLogDao.getLastPage(connectorConsumerRecord.getId());
 
-            return pageDao.getAfter(page);
+            return pageDao.getAfter(page, "article");
 
         } else {
             throw new IllegalArgumentException("Not found '" + consumer + "'");
