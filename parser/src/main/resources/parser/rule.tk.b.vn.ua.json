@@ -91,12 +91,18 @@
             },
             {
               "type": "contact-name",
-              "expression": "Відповідальний:\\s*(.*)\\s[Контакты|Контакти]",
+              "expression": "Відповідальний:\\s*(.*)\\s(.*)\\s[Контакты|Контакти]",
               "group": [
                 {
                   "order": 1,
                   "nature": "string",
-                  "type": "name",
+                  "type": "firstName",
+                  "persist": true
+                },
+                {
+                  "order": 2,
+                  "nature": "string",
+                  "type": "lastName",
                   "persist": true
                 }
               ]

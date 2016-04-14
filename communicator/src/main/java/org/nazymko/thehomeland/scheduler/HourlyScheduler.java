@@ -12,7 +12,6 @@ import org.nazymko.thehomeland.parser.ThRecordConverter;
 import org.nazymko.thehomeland.utils.RuleConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.scheduling.annotation.Scheduled;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -39,7 +38,7 @@ public class HourlyScheduler implements Scheduler {
     private Repository repository;
 
     //    @Scheduled(cron = "0 */1 * * *") - every hour
-    @Scheduled(cron = "0 */1 * * * *") //every minute
+//    @Scheduled(cron = "0 */1 * * * *") //every minute
     public void doIt() {
         log.info("Started");
         HashMap<Integer, HashMap<String, String>> rules = prepare(ruleDao.all());

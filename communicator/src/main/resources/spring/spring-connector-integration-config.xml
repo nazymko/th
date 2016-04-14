@@ -15,16 +15,14 @@
                  service-interface="org.nazymko.thehomeland.integration.PostMessageChannel">
     </int:gateway>
 
-    <int:header-enricher input-channel="internalPostChannel" output-channel="objToJsonChannel">
+    <int:header-enricher input-channel="internalPostChannel" output-channel="outputPostChannel">
         <int:header name="content-type" value="application/json"/>
-        <int:header name="Authorization" value="Basic cDgxdmstOFpvRUNZc1VOZlg4bGE4cUt3czZJdXFOVUogIEdlbmVyYXRlOg=="/>
+        <int:header name="Authorization" value="Basic T1BHTkotOUd6NC04TVVjVEFRZ1g5UXhBNXdkb0JyMEk6"/>
     </int:header-enricher>
-
-    <int:object-to-json-transformer input-channel="objToJsonChannel" output-channel="outputPostChannel"/>
-
+    <!--Outbound gateway to send data for service-->
     <int-http:outbound-gateway id="outboundPost"
                                request-channel="outputPostChannel"
-                               url="http://thehomeland.com.ua/api/trip/create"
+                               url="https://thehomeland.com.ua/api/trip/create"
                                http-method="POST"
                                extract-request-payload="true"
                                expected-response-type="java.lang.String"

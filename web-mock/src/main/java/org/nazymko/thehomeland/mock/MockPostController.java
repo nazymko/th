@@ -1,10 +1,8 @@
 package org.nazymko.thehomeland.mock;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 
@@ -16,8 +14,8 @@ import java.util.HashMap;
 public class MockPostController {
     @ResponseBody
     @RequestMapping(value = "post", method = RequestMethod.POST)
-    public String mockPost(@RequestBody HashMap<String, String> object) {
-        System.out.println("object = [" + object + "]");
+    public String mockPost(@RequestBody HashMap<String, String> object, @RequestHeader HttpHeaders allHeaders) {
+        System.out.println("object = [" + object + "], \nallHeaders = [" + allHeaders + "]");
         return "success";
     }
 
