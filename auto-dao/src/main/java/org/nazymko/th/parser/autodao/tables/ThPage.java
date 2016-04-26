@@ -4,16 +4,22 @@
 package org.nazymko.th.parser.autodao.tables;
 
 
-import org.jooq.*;
+import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.annotation.Generated;
+
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Identity;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.UniqueKey;
 import org.jooq.impl.TableImpl;
 import org.nazymko.th.parser.autodao.Keys;
 import org.nazymko.th.parser.autodao.Thehomeland;
 import org.nazymko.th.parser.autodao.tables.records.ThPageRecord;
-
-import javax.annotation.Generated;
-import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.List;
 
 
 /**
@@ -29,47 +35,66 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ThPage extends TableImpl<ThPageRecord> {
 
+	private static final long serialVersionUID = -738805753;
+
 	/**
 	 * The reference instance of <code>thehomeland.th_page</code>
 	 */
 	public static final ThPage TH_PAGE = new ThPage();
-	private static final long serialVersionUID = -738805753;
+
+	/**
+	 * The class holding records for this type
+	 */
+	@Override
+	public Class<ThPageRecord> getRecordType() {
+		return ThPageRecord.class;
+	}
+
 	/**
 	 * The column <code>thehomeland.th_page.id</code>.
 	 */
 	public final TableField<ThPageRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
 	/**
 	 * The column <code>thehomeland.th_page.page_url</code>.
 	 */
 	public final TableField<ThPageRecord, String> PAGE_URL = createField("page_url", org.jooq.impl.SQLDataType.VARCHAR.length(1024).nullable(false), this, "");
+
 	/**
 	 * The column <code>thehomeland.th_page.version</code>.
 	 */
 	public final TableField<ThPageRecord, Integer> VERSION = createField("version", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaulted(true), this, "");
+
 	/**
 	 * The column <code>thehomeland.th_page.authority</code>.
 	 */
 	public final TableField<ThPageRecord, String> AUTHORITY = createField("authority", org.jooq.impl.SQLDataType.VARCHAR.length(512), this, "");
+
 	/**
 	 * The column <code>thehomeland.th_page.site_id</code>.
 	 */
 	public final TableField<ThPageRecord, Integer> SITE_ID = createField("site_id", org.jooq.impl.SQLDataType.INTEGER, this, "");
+
 	/**
 	 * The column <code>thehomeland.th_page.visited_at</code>.
 	 */
 	public final TableField<ThPageRecord, Timestamp> VISITED_AT = createField("visited_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
+
 	/**
 	 * The column <code>thehomeland.th_page.type</code>.
 	 */
 	public final TableField<ThPageRecord, String> TYPE = createField("type", org.jooq.impl.SQLDataType.VARCHAR.length(32), this, "");
+
 	/**
 	 * The column <code>thehomeland.th_page.registered_at</code>.
 	 */
 	public final TableField<ThPageRecord, Timestamp> REGISTERED_AT = createField("registered_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
+
 	/**
 	 * The column <code>thehomeland.th_page.sourcePage</code>.
 	 */
 	public final TableField<ThPageRecord, Integer> SOURCEPAGE = createField("sourcePage", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaulted(true), this, "");
+
 	/**
 	 * The column <code>thehomeland.th_page.task_run_id</code>.
 	 */
@@ -95,14 +120,6 @@ public class ThPage extends TableImpl<ThPageRecord> {
 
 	private ThPage(String alias, Table<ThPageRecord> aliased, Field<?>[] parameters) {
 		super(alias, Thehomeland.THEHOMELAND, aliased, parameters, "");
-	}
-
-	/**
-	 * The class holding records for this type
-	 */
-	@Override
-	public Class<ThPageRecord> getRecordType() {
-		return ThPageRecord.class;
 	}
 
 	/**

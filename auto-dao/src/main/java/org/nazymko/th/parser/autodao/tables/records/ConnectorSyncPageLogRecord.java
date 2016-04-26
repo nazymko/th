@@ -4,12 +4,7 @@
 package org.nazymko.th.parser.autodao.tables.records;
 
 
-import org.jooq.Field;
-import org.jooq.Record1;
-import org.jooq.Record4;
-import org.jooq.Row4;
-import org.jooq.impl.UpdatableRecordImpl;
-import org.nazymko.th.parser.autodao.tables.ConnectorSyncPageLog;
+import java.sql.Timestamp;
 
 import javax.annotation.Generated;
 import javax.persistence.Column;
@@ -18,7 +13,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.sql.Timestamp;
+
+import org.jooq.Field;
+import org.jooq.Record1;
+import org.jooq.Record6;
+import org.jooq.Row6;
+import org.jooq.impl.UpdatableRecordImpl;
+import org.nazymko.th.parser.autodao.tables.ConnectorSyncPageLog;
 
 
 /**
@@ -34,27 +35,15 @@ import java.sql.Timestamp;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Entity
 @Table(name = "connector_sync_page_log", schema = "thehomeland")
-public class ConnectorSyncPageLogRecord extends UpdatableRecordImpl<ConnectorSyncPageLogRecord> implements Record4<Integer, Integer, String, Timestamp> {
+public class ConnectorSyncPageLogRecord extends UpdatableRecordImpl<ConnectorSyncPageLogRecord> implements Record6<Integer, Integer, String, Timestamp, String, Integer> {
 
-	private static final long serialVersionUID = 1897241928;
-
-	/**
-	 * Create a detached ConnectorSyncPageLogRecord
-	 */
-	public ConnectorSyncPageLogRecord() {
-		super(ConnectorSyncPageLog.CONNECTOR_SYNC_PAGE_LOG);
-	}
+	private static final long serialVersionUID = 287889248;
 
 	/**
-	 * Create a detached, initialised ConnectorSyncPageLogRecord
+	 * Setter for <code>thehomeland.connector_sync_page_log.id</code>.
 	 */
-	public ConnectorSyncPageLogRecord(Integer id, Integer pageId, String consumer, Timestamp time) {
-		super(ConnectorSyncPageLog.CONNECTOR_SYNC_PAGE_LOG);
-
-		setValue(0, id);
-		setValue(1, pageId);
-		setValue(2, consumer);
-		setValue(3, time);
+	public void setId(Integer value) {
+		setValue(0, value);
 	}
 
 	/**
@@ -68,10 +57,10 @@ public class ConnectorSyncPageLogRecord extends UpdatableRecordImpl<ConnectorSyn
 	}
 
 	/**
-	 * Setter for <code>thehomeland.connector_sync_page_log.id</code>.
+	 * Setter for <code>thehomeland.connector_sync_page_log.page_id</code>.
 	 */
-	public void setId(Integer value) {
-		setValue(0, value);
+	public void setPageId(Integer value) {
+		setValue(1, value);
 	}
 
 	/**
@@ -84,10 +73,10 @@ public class ConnectorSyncPageLogRecord extends UpdatableRecordImpl<ConnectorSyn
 	}
 
 	/**
-	 * Setter for <code>thehomeland.connector_sync_page_log.page_id</code>.
+	 * Setter for <code>thehomeland.connector_sync_page_log.consumer</code>.
 	 */
-	public void setPageId(Integer value) {
-		setValue(1, value);
+	public void setConsumer(String value) {
+		setValue(2, value);
 	}
 
 	/**
@@ -101,15 +90,11 @@ public class ConnectorSyncPageLogRecord extends UpdatableRecordImpl<ConnectorSyn
 	}
 
 	/**
-	 * Setter for <code>thehomeland.connector_sync_page_log.consumer</code>.
+	 * Setter for <code>thehomeland.connector_sync_page_log.time</code>.
 	 */
-	public void setConsumer(String value) {
-		setValue(2, value);
+	public void setTime(Timestamp value) {
+		setValue(3, value);
 	}
-
-	// -------------------------------------------------------------------------
-	// Primary key information
-	// -------------------------------------------------------------------------
 
 	/**
 	 * Getter for <code>thehomeland.connector_sync_page_log.time</code>.
@@ -120,16 +105,39 @@ public class ConnectorSyncPageLogRecord extends UpdatableRecordImpl<ConnectorSyn
 		return (Timestamp) getValue(3);
 	}
 
-	// -------------------------------------------------------------------------
-	// Record4 type implementation
-	// -------------------------------------------------------------------------
+	/**
+	 * Setter for <code>thehomeland.connector_sync_page_log.response_text</code>.
+	 */
+	public void setResponseText(String value) {
+		setValue(4, value);
+	}
 
 	/**
-	 * Setter for <code>thehomeland.connector_sync_page_log.time</code>.
+	 * Getter for <code>thehomeland.connector_sync_page_log.response_text</code>.
 	 */
-	public void setTime(Timestamp value) {
-		setValue(3, value);
+	@Column(name = "response_text")
+	public String getResponseText() {
+		return (String) getValue(4);
 	}
+
+	/**
+	 * Setter for <code>thehomeland.connector_sync_page_log.response_code</code>.
+	 */
+	public void setResponseCode(Integer value) {
+		setValue(5, value);
+	}
+
+	/**
+	 * Getter for <code>thehomeland.connector_sync_page_log.response_code</code>.
+	 */
+	@Column(name = "response_code", precision = 10)
+	public Integer getResponseCode() {
+		return (Integer) getValue(5);
+	}
+
+	// -------------------------------------------------------------------------
+	// Primary key information
+	// -------------------------------------------------------------------------
 
 	/**
 	 * {@inheritDoc}
@@ -139,20 +147,24 @@ public class ConnectorSyncPageLogRecord extends UpdatableRecordImpl<ConnectorSyn
 		return (Record1) super.key();
 	}
 
+	// -------------------------------------------------------------------------
+	// Record6 type implementation
+	// -------------------------------------------------------------------------
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Row4<Integer, Integer, String, Timestamp> fieldsRow() {
-		return (Row4) super.fieldsRow();
+	public Row6<Integer, Integer, String, Timestamp, String, Integer> fieldsRow() {
+		return (Row6) super.fieldsRow();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Row4<Integer, Integer, String, Timestamp> valuesRow() {
-		return (Row4) super.valuesRow();
+	public Row6<Integer, Integer, String, Timestamp, String, Integer> valuesRow() {
+		return (Row6) super.valuesRow();
 	}
 
 	/**
@@ -191,6 +203,22 @@ public class ConnectorSyncPageLogRecord extends UpdatableRecordImpl<ConnectorSyn
 	 * {@inheritDoc}
 	 */
 	@Override
+	public Field<String> field5() {
+		return ConnectorSyncPageLog.CONNECTOR_SYNC_PAGE_LOG.RESPONSE_TEXT;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Field<Integer> field6() {
+		return ConnectorSyncPageLog.CONNECTOR_SYNC_PAGE_LOG.RESPONSE_CODE;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public Integer value1() {
 		return getId();
 	}
@@ -223,6 +251,22 @@ public class ConnectorSyncPageLogRecord extends UpdatableRecordImpl<ConnectorSyn
 	 * {@inheritDoc}
 	 */
 	@Override
+	public String value5() {
+		return getResponseText();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Integer value6() {
+		return getResponseCode();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public ConnectorSyncPageLogRecord value1(Integer value) {
 		setId(value);
 		return this;
@@ -246,10 +290,6 @@ public class ConnectorSyncPageLogRecord extends UpdatableRecordImpl<ConnectorSyn
 		return this;
 	}
 
-	// -------------------------------------------------------------------------
-	// Constructors
-	// -------------------------------------------------------------------------
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -263,11 +303,56 @@ public class ConnectorSyncPageLogRecord extends UpdatableRecordImpl<ConnectorSyn
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ConnectorSyncPageLogRecord values(Integer value1, Integer value2, String value3, Timestamp value4) {
+	public ConnectorSyncPageLogRecord value5(String value) {
+		setResponseText(value);
+		return this;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ConnectorSyncPageLogRecord value6(Integer value) {
+		setResponseCode(value);
+		return this;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ConnectorSyncPageLogRecord values(Integer value1, Integer value2, String value3, Timestamp value4, String value5, Integer value6) {
 		value1(value1);
 		value2(value2);
 		value3(value3);
 		value4(value4);
+		value5(value5);
+		value6(value6);
 		return this;
+	}
+
+	// -------------------------------------------------------------------------
+	// Constructors
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Create a detached ConnectorSyncPageLogRecord
+	 */
+	public ConnectorSyncPageLogRecord() {
+		super(ConnectorSyncPageLog.CONNECTOR_SYNC_PAGE_LOG);
+	}
+
+	/**
+	 * Create a detached, initialised ConnectorSyncPageLogRecord
+	 */
+	public ConnectorSyncPageLogRecord(Integer id, Integer pageId, String consumer, Timestamp time, String responseText, Integer responseCode) {
+		super(ConnectorSyncPageLog.CONNECTOR_SYNC_PAGE_LOG);
+
+		setValue(0, id);
+		setValue(1, pageId);
+		setValue(2, consumer);
+		setValue(3, time);
+		setValue(4, responseText);
+		setValue(5, responseCode);
 	}
 }

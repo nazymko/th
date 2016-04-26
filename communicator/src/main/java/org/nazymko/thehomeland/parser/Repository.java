@@ -14,9 +14,12 @@ import java.util.Optional;
  * Created by nazymko.patronus@gmail.com.
  */
 public class Repository {
-    @Autowired private PageDao pageDao;
-    @Autowired private SyncMainLogDao mainLogDao;
-    @Autowired private SyncConsumerDao consumerDao;
+    @Autowired
+    private PageDao pageDao;
+    @Autowired
+    private SyncMainLogDao mainLogDao;
+    @Autowired
+    private SyncConsumerDao consumerDao;
 
     public Result<ThPageRecord> latest() {
         String consumer = "http://thehomeland.com.ua";

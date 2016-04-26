@@ -4,14 +4,15 @@
 package org.nazymko.th.parser.autodao.tables.daos;
 
 
+import java.sql.Timestamp;
+import java.util.List;
+
+import javax.annotation.Generated;
+
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
 import org.nazymko.th.parser.autodao.tables.ConnectorSyncPageLog;
 import org.nazymko.th.parser.autodao.tables.records.ConnectorSyncPageLogRecord;
-
-import javax.annotation.Generated;
-import java.sql.Timestamp;
-import java.util.List;
 
 
 /**
@@ -82,5 +83,19 @@ public class ConnectorSyncPageLogDao extends DAOImpl<ConnectorSyncPageLogRecord,
 	 */
 	public List<org.nazymko.th.parser.autodao.tables.pojos.ConnectorSyncPageLog> fetchByTime(Timestamp... values) {
 		return fetch(ConnectorSyncPageLog.CONNECTOR_SYNC_PAGE_LOG.TIME, values);
+	}
+
+	/**
+	 * Fetch records that have <code>response_text IN (values)</code>
+	 */
+	public List<org.nazymko.th.parser.autodao.tables.pojos.ConnectorSyncPageLog> fetchByResponseText(String... values) {
+		return fetch(ConnectorSyncPageLog.CONNECTOR_SYNC_PAGE_LOG.RESPONSE_TEXT, values);
+	}
+
+	/**
+	 * Fetch records that have <code>response_code IN (values)</code>
+	 */
+	public List<org.nazymko.th.parser.autodao.tables.pojos.ConnectorSyncPageLog> fetchByResponseCode(Integer... values) {
+		return fetch(ConnectorSyncPageLog.CONNECTOR_SYNC_PAGE_LOG.RESPONSE_CODE, values);
 	}
 }

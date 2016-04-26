@@ -4,6 +4,8 @@
 package org.nazymko.th.parser.autodao.tables.pojos;
 
 
+import java.io.Serializable;
+
 import javax.annotation.Generated;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 
 
 /**
@@ -34,7 +35,7 @@ public class ThSite implements Serializable {
 	private Integer id;
 	private String  authority;
 	private String  name;
-	private String defaultUrl;
+	private String  defaultUrl;
 
 	public ThSite() {}
 
@@ -46,10 +47,10 @@ public class ThSite implements Serializable {
 	}
 
 	public ThSite(
-			Integer id,
-			String  authority,
-			String name,
-			String defaultUrl
+		Integer id,
+		String  authority,
+		String  name,
+		String  defaultUrl
 	) {
 		this.id = id;
 		this.authority = authority;

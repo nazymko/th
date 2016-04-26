@@ -4,16 +4,22 @@
 package org.nazymko.th.parser.autodao.tables;
 
 
-import org.jooq.*;
+import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.annotation.Generated;
+
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Identity;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.UniqueKey;
 import org.jooq.impl.TableImpl;
 import org.nazymko.th.parser.autodao.Keys;
 import org.nazymko.th.parser.autodao.Thehomeland;
 import org.nazymko.th.parser.autodao.tables.records.TaskScheduleRecord;
-
-import javax.annotation.Generated;
-import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.List;
 
 
 /**
@@ -29,35 +35,51 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TaskSchedule extends TableImpl<TaskScheduleRecord> {
 
+	private static final long serialVersionUID = -1598590663;
+
 	/**
 	 * The reference instance of <code>thehomeland.task_schedule</code>
 	 */
 	public static final TaskSchedule TASK_SCHEDULE = new TaskSchedule();
-	private static final long serialVersionUID = -1598590663;
+
+	/**
+	 * The class holding records for this type
+	 */
+	@Override
+	public Class<TaskScheduleRecord> getRecordType() {
+		return TaskScheduleRecord.class;
+	}
+
 	/**
 	 * The column <code>thehomeland.task_schedule.id</code>.
 	 */
 	public final TableField<TaskScheduleRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
 	/**
 	 * The column <code>thehomeland.task_schedule.site_id</code>.
 	 */
 	public final TableField<TaskScheduleRecord, Integer> SITE_ID = createField("site_id", org.jooq.impl.SQLDataType.INTEGER, this, "");
+
 	/**
 	 * The column <code>thehomeland.task_schedule.start_page</code>.
 	 */
 	public final TableField<TaskScheduleRecord, String> START_PAGE = createField("start_page", org.jooq.impl.SQLDataType.VARCHAR.length(256).nullable(false), this, "");
+
 	/**
 	 * The column <code>thehomeland.task_schedule.page_type</code>.
 	 */
 	public final TableField<TaskScheduleRecord, String> PAGE_TYPE = createField("page_type", org.jooq.impl.SQLDataType.VARCHAR.length(64).nullable(false), this, "");
+
 	/**
 	 * The column <code>thehomeland.task_schedule.start_at</code>.
 	 */
 	public final TableField<TaskScheduleRecord, Timestamp> START_AT = createField("start_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaulted(true), this, "");
+
 	/**
 	 * The column <code>thehomeland.task_schedule.cron</code>.
 	 */
 	public final TableField<TaskScheduleRecord, String> CRON = createField("cron", org.jooq.impl.SQLDataType.VARCHAR.length(64), this, "");
+
 	/**
 	 * The column <code>thehomeland.task_schedule.is_enabled</code>.
 	 */
@@ -83,14 +105,6 @@ public class TaskSchedule extends TableImpl<TaskScheduleRecord> {
 
 	private TaskSchedule(String alias, Table<TaskScheduleRecord> aliased, Field<?>[] parameters) {
 		super(alias, Thehomeland.THEHOMELAND, aliased, parameters, "");
-	}
-
-	/**
-	 * The class holding records for this type
-	 */
-	@Override
-	public Class<TaskScheduleRecord> getRecordType() {
-		return TaskScheduleRecord.class;
 	}
 
 	/**

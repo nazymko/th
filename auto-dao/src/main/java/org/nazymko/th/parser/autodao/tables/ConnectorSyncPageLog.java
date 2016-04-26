@@ -4,16 +4,22 @@
 package org.nazymko.th.parser.autodao.tables;
 
 
-import org.jooq.*;
+import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.annotation.Generated;
+
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Identity;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.UniqueKey;
 import org.jooq.impl.TableImpl;
 import org.nazymko.th.parser.autodao.Keys;
 import org.nazymko.th.parser.autodao.Thehomeland;
 import org.nazymko.th.parser.autodao.tables.records.ConnectorSyncPageLogRecord;
-
-import javax.annotation.Generated;
-import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.List;
 
 
 /**
@@ -29,27 +35,50 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ConnectorSyncPageLog extends TableImpl<ConnectorSyncPageLogRecord> {
 
+	private static final long serialVersionUID = -495054284;
+
 	/**
 	 * The reference instance of <code>thehomeland.connector_sync_page_log</code>
 	 */
 	public static final ConnectorSyncPageLog CONNECTOR_SYNC_PAGE_LOG = new ConnectorSyncPageLog();
-	private static final long serialVersionUID = 1249045077;
+
+	/**
+	 * The class holding records for this type
+	 */
+	@Override
+	public Class<ConnectorSyncPageLogRecord> getRecordType() {
+		return ConnectorSyncPageLogRecord.class;
+	}
+
 	/**
 	 * The column <code>thehomeland.connector_sync_page_log.id</code>.
 	 */
 	public final TableField<ConnectorSyncPageLogRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
 	/**
 	 * The column <code>thehomeland.connector_sync_page_log.page_id</code>.
 	 */
 	public final TableField<ConnectorSyncPageLogRecord, Integer> PAGE_ID = createField("page_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
 	/**
 	 * The column <code>thehomeland.connector_sync_page_log.consumer</code>.
 	 */
 	public final TableField<ConnectorSyncPageLogRecord, String> CONSUMER = createField("consumer", org.jooq.impl.SQLDataType.VARCHAR.length(128).nullable(false), this, "");
+
 	/**
 	 * The column <code>thehomeland.connector_sync_page_log.time</code>.
 	 */
 	public final TableField<ConnectorSyncPageLogRecord, Timestamp> TIME = createField("time", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaulted(true), this, "");
+
+	/**
+	 * The column <code>thehomeland.connector_sync_page_log.response_text</code>.
+	 */
+	public final TableField<ConnectorSyncPageLogRecord, String> RESPONSE_TEXT = createField("response_text", org.jooq.impl.SQLDataType.CLOB, this, "");
+
+	/**
+	 * The column <code>thehomeland.connector_sync_page_log.response_code</code>.
+	 */
+	public final TableField<ConnectorSyncPageLogRecord, Integer> RESPONSE_CODE = createField("response_code", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
 	/**
 	 * Create a <code>thehomeland.connector_sync_page_log</code> table reference
@@ -74,11 +103,11 @@ public class ConnectorSyncPageLog extends TableImpl<ConnectorSyncPageLogRecord> 
 	}
 
 	/**
-	 * The class holding records for this type
+	 * {@inheritDoc}
 	 */
 	@Override
-	public Class<ConnectorSyncPageLogRecord> getRecordType() {
-		return ConnectorSyncPageLogRecord.class;
+	public Identity<ConnectorSyncPageLogRecord, Integer> getIdentity() {
+		return Keys.IDENTITY_CONNECTOR_SYNC_PAGE_LOG;
 	}
 
 	/**

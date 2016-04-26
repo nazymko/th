@@ -54,4 +54,16 @@ public class SyncPageLogDao extends AbstractDao<Integer, ConnectorSyncPageLogRec
             return Optional.of(TimeStampHelper.zero());
         }
     }
+
+    public void save(Integer pageId, String responseText, Integer responseCode, String consumer, Long time) {
+        ConnectorSyncPageLogRecord rec = new ConnectorSyncPageLogRecord();
+
+        rec.setPageId(pageId);
+        rec.setConsumer(consumer);
+        rec.setResponseCode(responseCode);
+        rec.setResponseText(responseText);
+        rec.setTime(new Timestamp(time));
+
+        store(rec);
+    }
 }

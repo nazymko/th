@@ -17,7 +17,7 @@ import org.jooq.Record1;
 import org.jooq.Record4;
 import org.jooq.Row4;
 import org.jooq.impl.UpdatableRecordImpl;
-import org.nazymko.th.parser.autodao.tables.ThSite;
+import org.nazymko.th.parser.autodao.tables.ConnectorRules;
 
 
 /**
@@ -32,20 +32,20 @@ import org.nazymko.th.parser.autodao.tables.ThSite;
 )
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Entity
-@Table(name = "th_site", schema = "thehomeland")
-public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements Record4<Integer, String, String, String> {
+@Table(name = "connector_rules", schema = "thehomeland")
+public class ConnectorRulesRecord extends UpdatableRecordImpl<ConnectorRulesRecord> implements Record4<Integer, String, Integer, Integer> {
 
-	private static final long serialVersionUID = 160987920;
+	private static final long serialVersionUID = 2119240067;
 
 	/**
-	 * Setter for <code>thehomeland.th_site.id</code>.
+	 * Setter for <code>thehomeland.connector_rules.id</code>.
 	 */
 	public void setId(Integer value) {
 		setValue(0, value);
 	}
 
 	/**
-	 * Getter for <code>thehomeland.th_site.id</code>.
+	 * Getter for <code>thehomeland.connector_rules.id</code>.
 	 */
 	@Id
 	@Column(name = "id", unique = true, nullable = false, precision = 10)
@@ -55,52 +55,49 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	}
 
 	/**
-	 * Setter for <code>thehomeland.th_site.authority</code>.
+	 * Setter for <code>thehomeland.connector_rules.rule</code>.
 	 */
-	public void setAuthority(String value) {
+	public void setRule(String value) {
 		setValue(1, value);
 	}
 
 	/**
-	 * Getter for <code>thehomeland.th_site.authority</code>.
+	 * Getter for <code>thehomeland.connector_rules.rule</code>.
 	 */
-	@Column(name = "authority", length = 256)
-	@Size(max = 256)
-	public String getAuthority() {
+	@Column(name = "rule", length = 65535)
+	@Size(max = 65535)
+	public String getRule() {
 		return (String) getValue(1);
 	}
 
 	/**
-	 * Setter for <code>thehomeland.th_site.name</code>.
+	 * Setter for <code>thehomeland.connector_rules.consumer_id</code>.
 	 */
-	public void setName(String value) {
+	public void setConsumerId(Integer value) {
 		setValue(2, value);
 	}
 
 	/**
-	 * Getter for <code>thehomeland.th_site.name</code>.
+	 * Getter for <code>thehomeland.connector_rules.consumer_id</code>.
 	 */
-	@Column(name = "name", length = 128)
-	@Size(max = 128)
-	public String getName() {
-		return (String) getValue(2);
+	@Column(name = "consumer_id", precision = 10)
+	public Integer getConsumerId() {
+		return (Integer) getValue(2);
 	}
 
 	/**
-	 * Setter for <code>thehomeland.th_site.default_url</code>.
+	 * Setter for <code>thehomeland.connector_rules.site_id</code>.
 	 */
-	public void setDefaultUrl(String value) {
+	public void setSiteId(Integer value) {
 		setValue(3, value);
 	}
 
 	/**
-	 * Getter for <code>thehomeland.th_site.default_url</code>.
+	 * Getter for <code>thehomeland.connector_rules.site_id</code>.
 	 */
-	@Column(name = "default_url", nullable = false, length = 1024)
-	@NotNull
-	@Size(max = 1024)
-	public String getDefaultUrl() {
-		return (String) getValue(3);
+	@Column(name = "site_id", precision = 10)
+	public Integer getSiteId() {
+		return (Integer) getValue(3);
 	}
 
 	// -------------------------------------------------------------------------
@@ -123,7 +120,7 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Row4<Integer, String, String, String> fieldsRow() {
+	public Row4<Integer, String, Integer, Integer> fieldsRow() {
 		return (Row4) super.fieldsRow();
 	}
 
@@ -131,7 +128,7 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Row4<Integer, String, String, String> valuesRow() {
+	public Row4<Integer, String, Integer, Integer> valuesRow() {
 		return (Row4) super.valuesRow();
 	}
 
@@ -140,7 +137,7 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	 */
 	@Override
 	public Field<Integer> field1() {
-		return ThSite.TH_SITE.ID;
+		return ConnectorRules.CONNECTOR_RULES.ID;
 	}
 
 	/**
@@ -148,23 +145,23 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	 */
 	@Override
 	public Field<String> field2() {
-		return ThSite.TH_SITE.AUTHORITY;
+		return ConnectorRules.CONNECTOR_RULES.RULE;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Field<String> field3() {
-		return ThSite.TH_SITE.NAME;
+	public Field<Integer> field3() {
+		return ConnectorRules.CONNECTOR_RULES.CONSUMER_ID;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Field<String> field4() {
-		return ThSite.TH_SITE.DEFAULT_URL;
+	public Field<Integer> field4() {
+		return ConnectorRules.CONNECTOR_RULES.SITE_ID;
 	}
 
 	/**
@@ -180,30 +177,30 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	 */
 	@Override
 	public String value2() {
-		return getAuthority();
+		return getRule();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String value3() {
-		return getName();
+	public Integer value3() {
+		return getConsumerId();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String value4() {
-		return getDefaultUrl();
+	public Integer value4() {
+		return getSiteId();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ThSiteRecord value1(Integer value) {
+	public ConnectorRulesRecord value1(Integer value) {
 		setId(value);
 		return this;
 	}
@@ -212,8 +209,8 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ThSiteRecord value2(String value) {
-		setAuthority(value);
+	public ConnectorRulesRecord value2(String value) {
+		setRule(value);
 		return this;
 	}
 
@@ -221,8 +218,8 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ThSiteRecord value3(String value) {
-		setName(value);
+	public ConnectorRulesRecord value3(Integer value) {
+		setConsumerId(value);
 		return this;
 	}
 
@@ -230,8 +227,8 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ThSiteRecord value4(String value) {
-		setDefaultUrl(value);
+	public ConnectorRulesRecord value4(Integer value) {
+		setSiteId(value);
 		return this;
 	}
 
@@ -239,7 +236,7 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ThSiteRecord values(Integer value1, String value2, String value3, String value4) {
+	public ConnectorRulesRecord values(Integer value1, String value2, Integer value3, Integer value4) {
 		value1(value1);
 		value2(value2);
 		value3(value3);
@@ -252,21 +249,21 @@ public class ThSiteRecord extends UpdatableRecordImpl<ThSiteRecord> implements R
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Create a detached ThSiteRecord
+	 * Create a detached ConnectorRulesRecord
 	 */
-	public ThSiteRecord() {
-		super(ThSite.TH_SITE);
+	public ConnectorRulesRecord() {
+		super(ConnectorRules.CONNECTOR_RULES);
 	}
 
 	/**
-	 * Create a detached, initialised ThSiteRecord
+	 * Create a detached, initialised ConnectorRulesRecord
 	 */
-	public ThSiteRecord(Integer id, String authority, String name, String defaultUrl) {
-		super(ThSite.TH_SITE);
+	public ConnectorRulesRecord(Integer id, String rule, Integer consumerId, Integer siteId) {
+		super(ConnectorRules.CONNECTOR_RULES);
 
 		setValue(0, id);
-		setValue(1, authority);
-		setValue(2, name);
-		setValue(3, defaultUrl);
+		setValue(1, rule);
+		setValue(2, consumerId);
+		setValue(3, siteId);
 	}
 }

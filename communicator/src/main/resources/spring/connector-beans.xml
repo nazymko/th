@@ -3,4 +3,6 @@
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
     <bean id="thConverter" class="org.nazymko.thehomeland.parser.ThRecordConverter"/>
+    <bean id="logService" class="org.nazymko.thehomeland.services.SendingLogService"/>
+    <bean id="connectorSyncPageLog" class="org.nazymko.th.parser.autodao.tables.ConnectorSyncPageLog"/>
 </beans>

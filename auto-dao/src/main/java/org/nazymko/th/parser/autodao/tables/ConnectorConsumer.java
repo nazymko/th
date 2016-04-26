@@ -4,7 +4,14 @@
 package org.nazymko.th.parser.autodao.tables;
 
 
+import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.annotation.Generated;
+
 import org.jooq.Field;
+import org.jooq.Identity;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.UniqueKey;
@@ -12,11 +19,6 @@ import org.jooq.impl.TableImpl;
 import org.nazymko.th.parser.autodao.Keys;
 import org.nazymko.th.parser.autodao.Thehomeland;
 import org.nazymko.th.parser.autodao.tables.records.ConnectorConsumerRecord;
-
-import javax.annotation.Generated;
-import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.List;
 
 
 /**
@@ -32,19 +34,31 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ConnectorConsumer extends TableImpl<ConnectorConsumerRecord> {
 
+	private static final long serialVersionUID = -1303533369;
+
 	/**
 	 * The reference instance of <code>thehomeland.connector_consumer</code>
 	 */
 	public static final ConnectorConsumer CONNECTOR_CONSUMER = new ConnectorConsumer();
-	private static final long serialVersionUID = -448159697;
+
+	/**
+	 * The class holding records for this type
+	 */
+	@Override
+	public Class<ConnectorConsumerRecord> getRecordType() {
+		return ConnectorConsumerRecord.class;
+	}
+
 	/**
 	 * The column <code>thehomeland.connector_consumer.id</code>.
 	 */
 	public final TableField<ConnectorConsumerRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
 	/**
 	 * The column <code>thehomeland.connector_consumer.domain</code>.
 	 */
 	public final TableField<ConnectorConsumerRecord, String> DOMAIN = createField("domain", org.jooq.impl.SQLDataType.VARCHAR.length(1024).nullable(false), this, "");
+
 	/**
 	 * The column <code>thehomeland.connector_consumer.time</code>.
 	 */
@@ -73,11 +87,11 @@ public class ConnectorConsumer extends TableImpl<ConnectorConsumerRecord> {
 	}
 
 	/**
-	 * The class holding records for this type
+	 * {@inheritDoc}
 	 */
 	@Override
-	public Class<ConnectorConsumerRecord> getRecordType() {
-		return ConnectorConsumerRecord.class;
+	public Identity<ConnectorConsumerRecord, Integer> getIdentity() {
+		return Keys.IDENTITY_CONNECTOR_CONSUMER;
 	}
 
 	/**

@@ -19,17 +19,26 @@
         <int:header name="content-type" value="application/json"/>
         <int:header name="Authorization" value="Basic T1BHTkotOUd6NC04TVVjVEFRZ1g5UXhBNXdkb0JyMEk6"/>
     </int:header-enricher>
+    <!--url="https://thehomeland.com.ua/api/trip/create"-->
     <!--Outbound gateway to send data for service-->
     <int-http:outbound-gateway id="outboundPost"
                                request-channel="outputPostChannel"
-                               url="https://thehomeland.com.ua/api/trip/create"
+                               url="http://localhost:8080/mock/post"
                                http-method="POST"
                                extract-request-payload="true"
                                expected-response-type="java.lang.String"
                                charset="UTF-8"
                                reply-timeout="1000"
-                               reply-channel="logChannel">
+                               reply-channel="onResponseChannel">
     </int-http:outbound-gateway>
     <int:channel id="logChannel"/>
-    <int:logging-channel-adapter channel="logChannel" level="INFO"/>
+    <int:channel id="onResponseChannel">
+        <int:interceptors>
+            <int:wire-tap channel="logChannel"/>
+        </int:interceptors>
+    </int:channel>
+    <int:service-activator id="logServiceActivator"
+                           input-channel="onResponseChannel"
+                           ref="logService" method="afterSend"/>
+    <int:logging-channel-adapter channel="logChannel" level="DEBUG"/>
 </beans>

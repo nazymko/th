@@ -4,14 +4,32 @@
 package org.nazymko.th.parser.autodao;
 
 
+import javax.annotation.Generated;
+
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.UniqueKey;
 import org.jooq.impl.AbstractKeys;
-import org.nazymko.th.parser.autodao.tables.*;
-import org.nazymko.th.parser.autodao.tables.records.*;
-
-import javax.annotation.Generated;
+import org.nazymko.th.parser.autodao.tables.ConnectorConsumer;
+import org.nazymko.th.parser.autodao.tables.ConnectorRules;
+import org.nazymko.th.parser.autodao.tables.ConnectorSyncMainLog;
+import org.nazymko.th.parser.autodao.tables.ConnectorSyncPageLog;
+import org.nazymko.th.parser.autodao.tables.TaskRun;
+import org.nazymko.th.parser.autodao.tables.TaskSchedule;
+import org.nazymko.th.parser.autodao.tables.ThAttributeData;
+import org.nazymko.th.parser.autodao.tables.ThPage;
+import org.nazymko.th.parser.autodao.tables.ThRule;
+import org.nazymko.th.parser.autodao.tables.ThSite;
+import org.nazymko.th.parser.autodao.tables.records.ConnectorConsumerRecord;
+import org.nazymko.th.parser.autodao.tables.records.ConnectorRulesRecord;
+import org.nazymko.th.parser.autodao.tables.records.ConnectorSyncMainLogRecord;
+import org.nazymko.th.parser.autodao.tables.records.ConnectorSyncPageLogRecord;
+import org.nazymko.th.parser.autodao.tables.records.TaskRunRecord;
+import org.nazymko.th.parser.autodao.tables.records.TaskScheduleRecord;
+import org.nazymko.th.parser.autodao.tables.records.ThAttributeDataRecord;
+import org.nazymko.th.parser.autodao.tables.records.ThPageRecord;
+import org.nazymko.th.parser.autodao.tables.records.ThRuleRecord;
+import org.nazymko.th.parser.autodao.tables.records.ThSiteRecord;
 
 
 /**
@@ -32,7 +50,10 @@ public class Keys {
 	// IDENTITY definitions
 	// -------------------------------------------------------------------------
 
+	public static final Identity<ConnectorConsumerRecord, Integer> IDENTITY_CONNECTOR_CONSUMER = Identities0.IDENTITY_CONNECTOR_CONSUMER;
 	public static final Identity<ConnectorRulesRecord, Integer> IDENTITY_CONNECTOR_RULES = Identities0.IDENTITY_CONNECTOR_RULES;
+	public static final Identity<ConnectorSyncMainLogRecord, Integer> IDENTITY_CONNECTOR_SYNC_MAIN_LOG = Identities0.IDENTITY_CONNECTOR_SYNC_MAIN_LOG;
+	public static final Identity<ConnectorSyncPageLogRecord, Integer> IDENTITY_CONNECTOR_SYNC_PAGE_LOG = Identities0.IDENTITY_CONNECTOR_SYNC_PAGE_LOG;
 	public static final Identity<TaskRunRecord, Integer> IDENTITY_TASK_RUN = Identities0.IDENTITY_TASK_RUN;
 	public static final Identity<TaskScheduleRecord, Integer> IDENTITY_TASK_SCHEDULE = Identities0.IDENTITY_TASK_SCHEDULE;
 	public static final Identity<ThAttributeDataRecord, Integer> IDENTITY_TH_ATTRIBUTE_DATA = Identities0.IDENTITY_TH_ATTRIBUTE_DATA;
@@ -80,7 +101,10 @@ public class Keys {
 	// -------------------------------------------------------------------------
 
 	private static class Identities0 extends AbstractKeys {
+		public static Identity<ConnectorConsumerRecord, Integer> IDENTITY_CONNECTOR_CONSUMER = createIdentity(ConnectorConsumer.CONNECTOR_CONSUMER, ConnectorConsumer.CONNECTOR_CONSUMER.ID);
 		public static Identity<ConnectorRulesRecord, Integer> IDENTITY_CONNECTOR_RULES = createIdentity(ConnectorRules.CONNECTOR_RULES, ConnectorRules.CONNECTOR_RULES.ID);
+		public static Identity<ConnectorSyncMainLogRecord, Integer> IDENTITY_CONNECTOR_SYNC_MAIN_LOG = createIdentity(ConnectorSyncMainLog.CONNECTOR_SYNC_MAIN_LOG, ConnectorSyncMainLog.CONNECTOR_SYNC_MAIN_LOG.ID);
+		public static Identity<ConnectorSyncPageLogRecord, Integer> IDENTITY_CONNECTOR_SYNC_PAGE_LOG = createIdentity(ConnectorSyncPageLog.CONNECTOR_SYNC_PAGE_LOG, ConnectorSyncPageLog.CONNECTOR_SYNC_PAGE_LOG.ID);
 		public static Identity<TaskRunRecord, Integer> IDENTITY_TASK_RUN = createIdentity(TaskRun.TASK_RUN, TaskRun.TASK_RUN.ID);
 		public static Identity<TaskScheduleRecord, Integer> IDENTITY_TASK_SCHEDULE = createIdentity(TaskSchedule.TASK_SCHEDULE, TaskSchedule.TASK_SCHEDULE.ID);
 		public static Identity<ThAttributeDataRecord, Integer> IDENTITY_TH_ATTRIBUTE_DATA = createIdentity(ThAttributeData.TH_ATTRIBUTE_DATA, ThAttributeData.TH_ATTRIBUTE_DATA.ID);

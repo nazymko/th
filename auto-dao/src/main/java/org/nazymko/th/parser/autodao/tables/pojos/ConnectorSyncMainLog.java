@@ -4,14 +4,15 @@
 package org.nazymko.th.parser.autodao.tables.pojos;
 
 
+import java.io.Serializable;
+import java.sql.Timestamp;
+
 import javax.annotation.Generated;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.sql.Timestamp;
 
 
 /**
@@ -36,7 +37,7 @@ public class ConnectorSyncMainLog implements Serializable {
 	private Timestamp syncDate;
 	private Integer   countNew;
 	private Integer   countTotal;
-	private Integer latestPageId;
+	private Integer   latestPageId;
 
 	public ConnectorSyncMainLog() {}
 
@@ -50,12 +51,12 @@ public class ConnectorSyncMainLog implements Serializable {
 	}
 
 	public ConnectorSyncMainLog(
-			Integer   id,
-			Integer   consumerId,
-			Timestamp syncDate,
-			Integer   countNew,
-			Integer   countTotal,
-			Integer latestPageId
+		Integer   id,
+		Integer   consumerId,
+		Timestamp syncDate,
+		Integer   countNew,
+		Integer   countTotal,
+		Integer   latestPageId
 	) {
 		this.id = id;
 		this.consumerId = consumerId;

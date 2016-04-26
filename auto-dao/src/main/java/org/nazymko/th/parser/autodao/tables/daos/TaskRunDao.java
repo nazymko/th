@@ -4,16 +4,18 @@
 package org.nazymko.th.parser.autodao.tables.daos;
 
 
+import java.sql.Timestamp;
+import java.util.List;
+
+import javax.annotation.Generated;
+
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
 import org.nazymko.th.parser.autodao.tables.TaskRun;
 import org.nazymko.th.parser.autodao.tables.records.TaskRunRecord;
+
 import utils.support.runtype.RunType;
 import utils.support.task.TaskStatus;
-
-import javax.annotation.Generated;
-import java.sql.Timestamp;
-import java.util.List;
 
 
 /**

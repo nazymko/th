@@ -4,6 +4,9 @@
 package org.nazymko.th.parser.autodao.tables.pojos;
 
 
+import java.io.Serializable;
+import java.sql.Timestamp;
+
 import javax.annotation.Generated;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,8 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
-import java.sql.Timestamp;
 
 
 /**
@@ -30,12 +31,14 @@ import java.sql.Timestamp;
 @Table(name = "connector_sync_page_log", schema = "thehomeland")
 public class ConnectorSyncPageLog implements Serializable {
 
-	private static final long serialVersionUID = 1154100045;
+	private static final long serialVersionUID = -1564492515;
 
 	private Integer   id;
 	private Integer   pageId;
 	private String    consumer;
 	private Timestamp time;
+	private String    responseText;
+	private Integer   responseCode;
 
 	public ConnectorSyncPageLog() {}
 
@@ -44,18 +47,24 @@ public class ConnectorSyncPageLog implements Serializable {
 		this.pageId = value.pageId;
 		this.consumer = value.consumer;
 		this.time = value.time;
+		this.responseText = value.responseText;
+		this.responseCode = value.responseCode;
 	}
 
 	public ConnectorSyncPageLog(
 		Integer   id,
 		Integer   pageId,
 		String    consumer,
-		Timestamp time
+		Timestamp time,
+		String    responseText,
+		Integer   responseCode
 	) {
 		this.id = id;
 		this.pageId = pageId;
 		this.consumer = consumer;
 		this.time = time;
+		this.responseText = responseText;
+		this.responseCode = responseCode;
 	}
 
 	@Id
@@ -100,6 +109,24 @@ public class ConnectorSyncPageLog implements Serializable {
 		this.time = time;
 	}
 
+	@Column(name = "response_text")
+	public String getResponseText() {
+		return this.responseText;
+	}
+
+	public void setResponseText(String responseText) {
+		this.responseText = responseText;
+	}
+
+	@Column(name = "response_code", precision = 10)
+	public Integer getResponseCode() {
+		return this.responseCode;
+	}
+
+	public void setResponseCode(Integer responseCode) {
+		this.responseCode = responseCode;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder("ConnectorSyncPageLog (");
@@ -108,6 +135,8 @@ public class ConnectorSyncPageLog implements Serializable {
 		sb.append(", ").append(pageId);
 		sb.append(", ").append(consumer);
 		sb.append(", ").append(time);
+		sb.append(", ").append(responseText);
+		sb.append(", ").append(responseCode);
 
 		sb.append(")");
 		return sb.toString();

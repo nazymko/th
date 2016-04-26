@@ -4,15 +4,21 @@
 package org.nazymko.th.parser.autodao.tables;
 
 
-import org.jooq.*;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.annotation.Generated;
+
+import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Identity;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.UniqueKey;
 import org.jooq.impl.TableImpl;
 import org.nazymko.th.parser.autodao.Keys;
 import org.nazymko.th.parser.autodao.Thehomeland;
 import org.nazymko.th.parser.autodao.tables.records.ThAttributeDataRecord;
-
-import javax.annotation.Generated;
-import java.util.Arrays;
-import java.util.List;
 
 
 /**
@@ -28,43 +34,61 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ThAttributeData extends TableImpl<ThAttributeDataRecord> {
 
+	private static final long serialVersionUID = -411048139;
+
 	/**
 	 * The reference instance of <code>thehomeland.th_attribute_data</code>
 	 */
 	public static final ThAttributeData TH_ATTRIBUTE_DATA = new ThAttributeData();
-	private static final long serialVersionUID = -411048139;
+
+	/**
+	 * The class holding records for this type
+	 */
+	@Override
+	public Class<ThAttributeDataRecord> getRecordType() {
+		return ThAttributeDataRecord.class;
+	}
+
 	/**
 	 * The column <code>thehomeland.th_attribute_data.id</code>.
 	 */
 	public final TableField<ThAttributeDataRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
 	/**
 	 * The column <code>thehomeland.th_attribute_data.site_id</code>.
 	 */
 	public final TableField<ThAttributeDataRecord, Integer> SITE_ID = createField("site_id", org.jooq.impl.SQLDataType.INTEGER, this, "");
+
 	/**
 	 * The column <code>thehomeland.th_attribute_data.page_id</code>.
 	 */
 	public final TableField<ThAttributeDataRecord, Integer> PAGE_ID = createField("page_id", org.jooq.impl.SQLDataType.INTEGER, this, "");
+
 	/**
 	 * The column <code>thehomeland.th_attribute_data.attribute_name</code>.
 	 */
 	public final TableField<ThAttributeDataRecord, String> ATTRIBUTE_NAME = createField("attribute_name", org.jooq.impl.SQLDataType.VARCHAR.length(64).nullable(false), this, "");
+
 	/**
 	 * The column <code>thehomeland.th_attribute_data.attribute_value</code>.
 	 */
 	public final TableField<ThAttributeDataRecord, String> ATTRIBUTE_VALUE = createField("attribute_value", org.jooq.impl.SQLDataType.CLOB, this, "");
+
 	/**
 	 * The column <code>thehomeland.th_attribute_data.attribute_index</code>.
 	 */
 	public final TableField<ThAttributeDataRecord, Integer> ATTRIBUTE_INDEX = createField("attribute_index", org.jooq.impl.SQLDataType.INTEGER, this, "");
+
 	/**
 	 * The column <code>thehomeland.th_attribute_data.attribute_type</code>.
 	 */
 	public final TableField<ThAttributeDataRecord, String> ATTRIBUTE_TYPE = createField("attribute_type", org.jooq.impl.SQLDataType.VARCHAR.length(32), this, "");
+
 	/**
 	 * The column <code>thehomeland.th_attribute_data.attribute_format</code>.
 	 */
 	public final TableField<ThAttributeDataRecord, String> ATTRIBUTE_FORMAT = createField("attribute_format", org.jooq.impl.SQLDataType.VARCHAR.length(256), this, "");
+
 	/**
 	 * The column <code>thehomeland.th_attribute_data.rule_id</code>.
 	 */
@@ -90,14 +114,6 @@ public class ThAttributeData extends TableImpl<ThAttributeDataRecord> {
 
 	private ThAttributeData(String alias, Table<ThAttributeDataRecord> aliased, Field<?>[] parameters) {
 		super(alias, Thehomeland.THEHOMELAND, aliased, parameters, "");
-	}
-
-	/**
-	 * The class holding records for this type
-	 */
-	@Override
-	public Class<ThAttributeDataRecord> getRecordType() {
-		return ThAttributeDataRecord.class;
 	}
 
 	/**

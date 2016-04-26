@@ -4,6 +4,9 @@
 package org.nazymko.th.parser.autodao.tables.pojos;
 
 
+import java.io.Serializable;
+import java.sql.Timestamp;
+
 import javax.annotation.Generated;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,8 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
-import java.sql.Timestamp;
 
 
 /**
@@ -33,8 +34,8 @@ public class ThPage implements Serializable {
 	private static final long serialVersionUID = 407309876;
 
 	private Integer   id;
-	private String pageUrl;
-	private Integer version;
+	private String    pageUrl;
+	private Integer   version;
 	private String    authority;
 	private Integer   siteId;
 	private Timestamp visitedAt;
@@ -59,16 +60,16 @@ public class ThPage implements Serializable {
 	}
 
 	public ThPage(
-			Integer   id,
-			String pageUrl,
-			Integer version,
-			String    authority,
-			Integer   siteId,
-			Timestamp visitedAt,
-			String    type,
-			Timestamp registeredAt,
-			Integer   sourcepage,
-			Integer taskRunId
+		Integer   id,
+		String    pageUrl,
+		Integer   version,
+		String    authority,
+		Integer   siteId,
+		Timestamp visitedAt,
+		String    type,
+		Timestamp registeredAt,
+		Integer   sourcepage,
+		Integer   taskRunId
 	) {
 		this.id = id;
 		this.pageUrl = pageUrl;

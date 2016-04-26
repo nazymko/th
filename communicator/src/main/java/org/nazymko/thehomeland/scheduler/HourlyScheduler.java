@@ -12,7 +12,11 @@ import org.nazymko.thehomeland.parser.ThRecordConverter;
 import org.nazymko.thehomeland.utils.RuleConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.support.GenericMessage;
+import org.springframework.scheduling.annotation.Scheduled;
 
+import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +29,8 @@ import java.util.Map;
 public class HourlyScheduler implements Scheduler {
 
 
-    @Autowired
+    private Gson GSON = new Gson();
+    @Resource
     PostMessageChannel messageChannel;
     @Qualifier("connectorRuleDao")
     @Autowired
@@ -38,19 +43,33 @@ public class HourlyScheduler implements Scheduler {
     private Repository repository;
 
     //    @Scheduled(cron = "0 */1 * * *") - every hour
-//    @Scheduled(cron = "0 */1 * * * *") //every minute
+    @Scheduled(cron = "0 */1 * * * *") //every minute
     public void doIt() {
-        log.info("Started");
-        HashMap<Integer, HashMap<String, String>> rules = prepare(ruleDao.all());
-        thRecordConverter.setRulePull(rules);
-        Result<ThPageRecord> latest = repository.latest();
-        for (ThPageRecord thPageRecord : latest) {
-            Map convert = thRecordConverter.convert(thPageRecord);
-            String string = new Gson().toJson(convert);
-            System.out.println("json = " + string);
-            messageChannel.send(convert);
+        try {
+            log.info("Started");
+            HashMap<Integer, HashMap<String, String>> rules = prepare(ruleDao.all());
+            thRecordConverter.setRulePull(rules);
+            Result<ThPageRecord> latest = repository.latest();
+            for (ThPageRecord thPageRecord : latest) {
+                Map convert = thRecordConverter.convert(thPageRecord);
+                String json = GSON.toJson(convert);
+
+                messageChannel.send(new GenericMessage<String>(json, new MessageHeaders(makeHeaders(thPageRecord.getId()))));
+            }
+            log.info("Finished");
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        log.info("Finished");
+    }
+
+    private Map<String, Object> makeHeaders(Integer id) {
+        HashMap<String, Object> headers = new HashMap<>();
+
+        headers.put("content-type", "application/json");
+        headers.put("Authorization", "Basic T1BHTkotOUd6NC04TVVjVEFRZ1g5UXhBNXdkb0JyMEk6");
+        headers.put("X-Original-Page-Id", id);
+
+        return headers;
     }
 
     private HashMap<Integer, HashMap<String, String>> prepare(List<ConnectorRulesRecord> all) {

@@ -4,8 +4,8 @@
 package org.nazymko.th.parser.autodao.tables.pojos;
 
 
-import utils.support.runtype.RunType;
-import utils.support.task.TaskStatus;
+import java.io.Serializable;
+import java.sql.Timestamp;
 
 import javax.annotation.Generated;
 import javax.persistence.Column;
@@ -13,8 +13,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.sql.Timestamp;
+
+import utils.support.runtype.RunType;
+import utils.support.task.TaskStatus;
 
 
 /**

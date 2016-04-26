@@ -4,12 +4,7 @@
 package org.nazymko.th.parser.autodao.tables.records;
 
 
-import org.jooq.Field;
-import org.jooq.Record1;
-import org.jooq.Record3;
-import org.jooq.Row3;
-import org.jooq.impl.UpdatableRecordImpl;
-import org.nazymko.th.parser.autodao.tables.ConnectorConsumer;
+import java.sql.Timestamp;
 
 import javax.annotation.Generated;
 import javax.persistence.Column;
@@ -18,7 +13,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.sql.Timestamp;
+
+import org.jooq.Field;
+import org.jooq.Record1;
+import org.jooq.Record3;
+import org.jooq.Row3;
+import org.jooq.impl.UpdatableRecordImpl;
+import org.nazymko.th.parser.autodao.tables.ConnectorConsumer;
 
 
 /**
@@ -39,21 +40,10 @@ public class ConnectorConsumerRecord extends UpdatableRecordImpl<ConnectorConsum
 	private static final long serialVersionUID = -1635766750;
 
 	/**
-	 * Create a detached ConnectorConsumerRecord
+	 * Setter for <code>thehomeland.connector_consumer.id</code>.
 	 */
-	public ConnectorConsumerRecord() {
-		super(ConnectorConsumer.CONNECTOR_CONSUMER);
-	}
-
-	/**
-	 * Create a detached, initialised ConnectorConsumerRecord
-	 */
-	public ConnectorConsumerRecord(Integer id, String domain, Timestamp time) {
-		super(ConnectorConsumer.CONNECTOR_CONSUMER);
-
-		setValue(0, id);
-		setValue(1, domain);
-		setValue(2, time);
+	public void setId(Integer value) {
+		setValue(0, value);
 	}
 
 	/**
@@ -67,10 +57,10 @@ public class ConnectorConsumerRecord extends UpdatableRecordImpl<ConnectorConsum
 	}
 
 	/**
-	 * Setter for <code>thehomeland.connector_consumer.id</code>.
+	 * Setter for <code>thehomeland.connector_consumer.domain</code>.
 	 */
-	public void setId(Integer value) {
-		setValue(0, value);
+	public void setDomain(String value) {
+		setValue(1, value);
 	}
 
 	/**
@@ -84,15 +74,11 @@ public class ConnectorConsumerRecord extends UpdatableRecordImpl<ConnectorConsum
 	}
 
 	/**
-	 * Setter for <code>thehomeland.connector_consumer.domain</code>.
+	 * Setter for <code>thehomeland.connector_consumer.time</code>.
 	 */
-	public void setDomain(String value) {
-		setValue(1, value);
+	public void setTime(Timestamp value) {
+		setValue(2, value);
 	}
-
-	// -------------------------------------------------------------------------
-	// Primary key information
-	// -------------------------------------------------------------------------
 
 	/**
 	 * Getter for <code>thehomeland.connector_consumer.time</code>.
@@ -104,15 +90,8 @@ public class ConnectorConsumerRecord extends UpdatableRecordImpl<ConnectorConsum
 	}
 
 	// -------------------------------------------------------------------------
-	// Record3 type implementation
+	// Primary key information
 	// -------------------------------------------------------------------------
-
-	/**
-	 * Setter for <code>thehomeland.connector_consumer.time</code>.
-	 */
-	public void setTime(Timestamp value) {
-		setValue(2, value);
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -121,6 +100,10 @@ public class ConnectorConsumerRecord extends UpdatableRecordImpl<ConnectorConsum
 	public Record1<Integer> key() {
 		return (Record1) super.key();
 	}
+
+	// -------------------------------------------------------------------------
+	// Record3 type implementation
+	// -------------------------------------------------------------------------
 
 	/**
 	 * {@inheritDoc}
@@ -204,10 +187,6 @@ public class ConnectorConsumerRecord extends UpdatableRecordImpl<ConnectorConsum
 		return this;
 	}
 
-	// -------------------------------------------------------------------------
-	// Constructors
-	// -------------------------------------------------------------------------
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -226,5 +205,27 @@ public class ConnectorConsumerRecord extends UpdatableRecordImpl<ConnectorConsum
 		value2(value2);
 		value3(value3);
 		return this;
+	}
+
+	// -------------------------------------------------------------------------
+	// Constructors
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Create a detached ConnectorConsumerRecord
+	 */
+	public ConnectorConsumerRecord() {
+		super(ConnectorConsumer.CONNECTOR_CONSUMER);
+	}
+
+	/**
+	 * Create a detached, initialised ConnectorConsumerRecord
+	 */
+	public ConnectorConsumerRecord(Integer id, String domain, Timestamp time) {
+		super(ConnectorConsumer.CONNECTOR_CONSUMER);
+
+		setValue(0, id);
+		setValue(1, domain);
+		setValue(2, time);
 	}
 }
