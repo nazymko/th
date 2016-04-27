@@ -1,6 +1,6 @@
 {
   "url": "http://tcb.vn.ua",
-  "name": "TK Bidnyajka",
+  "name": "TK Bidnyajka -222",
   "selector": "css",
   "meta": {
     "topics": [
@@ -29,7 +29,7 @@
     },
     {
       "type": "category_list",
-      "unique_visit": false,
+      "unique": false,
       "attrs": [
         {
           "path": ".tripak >a",
@@ -40,7 +40,7 @@
     },
     {
       "type": "article",
-      "unique_visit": true,
+      "unique": true,
       "attrs": [
         {
           "path": ".entry td h3",

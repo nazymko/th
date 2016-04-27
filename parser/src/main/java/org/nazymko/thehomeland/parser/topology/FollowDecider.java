@@ -3,7 +3,6 @@ package org.nazymko.thehomeland.parser.topology;
 import lombok.extern.log4j.Log4j2;
 import org.nazymko.th.parser.autodao.tables.records.ThPageRecord;
 import org.nazymko.thehomeland.parser.db.dao.PageDao;
-import org.nazymko.thehomeland.parser.db.model.Page;
 
 import javax.annotation.Resource;
 import java.util.Optional;
@@ -22,10 +21,10 @@ public class FollowDecider implements History {
     @Override
     public boolean visited(String link) {
         log.debug("link = {}", link);
-        Optional<Page> page = pageDao.getByUrl(link);
+        Optional<ThPageRecord> page = pageDao.getByUrl(link);
         log.debug("page = {} ", page);
         if (page.isPresent()) {
-            return page.get().getVisited() != null;
+            return page.get().getVisitedAt() != null;
         }
         return false;
     }

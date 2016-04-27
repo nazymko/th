@@ -72,7 +72,7 @@ public class RuleResolver implements ProcessorRegister {
 
             item = stringPageItemHashMap.get(attr);
         } else {
-            item = null;
+            return Optional.empty();
         }
         return Optional.ofNullable(item);
     }

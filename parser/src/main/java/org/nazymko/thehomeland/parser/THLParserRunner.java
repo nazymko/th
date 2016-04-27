@@ -21,7 +21,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Log4j2(topic = THLParserRunner.THL_PARSER_MARKER)
 public class THLParserRunner {
     public static final String signature;
-    public static final String THL_PARSER_MARKER = "THL_PARSER";
+    static final String THL_PARSER_MARKER = "THL_PARSER";
 
     static {
         signature = UUID.randomUUID().toString();
@@ -71,7 +71,6 @@ public class THLParserRunner {
                 if (session.equals(((InfoSource) task).runId())) {
                     count++;
                 }
-
             }
         }
 

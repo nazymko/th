@@ -26,7 +26,6 @@ import static org.nazymko.th.parser.autodao.Tables.TH_PAGE;
  */
 @Log4j2
 public class PageDao extends AbstractDao<Integer, ThPageRecord> {
-    public static final String PAGE_BY_ID = "SELECT authority,(SELECT authority FROM th_site s WHERE s.id=p.site_id) AS site_url,id,type,registered_at,visited_at FROM th_page p WHERE p.id=:id";
     public static final String NEWEST_PAGE_BY_URL = "SELECT authority,(SELECT authority FROM th_site s WHERE s.id=p.site_id) AS site_url,id,type,version,visited_at,registered_at FROM th_page p WHERE p.authority=:url AND version = (SELECT MAX(version) FROM th_page WHERE authority = :url)";
     @Resource
     TaskDao taskDao;
@@ -53,8 +52,16 @@ public class PageDao extends AbstractDao<Integer, ThPageRecord> {
         return Optional.ofNullable(getDslContext().selectFrom(TH_PAGE).where(TH_PAGE.ID.eq(key)).fetchOne());
     }
 
-    public Optional<Page> getByUrl(String url) {
-        MapSqlParameterSource source = new MapSqlParameterSource();
+    public Optional<ThPageRecord> getByUrl(String url) {
+        ThPageRecord record = getDslContext()
+                .selectFrom(TH_PAGE)
+                .where(TH_PAGE.PAGE_URL.eq(url))
+                .limit(1)
+                .fetchOne();
+
+        return Optional.ofNullable(record);
+
+   /*     MapSqlParameterSource source = new MapSqlParameterSource();
         source.addValue("url", url);
         Page page = getJdbcTemplate().query(NEWEST_PAGE_BY_URL,
                 source, new ResultSetExtractor<Page>() {
@@ -66,7 +73,7 @@ public class PageDao extends AbstractDao<Integer, ThPageRecord> {
                         return null;
                     }
                 });
-        return Optional.ofNullable(page);
+        return Optional.ofNullable(page);*/
     }
 
     /**
@@ -75,28 +82,6 @@ public class PageDao extends AbstractDao<Integer, ThPageRecord> {
     public Integer save(ThPageRecord record) {
         store(record);
         return record.getId();
-    }
-
-    private int getVersion(String page) {
-
-        return getJdbcTemplate().query("SELECT MAX(version) max  FROM th_page WHERE authority=:url", new MapSqlParameterSource("url", page), new ResultSetExtractor<Integer>() {
-            @Override
-            public Integer extractData(ResultSet resultSet) throws SQLException, DataAccessException {
-                resultSet.next();
-                return resultSet.getInt("max");
-            }
-        });
-    }
-
-
-    public void visit(String link) {
-
-//        getDslContext().selectFrom(PAGE).where(PAGE.URL.eq(link)).and()
-        Optional<Page> page = getByUrl(link);
-        if (page.isPresent()) {
-            Integer id = page.get().getId();
-            getJdbcTemplate().update("UPDATE th_page SET visited_at = now() WHERE id = :id", new MapSqlParameterSource("id", id));
-        }
     }
 
     public Result<ThPageRecord> getList(int pageSize, int pageNumber) {

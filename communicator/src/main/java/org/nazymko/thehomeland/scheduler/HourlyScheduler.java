@@ -17,10 +17,13 @@ import org.springframework.messaging.support.GenericMessage;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.annotation.Resource;
+import java.nio.charset.Charset;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 /**
  * Created by nazymko.patronus@gmail.com.
@@ -49,12 +52,13 @@ public class HourlyScheduler implements Scheduler {
             log.info("Started");
             HashMap<Integer, HashMap<String, String>> rules = prepare(ruleDao.all());
             thRecordConverter.setRulePull(rules);
-            Result<ThPageRecord> latest = repository.latest();
+            Result<ThPageRecord> latest = repository.latest("http://thehomeland.com.ua");
+
+            log.info("New records for send : {}", latest.size());
             for (ThPageRecord thPageRecord : latest) {
                 Map convert = thRecordConverter.convert(thPageRecord);
-                String json = GSON.toJson(convert);
-
-                messageChannel.send(new GenericMessage<String>(json, new MessageHeaders(makeHeaders(thPageRecord.getId()))));
+                String json = new String(GSON.toJson(convert).getBytes(Charset.forName("UTF-8")), "UTF-8");
+                tryToSend(thPageRecord, json);
             }
             log.info("Finished");
         } catch (Exception ex) {
@@ -62,10 +66,20 @@ public class HourlyScheduler implements Scheduler {
         }
     }
 
+    private void tryToSend(ThPageRecord thPageRecord, String json) {
+        try {
+
+            messageChannel.send(new GenericMessage<String>(json, new MessageHeaders(makeHeaders(thPageRecord.getId()))));
+        } catch (Exception ex) {
+            log.error(".tryToSend: thPageRecord = [" + thPageRecord.getId() + "], json = [" + json + "]");
+        }
+    }
+
     private Map<String, Object> makeHeaders(Integer id) {
         HashMap<String, Object> headers = new HashMap<>();
 
-        headers.put("content-type", "application/json");
+//        headers.put("content-type", "application/json");
+        headers.put("content-type", APPLICATION_JSON_UTF8_VALUE);
         headers.put("Authorization", "Basic T1BHTkotOUd6NC04TVVjVEFRZ1g5UXhBNXdkb0JyMEk6");
         headers.put("X-Original-Page-Id", id);
 

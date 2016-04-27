@@ -66,4 +66,15 @@ public class SyncPageLogDao extends AbstractDao<Integer, ConnectorSyncPageLogRec
 
         store(rec);
     }
+
+    public int getLatestId(String consumer) {
+        Record1<Integer> record = getDslContext().select(CONNECTOR_SYNC_PAGE_LOG.PAGE_ID.max())
+                .from(CONNECTOR_SYNC_PAGE_LOG)
+                .where(CONNECTOR_SYNC_PAGE_LOG.CONSUMER.eq(consumer)).fetchOne();
+        if (record.getValue(0) == null) {
+            return -1;
+        }
+
+        return record.getValue(CONNECTOR_SYNC_PAGE_LOG.PAGE_ID.max());
+    }
 }

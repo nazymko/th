@@ -13,8 +13,8 @@ import java.util.List;
 public class PageItem {
     @JsonProperty("parent")
     private String parent;
-    @JsonProperty("unique_visit")
-    private Boolean uniqueVisit = false;
+    @JsonProperty(value = "unique", defaultValue = "false")
+    private Boolean unique = false;
     @JsonProperty("type")
     private String type;
     @JsonProperty("attrs")

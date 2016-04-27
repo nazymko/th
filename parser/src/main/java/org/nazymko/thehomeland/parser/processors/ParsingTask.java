@@ -92,103 +92,7 @@ public class ParsingTask implements Runnable, InfoSource {
                     log.debug("Element not found '{}'", attr.getPath());
                     continue;
                 } else {
-                    //TODO : rework this messy code
-                    select.forEach(new Consumer<Element>() {
-                                       int index = 0;
-
-                                       @Override
-                                       public void accept(Element item) {
-                                           String value = getElementValue(item, attr);
-                                           processMainAttr(value, attr.isPersist());
-                                           if (hasCompositeAttrs(attr)) {
-                                               processCompositeAttr(value);
-                                           }
-                                           index++;
-                                       }
-
-                                       private void processCompositeAttr(String value) {
-                                           for (RegexpItem regexpItem : attr.getRegexp()) {
-                                               log.info("Matching {} : {}", regexpItem.getType(), regexpItem.getExpression());
-                                               //can optimize it
-                                               //and refactor this
-                                               String expression = regexpItem.getExpression();
-                                               expression = extend(expression);
-                                               Pattern compile = Pattern.compile(expression);
-                                               Matcher matcher = compile.matcher(value);
-                                               if (matcher.find()) {
-                                                   log.info("Matching found for {}", regexpItem.getType());
-                                                   MatchResult matchResult = matcher.toMatchResult();
-                                                   if (regexpItem.getGroup() == null) {
-                                                       log.info("Doing single matching for {}, persist :{}", regexpItem.getType(), regexpItem.isPersist());
-                                                       String type = regexpItem.getType();
-                                                       String groupValue = matchResult.group(1);
-                                                       ThAttributeDataRecord attribute = makeAttrFromConfig(groupValue, null, type, regexpItem.getType(), 0);
-                                                       log.info("Single matching for {}:{}", regexpItem.getType(), groupValue);
-                                                       publish(attribute, regexpItem.isPersist());
-                                                   } else {
-                                                       log.info("Doing groups: {}", regexpItem.getType());
-                                                       log.info("For value   : {}", value);
-                                                       for (GroupItem regExpGroup : regexpItem.getGroup()) {
-                                                           if (matchResult.groupCount() < regExpGroup.getOrder()) {
-                                                               log.info("Group {} not found in {}", regExpGroup.getOrder(), value);
-                                                               continue;
-                                                           }
-                                                           String groupValue = matchResult.group(regExpGroup.getOrder());
-                                                           log.info("Matched group for {}: {} ", regExpGroup.getType(), groupValue);
-                                                           log.info("Persist group : {}", regExpGroup.isPersist());
-
-                                                           ThAttributeDataRecord compositeAttr = makeAttrFromConfig(groupValue, regExpGroup.getFormat(), regExpGroup.getType(), regExpGroup.getType(), regExpGroup.getOrder());
-                                                           publish(compositeAttr, regExpGroup.isPersist());
-                                                       }
-                                                   }
-                                               } else {
-                                                   log.info("Nothing found for {}", regexpItem.getType());
-                                               }
-                                           }
-                                       }
-
-                        private ThAttributeDataRecord makeAttrFromConfig(String value, String attributeFormat, String attributeType, String attributeName, Integer order) {
-                                           ThAttributeDataRecord record = new ThAttributeDataRecord();
-                                           record.setPageId(config.getPageId());
-                                           record.setRuleId(config.getRuleId());
-                                           record.setSiteId(config.getSiteId());
-
-                                           record.setAttributeValue(value);
-                                           record.setAttributeType(attributeType);
-                                           record.setAttributeName(attributeName);
-                                           record.setAttributeFormat(attributeFormat);
-                            record.setAttributeIndex(order);
-
-                                           record.setAttributeIndex(index);
-                                           return record;
-
-                                       }
-
-                                       private boolean hasCompositeAttrs(AttrsItem attr) {
-                                           return attr.getRegexp() != null && !attr.getRegexp().isEmpty();
-                                       }
-
-                                       private void processMainAttr(String value, boolean persist) {
-                                           String _attr = attr.getAttr();
-
-                                           ThAttributeDataRecord attribute = makeAttrFromConfig(value, null, _attr, attr.getType(), 0);
-                                           publish(attribute, persist);
-                                       }
-
-                                       private void publish(ThAttributeDataRecord attribute, boolean persist) {
-                                           for (AttrListener listener : listeners) {
-                                               if (listener.support(attribute, sessionKey, persist)) {
-                                                   listener.process(attribute, sessionKey);
-                                               }
-                                           }
-                                       }
-
-                                       private String extend(String expression) {
-                                           return ".*" + expression + ".*";
-                                       }
-                                   }
-
-                    );
+                    select.forEach(makeProcessor(attr));
                 }
             }
             log.debug("Finished {}.", page);
@@ -196,6 +100,103 @@ public class ParsingTask implements Runnable, InfoSource {
             ex.printStackTrace();
         }
 
+    }
+
+    private Consumer<Element> makeProcessor(final AttrsItem attr) {
+        return new Consumer<Element>() {
+            int index = 0;
+
+            @Override
+            public void accept(Element item) {
+                String value = getElementValue(item, attr);
+                processMainAttr(value, attr.isPersist());
+                if (hasCompositeAttrs(attr)) {
+                    processCompositeAttr(value);
+                }
+                index++;
+            }
+
+            private void processCompositeAttr(String value) {
+                for (RegexpItem regexpItem : attr.getRegexp()) {
+                    log.info("Matching {} : {}", regexpItem.getType(), regexpItem.getExpression());
+                    //can optimize it
+                    //and refactor this
+                    String expression = regexpItem.getExpression();
+                    expression = extend(expression);
+                    Pattern compile = Pattern.compile(expression);
+                    Matcher matcher = compile.matcher(value);
+                    if (matcher.find()) {
+                        log.info("Matching found for {}", regexpItem.getType());
+                        MatchResult matchResult = matcher.toMatchResult();
+                        if (regexpItem.getGroup() == null) {
+                            log.info("Doing single matching for {}, persist :{}", regexpItem.getType(), regexpItem.isPersist());
+                            String type = regexpItem.getType();
+                            String groupValue = matchResult.group(1);
+                            ThAttributeDataRecord attribute = makeAttrFromConfig(groupValue, null, type, regexpItem.getType(), 0);
+                            log.info("Single matching for {}:{}", regexpItem.getType(), groupValue);
+                            publish(attribute, regexpItem.isPersist());
+                        } else {
+                            log.info("Doing groups: {}", regexpItem.getType());
+                            log.info("For value   : {}", value);
+                            for (GroupItem regExpGroup : regexpItem.getGroup()) {
+                                if (matchResult.groupCount() < regExpGroup.getOrder()) {
+                                    log.info("Group {} not found in {}", regExpGroup.getOrder(), value);
+                                    continue;
+                                }
+                                String groupValue = matchResult.group(regExpGroup.getOrder());
+                                log.info("Matched group for {}: {} ", regExpGroup.getType(), groupValue);
+                                log.info("Persist group : {}", regExpGroup.isPersist());
+
+                                ThAttributeDataRecord compositeAttr = makeAttrFromConfig(groupValue, regExpGroup.getFormat(), regExpGroup.getType(), regExpGroup.getType(), regExpGroup.getOrder());
+                                publish(compositeAttr, regExpGroup.isPersist());
+                            }
+                        }
+                    } else {
+                        log.info("Nothing found for {}", regexpItem.getType());
+                    }
+                }
+            }
+
+            private ThAttributeDataRecord makeAttrFromConfig(String value, String attributeFormat, String attributeType, String attributeName, Integer order) {
+                ThAttributeDataRecord record = new ThAttributeDataRecord();
+                record.setPageId(config.getPageId());
+                record.setRuleId(config.getRuleId());
+                record.setSiteId(config.getSiteId());
+
+                record.setAttributeValue(value);
+                record.setAttributeType(attributeType);
+                record.setAttributeName(attributeName);
+                record.setAttributeFormat(attributeFormat);
+                record.setAttributeIndex(order);
+
+                record.setAttributeIndex(index);
+                return record;
+
+            }
+
+            private boolean hasCompositeAttrs(AttrsItem attr) {
+                return attr.getRegexp() != null && !attr.getRegexp().isEmpty();
+            }
+
+            private void processMainAttr(String value, boolean persist) {
+                String _attr = attr.getAttr();
+
+                ThAttributeDataRecord attribute = makeAttrFromConfig(value, null, _attr, attr.getType(), 0);
+                publish(attribute, persist);
+            }
+
+            private void publish(ThAttributeDataRecord attribute, boolean persist) {
+                for (AttrListener listener : listeners) {
+                    if (listener.support(attribute, sessionKey, persist)) {
+                        listener.process(attribute, sessionKey);
+                    }
+                }
+            }
+
+            private String extend(String expression) {
+                return ".*" + expression + ".*";
+            }
+        };
     }
 
     private String getElementValue(Element item, AttrsItem attr) {
@@ -216,6 +217,7 @@ public class ParsingTask implements Runnable, InfoSource {
         Optional<ThSiteRecord> byUrl = siteDao.getByUrl(siteUrl);
         if (!byUrl.isPresent()) {
             log.error("Site Record not found for {}", siteUrl);
+            throw new IllegalStateException("Site Record not found for " + siteUrl);
 
         }
         ThSiteRecord site = byUrl.get();
@@ -290,5 +292,6 @@ public class ParsingTask implements Runnable, InfoSource {
     class Config {
         int timeout = 10_000;
         private Integer siteId, pageId, ruleId;
+        boolean uniqueVisit;
     }
 }
