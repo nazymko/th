@@ -14,11 +14,9 @@ import org.nazymko.thehomeland.parser.Repository;
 import org.nazymko.thehomeland.parser.ThRecordConverter;
 import org.nazymko.thehomeland.services.SendingLogService;
 import org.nazymko.thehomeland.utils.RuleConverter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.GenericMessage;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.client.HttpClientErrorException;
 
 import javax.annotation.Resource;
@@ -27,8 +25,6 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 /**
  * Created by nazymko.patronus@gmail.com.
@@ -41,25 +37,19 @@ public class HourlyScheduler implements Scheduler {
     @Resource
     PostMessageChannel messageChannel;
 
-    @Qualifier("connectorRuleDao")
     @Resource
-    private SyncRuleDao ruleDao;
+    private SyncRuleDao syncRuleDao;
 
-    @Qualifier("thConverter")
     @Resource
     private ThRecordConverter thRecordConverter;
 
-    @Qualifier("repository")
     @Resource
     private Repository repository;
 
-    @Qualifier("syncHeadersDao")
     @Resource
     private SyncHeadersDao syncHeadersDao;
-    @Qualifier("consumerDao")
     @Resource
     private SyncConsumerDao consumerDao;
-    @Qualifier("logService")
     @Resource
     private SendingLogService logService;
 
@@ -75,7 +65,7 @@ public class HourlyScheduler implements Scheduler {
     public void doIt(String consumer) {
         try {
             log.info("Started");
-            HashMap<Integer, HashMap<String, String>> rules = prepare(ruleDao.all());
+            HashMap<Integer, HashMap<String, String>> rules = prepare(syncRuleDao.all());
             thRecordConverter.setRulePull(rules);
             ConnectorConsumerRecord consumerRecord = consumerDao.getByDomain(consumer).get();
             Result<ThPageRecord> latest = repository.latest(consumer);

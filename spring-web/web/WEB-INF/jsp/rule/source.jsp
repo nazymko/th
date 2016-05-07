@@ -1,15 +1,13 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--@elvariable id="gson" type="com.google.gson.Gson"--%>
 <%--@elvariable id="rule" type="org.nazymko.th.parser.autodao.tables.records.ThRuleRecord"--%>
 
-<link rel="stylesheet" href="/resources/js/hl_9_2/styles/zenburn.css">
-<script src=/resources/js/hl_9_2/highlight.pack.js></script>
-<script>
-    $(document).ready(function () {
-        $('pre code').each(function (i, block) {
-            hljs.highlightBlock(block);
-        });
-    });
-</script>
+<c:import url="../components/code-highlite-include.jsp"/>
+
+<jsp:include page="../components/code-highlite-script.jsp">
+    <jsp:param name="selector" value="pre code"/>
+</jsp:include>
+
 <div>
     <p>rule:${rule.authority}</p>
 

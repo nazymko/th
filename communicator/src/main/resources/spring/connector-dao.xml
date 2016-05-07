@@ -2,8 +2,8 @@
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-    <bean id="pageLogDao" class="org.nazymko.thehomeland.dao.SyncPageLogDao"/>
-    <bean id="consumerDao" class="org.nazymko.thehomeland.dao.SyncConsumerDao"/>
-    <bean id="connectorRuleDao" class="org.nazymko.thehomeland.dao.SyncRuleDao"/>
+    <bean id="syncPageLogDao" class="org.nazymko.thehomeland.dao.SyncPageLogDao"/>
+    <bean id="syncConsumerDao" class="org.nazymko.thehomeland.dao.SyncConsumerDao"/>
+    <bean id="syncConnectorRuleDao" class="org.nazymko.thehomeland.dao.SyncRuleDao"/>
     <bean id="syncHeadersDao" class="org.nazymko.thehomeland.dao.SyncHeadersDao"/>
 </beans>

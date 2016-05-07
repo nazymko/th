@@ -1,0 +1,1 @@
+<a href="/connector/consumers/add" class="btn bgm-blue">add</a>

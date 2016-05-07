@@ -10,8 +10,8 @@
   "departureAddress": "Вінниця",
   "ticketsTotal": "50",
   "image": "$article-img",
-  "firstName": "#name",
-  "lastName": "",
+  "firstName": "#firstName",
+  "lastName": "#lastName",
   "phones": "#phone",
   "url": "%page_url"
 }

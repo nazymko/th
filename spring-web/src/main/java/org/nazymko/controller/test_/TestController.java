@@ -2,7 +2,6 @@ package org.nazymko.controller.test_;
 
 import lombok.extern.log4j.Log4j2;
 import org.nazymko.thehomeland.dao.SyncPageLogDao;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,7 +19,7 @@ import javax.annotation.Resource;
 @RequestMapping("test")
 public class TestController {
 
-    @Qualifier("pageLogDao")
+    @Qualifier("syncPageLogDao")
     @Resource
     private SyncPageLogDao logDao;
 

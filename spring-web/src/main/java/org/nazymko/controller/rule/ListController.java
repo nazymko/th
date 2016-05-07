@@ -19,7 +19,6 @@ import java.util.List;
 public class ListController {
 
 
-    @Qualifier("ruleDao")
     @Resource
     private RuleDao ruleDao;
 
