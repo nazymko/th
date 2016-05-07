@@ -8,24 +8,33 @@ import org.nazymko.thehomeland.dao.SyncPageLogDao;
 import org.nazymko.thehomeland.parser.db.dao.PageDao;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
 import java.util.Optional;
 
 /**
  * Created by nazymko.patronus@gmail.com.
  */
 public class Repository {
-    @Autowired
+    @Resource
     private PageDao pageDao;
-    @Autowired
+    @Resource
     private SyncConsumerDao consumerDao;
-    @Autowired
+    @Resource
     private SyncPageLogDao pageLog;
 
     private static final String MAIN_PAGE_TYPE = "article";
 
+    public Repository() {
+    }
+
 
     public Result<ThPageRecord> latest(String consumer) {
         Optional<ConnectorConsumerRecord> byDomain = consumerDao.getByDomain(consumer);
+        return latest(consumer, byDomain);
+
+    }
+
+    public Result<ThPageRecord> latest(String consumer, Optional<ConnectorConsumerRecord> byDomain) {
         int latestId = pageLog.getLatestId(consumer);
 
         if (byDomain.isPresent()) {
@@ -34,6 +43,5 @@ public class Repository {
         } else {
             throw new IllegalArgumentException("Not found '" + consumer + "'");
         }
-
     }
 }

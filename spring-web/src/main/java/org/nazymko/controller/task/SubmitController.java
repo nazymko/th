@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 
 /**
@@ -22,9 +23,9 @@ import java.util.HashMap;
 @RequestMapping(value = "task")
 @Log4j2
 public class SubmitController {
-    @Autowired
+    @Resource
     THLParserRunner parser;
-    @Autowired
+    @Resource
     SiteDao siteDao;
 
     @RequestMapping(value = "submit/{site}", method = RequestMethod.GET)

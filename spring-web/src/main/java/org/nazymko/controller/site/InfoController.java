@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.annotation.Resource;
 import java.util.Set;
 
 /**
@@ -17,9 +18,9 @@ import java.util.Set;
 @RequestMapping("site")
 public class InfoController {
 
-    @Autowired
+    @Resource
     SiteDao siteDao;
-    @Autowired
+    @Resource
     RuleResolver resolver;
 
     @RequestMapping("{id}/supportedtypes")

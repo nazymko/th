@@ -203,7 +203,9 @@ public class ParsingTask implements Runnable, InfoSource {
         String value;
         if ("text".equals(attr.getAttr())) {
             value = item.text();
-        } else {
+        } else if ("html".equals(attr.getAttr()))
+            value = item.html();
+        else {
             value = item.attr(attr.getAttr());
         }
         return value;

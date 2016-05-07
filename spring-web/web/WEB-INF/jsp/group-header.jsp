@@ -5,7 +5,7 @@
         <li><a class="c-red" href="/rule">rules</a></li>
         <li><a class="c-red" href="/site">jobs</a></li>
         <li><a class="c-red" href="/task/activity">task manager</a></li>
-        <%--<li><input class="bgm-blue" type="button" value="running:${status}"></li>--%>
+        <li><a class="c-red" href="/connector/consumers">consumers</a></li>
     </ul>
 </nav>
 <%--</header>--%>

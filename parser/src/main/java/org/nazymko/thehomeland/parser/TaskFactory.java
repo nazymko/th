@@ -25,17 +25,17 @@ public class TaskFactory {
 
     @Resource
     TaskDao taskDao;
-    @Autowired
+    @Resource
     History historyDao;
-    @Autowired
+    @Resource
     private RuleResolver resolver;
-    @Autowired
+    @Resource
     @Setter
     private PageDao pageDao;
-    @Autowired
+    @Resource
     private RuleDao ruleDao;
     @Setter
-    @Autowired
+    @Resource
     private SiteDao siteDao;
     @Setter
     private List<AttrListener> listeners;

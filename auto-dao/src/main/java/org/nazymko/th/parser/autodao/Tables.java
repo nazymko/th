@@ -8,11 +8,12 @@ import javax.annotation.Generated;
 
 import org.nazymko.th.parser.autodao.tables.ConnectorConsumer;
 import org.nazymko.th.parser.autodao.tables.ConnectorRules;
-import org.nazymko.th.parser.autodao.tables.ConnectorSyncMainLog;
 import org.nazymko.th.parser.autodao.tables.ConnectorSyncPageLog;
+import org.nazymko.th.parser.autodao.tables.ConnectorsSendHeaders;
 import org.nazymko.th.parser.autodao.tables.TaskRun;
 import org.nazymko.th.parser.autodao.tables.TaskSchedule;
 import org.nazymko.th.parser.autodao.tables.ThAttributeData;
+import org.nazymko.th.parser.autodao.tables.ThConfig;
 import org.nazymko.th.parser.autodao.tables.ThPage;
 import org.nazymko.th.parser.autodao.tables.ThRule;
 import org.nazymko.th.parser.autodao.tables.ThSite;
@@ -32,6 +33,11 @@ import org.nazymko.th.parser.autodao.tables.ThSite;
 public class Tables {
 
 	/**
+	 * The table thehomeland.connectors_send_headers
+	 */
+	public static final ConnectorsSendHeaders CONNECTORS_SEND_HEADERS = org.nazymko.th.parser.autodao.tables.ConnectorsSendHeaders.CONNECTORS_SEND_HEADERS;
+
+	/**
 	 * The table thehomeland.connector_consumer
 	 */
 	public static final ConnectorConsumer CONNECTOR_CONSUMER = org.nazymko.th.parser.autodao.tables.ConnectorConsumer.CONNECTOR_CONSUMER;
@@ -40,11 +46,6 @@ public class Tables {
 	 * The table thehomeland.connector_rules
 	 */
 	public static final ConnectorRules CONNECTOR_RULES = org.nazymko.th.parser.autodao.tables.ConnectorRules.CONNECTOR_RULES;
-
-	/**
-	 * The table thehomeland.connector_sync_main_log
-	 */
-	public static final ConnectorSyncMainLog CONNECTOR_SYNC_MAIN_LOG = org.nazymko.th.parser.autodao.tables.ConnectorSyncMainLog.CONNECTOR_SYNC_MAIN_LOG;
 
 	/**
 	 * The table thehomeland.connector_sync_page_log
@@ -65,6 +66,11 @@ public class Tables {
 	 * The table thehomeland.th_attribute_data
 	 */
 	public static final ThAttributeData TH_ATTRIBUTE_DATA = org.nazymko.th.parser.autodao.tables.ThAttributeData.TH_ATTRIBUTE_DATA;
+
+	/**
+	 * The table thehomeland.th_config
+	 */
+	public static final ThConfig TH_CONFIG = org.nazymko.th.parser.autodao.tables.ThConfig.TH_CONFIG;
 
 	/**
 	 * The table thehomeland.th_page

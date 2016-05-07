@@ -38,7 +38,7 @@ public class RuleDao extends AbstractDao<String, ParsingRule> {
 
     @Resource
     RuleResolver resolver;
-    @Autowired
+    @Resource
     UrlSimplifier simplifier;
     @Resource
     @Setter

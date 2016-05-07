@@ -30,7 +30,7 @@ public class PageDao extends AbstractDao<Integer, ThPageRecord> {
     @Resource
     TaskDao taskDao;
     @Qualifier("siteDao")
-    @Autowired
+    @Resource
     private SiteDao siteDao;
 
     /**

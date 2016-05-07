@@ -29,7 +29,7 @@ public class THParserController {
     @Resource
     PageDao pageDao;
     @Qualifier("taskDao")
-    @Autowired
+    @Resource
     private TaskDao taskDao;
 
 

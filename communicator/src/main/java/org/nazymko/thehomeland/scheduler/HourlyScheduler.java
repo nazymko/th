@@ -3,18 +3,23 @@ package org.nazymko.thehomeland.scheduler;
 import com.google.gson.Gson;
 import lombok.extern.log4j.Log4j2;
 import org.jooq.Result;
+import org.nazymko.th.parser.autodao.tables.records.ConnectorConsumerRecord;
 import org.nazymko.th.parser.autodao.tables.records.ConnectorRulesRecord;
 import org.nazymko.th.parser.autodao.tables.records.ThPageRecord;
+import org.nazymko.thehomeland.dao.SyncConsumerDao;
+import org.nazymko.thehomeland.dao.SyncHeadersDao;
 import org.nazymko.thehomeland.dao.SyncRuleDao;
 import org.nazymko.thehomeland.integration.PostMessageChannel;
 import org.nazymko.thehomeland.parser.Repository;
 import org.nazymko.thehomeland.parser.ThRecordConverter;
+import org.nazymko.thehomeland.services.SendingLogService;
 import org.nazymko.thehomeland.utils.RuleConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.client.HttpClientErrorException;
 
 import javax.annotation.Resource;
 import java.nio.charset.Charset;
@@ -35,30 +40,55 @@ public class HourlyScheduler implements Scheduler {
     private Gson GSON = new Gson();
     @Resource
     PostMessageChannel messageChannel;
+
     @Qualifier("connectorRuleDao")
-    @Autowired
+    @Resource
     private SyncRuleDao ruleDao;
+
     @Qualifier("thConverter")
-    @Autowired
+    @Resource
     private ThRecordConverter thRecordConverter;
-    @Qualifier("revizor")
-    @Autowired
+
+    @Qualifier("repository")
+    @Resource
     private Repository repository;
 
-    //    @Scheduled(cron = "0 */1 * * *") - every hour
-    @Scheduled(cron = "0 */1 * * * *") //every minute
+    @Qualifier("syncHeadersDao")
+    @Resource
+    private SyncHeadersDao syncHeadersDao;
+    @Qualifier("consumerDao")
+    @Resource
+    private SyncConsumerDao consumerDao;
+    @Qualifier("logService")
+    @Resource
+    private SendingLogService logService;
+
+
+    //@Scheduled(cron = "0 */1 * * *") - every hour
+//    @Scheduled(cron = "0 */1 * * * *") //every minute
+
+    @Override
     public void doIt() {
+
+    }
+
+    public void doIt(String consumer) {
         try {
             log.info("Started");
             HashMap<Integer, HashMap<String, String>> rules = prepare(ruleDao.all());
             thRecordConverter.setRulePull(rules);
-            Result<ThPageRecord> latest = repository.latest("http://thehomeland.com.ua");
+            ConnectorConsumerRecord consumerRecord = consumerDao.getByDomain(consumer).get();
+            Result<ThPageRecord> latest = repository.latest(consumer);
+
+
+            HashMap<String, Object> headers = getHeaders(consumerRecord.getId());
 
             log.info("New records for send : {}", latest.size());
             for (ThPageRecord thPageRecord : latest) {
                 Map convert = thRecordConverter.convert(thPageRecord);
                 String json = new String(GSON.toJson(convert).getBytes(Charset.forName("UTF-8")), "UTF-8");
-                tryToSend(thPageRecord, json);
+                System.out.println("json = " + json);
+                tryToSend(thPageRecord, json, headers, consumer);
             }
             log.info("Finished");
         } catch (Exception ex) {
@@ -66,24 +96,26 @@ public class HourlyScheduler implements Scheduler {
         }
     }
 
-    private void tryToSend(ThPageRecord thPageRecord, String json) {
-        try {
-
-            messageChannel.send(new GenericMessage<String>(json, new MessageHeaders(makeHeaders(thPageRecord.getId()))));
-        } catch (Exception ex) {
-            log.error(".tryToSend: thPageRecord = [" + thPageRecord.getId() + "], json = [" + json + "]");
-        }
+    private HashMap<String, Object> getHeaders(Integer id) {
+        return syncHeadersDao.getByConsumer(id);
     }
 
-    private Map<String, Object> makeHeaders(Integer id) {
-        HashMap<String, Object> headers = new HashMap<>();
+    private void tryToSend(ThPageRecord thPageRecord, String json, HashMap<String, Object> headers, String consumer) {
+        GenericMessage<String> msg = null;
+        try {
 
-//        headers.put("content-type", "application/json");
-        headers.put("content-type", APPLICATION_JSON_UTF8_VALUE);
-        headers.put("Authorization", "Basic T1BHTkotOUd6NC04TVVjVEFRZ1g5UXhBNXdkb0JyMEk6");
-        headers.put("X-Original-Page-Id", id);
+            HashMap<String, Object> _mh = new HashMap<>(headers);
+            _mh.put("X-Original-Page-Id", thPageRecord.getId());
 
-        return headers;
+            MessageHeaders messageHeaders = new MessageHeaders(_mh);
+            msg = new GenericMessage<>(json, messageHeaders);
+            messageChannel.send(msg);
+        } catch (HttpClientErrorException ex) {
+            log.error("Failed to send. Record id = " + thPageRecord.getId(), ex);
+            logService.failedToSend(thPageRecord.getId(), ex.getStatusCode().value(), consumer);
+        } catch (Exception ex) {
+            log.error("Failed to send: thPageRecord = [" + thPageRecord.getId() + "], json = [" + json + "]", ex);
+        }
     }
 
     private HashMap<Integer, HashMap<String, String>> prepare(List<ConnectorRulesRecord> all) {
@@ -91,14 +123,9 @@ public class HourlyScheduler implements Scheduler {
         for (ConnectorRulesRecord connectorRulesRecord : all) {
             rules.put(connectorRulesRecord.getSiteId(), RuleConverter.makeMap(connectorRulesRecord.getRule()));
         }
-
-
         return rules;
     }
 
-    public void doIt(String domain) {
-
-    }
 
     public void doIt(String domain, Timestamp from, boolean force) {
 

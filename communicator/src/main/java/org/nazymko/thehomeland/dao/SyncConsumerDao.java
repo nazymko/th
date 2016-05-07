@@ -1,8 +1,10 @@
 package org.nazymko.thehomeland.dao;
 
+import org.nazymko.th.parser.autodao.tables.pojos.ConnectorConsumer;
 import org.nazymko.th.parser.autodao.tables.records.ConnectorConsumerRecord;
 import org.nazymko.thehomeland.parser.db.dao.AbstractDao;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.nazymko.th.parser.autodao.Tables.CONNECTOR_CONSUMER;
@@ -23,4 +25,12 @@ public class SyncConsumerDao extends AbstractDao<Integer, ConnectorConsumerRecor
     public Optional<ConnectorConsumerRecord> getByDomain(String domain) {
         return Optional.ofNullable(getDslContext().selectFrom(CONNECTOR_CONSUMER).where(CONNECTOR_CONSUMER.DOMAIN.eq(domain)).fetchOne());
     }
+
+    public List<ConnectorConsumer> findAll() {
+        return getDslContext()
+                .selectFrom(CONNECTOR_CONSUMER)
+                .fetchInto(ConnectorConsumer.class);
+
+    }
+
 }

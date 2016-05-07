@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ public class ListController {
 
 
     @Qualifier("ruleDao")
-    @Autowired
+    @Resource
     private RuleDao ruleDao;
 
     @RequestMapping("list")

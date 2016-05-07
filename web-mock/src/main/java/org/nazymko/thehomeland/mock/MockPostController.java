@@ -14,7 +14,7 @@ import java.util.HashMap;
 @RequestMapping("mock")
 public class MockPostController {
     @ResponseBody
-    @ResponseStatus(code = HttpStatus.ACCEPTED)
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @RequestMapping(value = "post", method = RequestMethod.POST)
     public String mockPost(@RequestBody HashMap<String, String> object, @RequestHeader HttpHeaders allHeaders) {
         System.out.println("object = [" + object + "], \nallHeaders = [" + allHeaders + "]");

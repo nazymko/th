@@ -33,7 +33,7 @@ public class LinkProcessorListener implements AttrListener {
     private SiteDao siteDao;
     @Resource
     PageDao pageDao;
-    @Autowired
+    @Resource
     private RuleResolver resolver;
 
 

@@ -55,7 +55,21 @@ public class SyncPageLogDao extends AbstractDao<Integer, ConnectorSyncPageLogRec
         }
     }
 
-    public void save(Integer pageId, String responseText, Integer responseCode, String consumer, Long time) {
+    public void save(Integer pageId, Integer code, String consumer) {
+        ConnectorSyncPageLogRecord rec = new ConnectorSyncPageLogRecord();
+
+        rec.setConsumer(consumer);
+        rec.setResponseCode(code);
+        rec.setPageId(pageId);
+        store(rec);
+    }
+
+    public void save(Integer pageId,
+                     String responseText,
+                     Integer responseCode,
+                     String consumer,
+                     Long time,
+                     String endpoint) {
         ConnectorSyncPageLogRecord rec = new ConnectorSyncPageLogRecord();
 
         rec.setPageId(pageId);
@@ -63,6 +77,7 @@ public class SyncPageLogDao extends AbstractDao<Integer, ConnectorSyncPageLogRec
         rec.setResponseCode(responseCode);
         rec.setResponseText(responseText);
         rec.setTime(new Timestamp(time));
+        rec.setConsumerEndpoint(endpoint);
 
         store(rec);
     }

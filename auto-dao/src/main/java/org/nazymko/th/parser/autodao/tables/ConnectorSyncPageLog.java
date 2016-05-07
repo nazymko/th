@@ -35,7 +35,7 @@ import org.nazymko.th.parser.autodao.tables.records.ConnectorSyncPageLogRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ConnectorSyncPageLog extends TableImpl<ConnectorSyncPageLogRecord> {
 
-	private static final long serialVersionUID = -495054284;
+	private static final long serialVersionUID = 1838817964;
 
 	/**
 	 * The reference instance of <code>thehomeland.connector_sync_page_log</code>
@@ -79,6 +79,11 @@ public class ConnectorSyncPageLog extends TableImpl<ConnectorSyncPageLogRecord> 
 	 * The column <code>thehomeland.connector_sync_page_log.response_code</code>.
 	 */
 	public final TableField<ConnectorSyncPageLogRecord, Integer> RESPONSE_CODE = createField("response_code", org.jooq.impl.SQLDataType.INTEGER, this, "");
+
+	/**
+	 * The column <code>thehomeland.connector_sync_page_log.consumer_endpoint</code>.
+	 */
+	public final TableField<ConnectorSyncPageLogRecord, String> CONSUMER_ENDPOINT = createField("consumer_endpoint", org.jooq.impl.SQLDataType.VARCHAR.length(128), this, "");
 
 	/**
 	 * Create a <code>thehomeland.connector_sync_page_log</code> table reference

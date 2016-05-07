@@ -1,10 +1,7 @@
 package org.nazymko.thehomeland.parser.db.dao;
 
 import lombok.Getter;
-import org.jooq.DSLContext;
-import org.jooq.Record;
-import org.jooq.SQLDialect;
-import org.jooq.UpdatableRecord;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
@@ -16,7 +13,7 @@ import java.util.Optional;
 /**
  * Created by nazymko.patronus@gmail.com.
  */
-public abstract class AbstractDao<K, T> implements Dao<K, T> {
+public abstract class AbstractDao<K, T > implements Dao<K, T> {
 
     @Getter
     @Resource
@@ -53,4 +50,8 @@ public abstract class AbstractDao<K, T> implements Dao<K, T> {
     }
 
 
+
+  /*  protected Table<? extends TableRecord> getRecord() {
+
+    }*/
 }

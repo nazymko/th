@@ -14,11 +14,12 @@ import org.jooq.Table;
 import org.jooq.impl.SchemaImpl;
 import org.nazymko.th.parser.autodao.tables.ConnectorConsumer;
 import org.nazymko.th.parser.autodao.tables.ConnectorRules;
-import org.nazymko.th.parser.autodao.tables.ConnectorSyncMainLog;
 import org.nazymko.th.parser.autodao.tables.ConnectorSyncPageLog;
+import org.nazymko.th.parser.autodao.tables.ConnectorsSendHeaders;
 import org.nazymko.th.parser.autodao.tables.TaskRun;
 import org.nazymko.th.parser.autodao.tables.TaskSchedule;
 import org.nazymko.th.parser.autodao.tables.ThAttributeData;
+import org.nazymko.th.parser.autodao.tables.ThConfig;
 import org.nazymko.th.parser.autodao.tables.ThPage;
 import org.nazymko.th.parser.autodao.tables.ThRule;
 import org.nazymko.th.parser.autodao.tables.ThSite;
@@ -37,7 +38,7 @@ import org.nazymko.th.parser.autodao.tables.ThSite;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Thehomeland extends SchemaImpl {
 
-	private static final long serialVersionUID = -121594693;
+	private static final long serialVersionUID = -813855839;
 
 	/**
 	 * The reference instance of <code>thehomeland</code>
@@ -60,13 +61,14 @@ public class Thehomeland extends SchemaImpl {
 
 	private final List<Table<?>> getTables0() {
 		return Arrays.<Table<?>>asList(
+			ConnectorsSendHeaders.CONNECTORS_SEND_HEADERS,
 			ConnectorConsumer.CONNECTOR_CONSUMER,
 			ConnectorRules.CONNECTOR_RULES,
-			ConnectorSyncMainLog.CONNECTOR_SYNC_MAIN_LOG,
 			ConnectorSyncPageLog.CONNECTOR_SYNC_PAGE_LOG,
 			TaskRun.TASK_RUN,
 			TaskSchedule.TASK_SCHEDULE,
 			ThAttributeData.TH_ATTRIBUTE_DATA,
+			ThConfig.TH_CONFIG,
 			ThPage.TH_PAGE,
 			ThRule.TH_RULE,
 			ThSite.TH_SITE);

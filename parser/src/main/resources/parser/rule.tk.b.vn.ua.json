@@ -149,7 +149,7 @@
       "attrs": [
         {
           "path": ".entry",
-          "attr": "text",
+          "attr": "html",
           "type": "big-body",
           "persist": true
         }

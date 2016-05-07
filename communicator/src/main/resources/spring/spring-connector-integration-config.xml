@@ -20,10 +20,12 @@
         <int:header name="Authorization" value="Basic T1BHTkotOUd6NC04TVVjVEFRZ1g5UXhBNXdkb0JyMEk6"/>
     </int:header-enricher>
     <!--url="https://thehomeland.com.ua/api/trip/create"-->
+    <!--url="http://localhost:8080/mock/post"-->
+
     <!--Outbound gateway to send data for service-->
     <int-http:outbound-gateway id="outboundPost"
                                request-channel="outputPostChannel"
-                               url="http://localhost:8080/mock/post"
+                               url-expression="headers.consumer_url"
                                http-method="POST"
                                extract-request-payload="true"
                                expected-response-type="java.lang.String"

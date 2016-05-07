@@ -31,7 +31,7 @@ import javax.validation.constraints.Size;
 @Table(name = "connector_sync_page_log", schema = "thehomeland")
 public class ConnectorSyncPageLog implements Serializable {
 
-	private static final long serialVersionUID = -1564492515;
+	private static final long serialVersionUID = -1905724378;
 
 	private Integer   id;
 	private Integer   pageId;
@@ -39,6 +39,7 @@ public class ConnectorSyncPageLog implements Serializable {
 	private Timestamp time;
 	private String    responseText;
 	private Integer   responseCode;
+	private String    consumerEndpoint;
 
 	public ConnectorSyncPageLog() {}
 
@@ -49,6 +50,7 @@ public class ConnectorSyncPageLog implements Serializable {
 		this.time = value.time;
 		this.responseText = value.responseText;
 		this.responseCode = value.responseCode;
+		this.consumerEndpoint = value.consumerEndpoint;
 	}
 
 	public ConnectorSyncPageLog(
@@ -57,7 +59,8 @@ public class ConnectorSyncPageLog implements Serializable {
 		String    consumer,
 		Timestamp time,
 		String    responseText,
-		Integer   responseCode
+		Integer   responseCode,
+		String    consumerEndpoint
 	) {
 		this.id = id;
 		this.pageId = pageId;
@@ -65,6 +68,7 @@ public class ConnectorSyncPageLog implements Serializable {
 		this.time = time;
 		this.responseText = responseText;
 		this.responseCode = responseCode;
+		this.consumerEndpoint = consumerEndpoint;
 	}
 
 	@Id
@@ -127,6 +131,16 @@ public class ConnectorSyncPageLog implements Serializable {
 		this.responseCode = responseCode;
 	}
 
+	@Column(name = "consumer_endpoint", length = 128)
+	@Size(max = 128)
+	public String getConsumerEndpoint() {
+		return this.consumerEndpoint;
+	}
+
+	public void setConsumerEndpoint(String consumerEndpoint) {
+		this.consumerEndpoint = consumerEndpoint;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder("ConnectorSyncPageLog (");
@@ -137,6 +151,7 @@ public class ConnectorSyncPageLog implements Serializable {
 		sb.append(", ").append(time);
 		sb.append(", ").append(responseText);
 		sb.append(", ").append(responseCode);
+		sb.append(", ").append(consumerEndpoint);
 
 		sb.append(")");
 		return sb.toString();

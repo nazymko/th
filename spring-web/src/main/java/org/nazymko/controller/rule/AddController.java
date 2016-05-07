@@ -25,9 +25,9 @@ import java.util.HashMap;
 @Controller
 @RequestMapping("rule")
 public class AddController {
-    @Autowired
+    @Resource
     RuleDao ruleDao;
-    @Autowired
+    @Resource
     Gson gson;
     @Resource
     PageDao pageDao;
