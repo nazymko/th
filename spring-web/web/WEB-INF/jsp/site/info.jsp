@@ -20,7 +20,7 @@
                 <td style="padding-left:10px;padding-right: 10px">${page.id}</td>
                 <td style="padding-left:10px;padding-right: 10px">${page.page}</td>
                 <td style="padding-left:10px;padding-right: 10px">${page.sourcePage}</td>
-                <td style="padding-left:10px;padding-right: 10px"><a href="/task/attrs/${page.id}">${page.visited}</a>
+                <td style="padding-left:10px;padding-right: 10px"><a href="<c:url value="/task/attrs/${page.id}"/>">${page.visited}</a>
                 </td>
             </tr>
         </c:forEach>

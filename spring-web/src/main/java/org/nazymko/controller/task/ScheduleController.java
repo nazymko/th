@@ -35,7 +35,7 @@ public class ScheduleController {
     @Resource
     TaskDao taskDao;
 
-    @RequestMapping("schedule")
+    @RequestMapping(value = "schedule",method = RequestMethod.GET)
     String schedule(Model model) {
         List<ThSiteRecord> all = siteDao.getAll();
 

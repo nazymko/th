@@ -41,12 +41,21 @@ public class LinkProcessorListener implements AttrListener {
         this.supportedAttrs = supportedAttrs;
     }
 
-    private String fixUrlfNeed(String site, String page) throws MalformedURLException {
-        if (page != null
-                && !page.startsWith("http://")
-                && !page.startsWith("https://")
-                && !page.startsWith("www.")) {
-            page = new URL(new URL(simplifier.addProtocol(site)), page).toExternalForm();
+    private String fixUrlfNeed(ThAttributeDataRecord attribute, String page) throws MalformedURLException {
+        String pageType = attribute.getAttributeName();
+        String site = siteDao.getById(attribute.getSiteId()).get().getAuthority();
+        if (page != null) {
+            if (page.startsWith("?")) {
+                ThPageRecord record = pageDao.getById(attribute.getPageId()).get();
+                String url = record.getPageUrl();
+                int lastIndexOf = url.lastIndexOf("?");
+                page = url.substring(0, lastIndexOf > 0 ? lastIndexOf : url.length()) + page;
+            }
+            if (!page.startsWith("http://")
+                    && !page.startsWith("https://")
+                    && !page.startsWith("www.")) {
+                page = new URL(new URL(simplifier.addProtocol(site)), page).toExternalForm();
+            }
         }
 
         return page;
@@ -63,7 +72,7 @@ public class LinkProcessorListener implements AttrListener {
         try {
             String pageType = attribute.getAttributeName();
             String site = siteDao.getById(attribute.getSiteId()).get().getAuthority();
-            String page = fixUrlfNeed(site, attribute.getAttributeValue());
+            String page = fixUrlfNeed(attribute, attribute.getAttributeValue());
             Optional<PageItem> pageItem = resolver.resolveByAttr(site, pageType);
 
             if (pageItem.isPresent()) {

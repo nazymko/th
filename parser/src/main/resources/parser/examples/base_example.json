@@ -26,6 +26,7 @@
           "attr": "text",
           "type": "parser#info-block",
           "persist": false,
+          "format": "YYYY-MM-DD hh:mm:ss",
           "regexp": [
             {
               "type": "trip-price",

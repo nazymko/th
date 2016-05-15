@@ -13,7 +13,6 @@ import org.nazymko.thehomeland.parser.rule.ParsingRule;
 import org.nazymko.thehomeland.parser.rule.RuleFactory;
 import org.nazymko.thehomeland.parser.topology.RuleResolver;
 import org.nazymko.thehomeland.parser.utils.UrlSimplifier;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;

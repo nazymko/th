@@ -25,16 +25,25 @@ public class RuleResolver implements ProcessorRegister {
     private HashMap<String, HashMap<String, PageItem>> catalogue = new HashMap<>();
     private HashMap<String, RuleMeta> meta = new HashMap<>();
 
+    private boolean initialized = false;
+
     public void setRuleDao(RuleDao ruleDao) {
         this.ruleDao = ruleDao;
     }
 
     @Override
     public Optional<HashMap<String, PageItem>> resolveBySite(String site) {
+        lazyInit();
         return Optional.ofNullable(catalogue.get(site));
     }
 
-    @PostConstruct
+    private void lazyInit() {
+        if (!initialized) {
+            init();
+        }
+    }
+
+
     public void init() {
 
         List<ParsingRule> all = ruleDao.getLatestParsingRules();
@@ -53,10 +62,14 @@ public class RuleResolver implements ProcessorRegister {
             }
         }
 
+        initialized = true;
+
     }
+
 
     @Override
     public Optional<PageItem> resolveByTypeForSite(String site, String type) {
+        lazyInit();
         log.debug("site = {}, type = {}", site, type);
         if (!catalogue.containsKey(site)) {
             log.warn("Not found {} in {}", site, catalogue);
@@ -66,6 +79,7 @@ public class RuleResolver implements ProcessorRegister {
 
     @Override
     public Optional<PageItem> resolveByAttr(String site, String attr) {
+        lazyInit();
         PageItem item;
         HashMap<String, PageItem> stringPageItemHashMap = catalogue.get(site);
         if (stringPageItemHashMap.containsKey(attr)) {
@@ -80,6 +94,7 @@ public class RuleResolver implements ProcessorRegister {
 
     @Override
     public boolean register(String site, JsonRule rule) {
+        lazyInit();
         try {
 
             if (!catalogue.containsKey(site)) {
@@ -114,6 +129,7 @@ public class RuleResolver implements ProcessorRegister {
 
     @Override
     public Optional<Set<String>> availableTypes(String site) {
+        lazyInit();
 
         Optional<ParsingRule> jsonRuleOptional = ruleDao.getById(site);
         if (jsonRuleOptional.isPresent()) {
@@ -127,6 +143,7 @@ public class RuleResolver implements ProcessorRegister {
 
     @Override
     public Optional<Set<String>> availableTypes(Integer site) {
+        lazyInit();
 
         Optional<ParsingRule> jsonRuleOptional = ruleDao.getJsonById(site);
         if (jsonRuleOptional.isPresent()) {

@@ -1,7 +1,9 @@
 package org.nazymko.thehomeland.parser.db.dao;
 
 import lombok.extern.log4j.Log4j2;
+import org.jooq.DSLContext;
 import org.jooq.Result;
+import org.jooq.impl.DSL;
 import org.nazymko.th.parser.autodao.tables.records.ThPageRecord;
 import org.nazymko.thehomeland.parser.db.model.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +28,8 @@ import static org.nazymko.th.parser.autodao.Tables.TH_PAGE;
  */
 @Log4j2
 public class PageDao extends AbstractDao<Integer, ThPageRecord> {
-    public static final String NEWEST_PAGE_BY_URL = "SELECT authority,(SELECT authority FROM th_site s WHERE s.id=p.site_id) AS site_url,id,type,version,visited_at,registered_at FROM th_page p WHERE p.authority=:url AND version = (SELECT MAX(version) FROM th_page WHERE authority = :url)";
     @Resource
     TaskDao taskDao;
-    @Qualifier("siteDao")
-    @Resource
-    private SiteDao siteDao;
 
     /**
      * Get newest page by URL
@@ -117,5 +115,11 @@ public class PageDao extends AbstractDao<Integer, ThPageRecord> {
                 .fetch();
 
         return records;
+    }
+
+    public Integer countAll() {
+        DSLContext dslContext = getDslContext();
+        int total = dslContext.fetchCount(dslContext.selectFrom(TH_PAGE));
+        return total;
     }
 }

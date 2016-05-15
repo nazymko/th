@@ -33,9 +33,28 @@
         Total: ${attrs.size()} attributes
     </pre>
 </div>
-<c:forEach var="attr" items="${attrs}">
-    <pre>
-            ${gson.toJson(attr)}
-    </pre>
-</c:forEach>
+<table cellpadding="3px" border="1px">
+    <thead>
+    <th>id</th>
+    <th>site Id</th>
+    <th>page Id</th>
+    <th>attribute name</th>
+    <th>attribute value</th>
+    <th>attribute index</th>
+    <th>attribute type</th>
+    <th>rule id</th>
+    </thead>
+    <c:forEach var="attr" items="${attrs}">
+        <tr>
+            <td>${attr.id}</td>
+            <td>${attr.siteId}</td>
+            <td>${attr.pageId}</td>
+            <td>${attr.attributeName}</td>
+            <td>${attr.attributeValue}</td>
+            <td>${attr.attributeIndex}</td>
+            <td>${attr.attributeType}</td>
+            <td>${attr.ruleId}</td>
+        </tr>
+    </c:forEach>
 
+</table>

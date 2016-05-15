@@ -46,9 +46,12 @@ public class THParserController {
         List<String> queUrls = parser.getStatusMessage();
         Integer size = Integer.valueOf(coalesce(params.get("size"), 15).toString());
         Integer page = Integer.valueOf(coalesce(params.get("page"), 0).toString());
+        Integer count = pageDao.countAll();
+
         Result<TaskRunRecord> active = taskDao.getActive();
         List<ThPageRecord> list = pageDao.getList(size, page);
         model.addAttribute("tasks", queUrls);
+        model.addAttribute("count", count);
         model.addAttribute("last", list);
         model.addAttribute("page", page);
         model.addAttribute("size", size);

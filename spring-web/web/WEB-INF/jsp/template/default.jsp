@@ -16,7 +16,7 @@
     <title>${title}</title>
     <jsp:include page="${css}"/>
     <jsp:include page="${js}"/>
-    <link rel="icon" sizes="32x32" href="/favicon.ico">
+    <link rel="icon" sizes="32x32" href="<c:url value="/favicon.ico"/>">
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 

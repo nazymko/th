@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<form action="/connector/consumers/${consumer.id}/mapping/add" method="post">
+<form action="<c:url value="/connector/consumers/${consumer.id}/mapping/add"/>" method="post">
     <table>
         <tr>
             <td>target</td>

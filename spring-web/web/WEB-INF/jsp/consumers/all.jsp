@@ -25,7 +25,7 @@
             <td>${cons.domain}</td>
             <td>
                 <div style="padding-top: 12pt"><%--Magick!--%>
-                    <form action="/connector/consumers/start" method="post" enctype="application/x-www-form-urlencoded">
+                    <form action="<c:url value="/connector/consumers/start"/>" method="post" enctype="application/x-www-form-urlencoded">
                         <button type="submit" class="btn bgm-green waves-effect">start</button>
                         <input type="hidden" value="${cons.domain}" name="domain">
                     </form>
@@ -34,11 +34,11 @@
             <td>
                     ${cons.time.toGMTString()}
             </td>
-            <td><a href="/connector/consumers/${cons.id}/headers/view" class="btn bgm-brown waves-effect">headers</a>
+            <td><a href="<c:url value="/connector/consumers/${cons.id}/headers/view"/>" class="btn bgm-brown waves-effect">headers</a>
             </td>
-            <td><a href="/connector/consumers/${cons.id}/mapping/view" class="btn bgm-brown waves-effect">mapping
+            <td><a href="<c:url value="/connector/consumers/${cons.id}/mapping/view"/>" class="btn bgm-brown waves-effect">mapping
                 rule</a></td>
-            <td><a href="/connector/consumers/${cons.id}/disable" class="btn bgm-black waves-effect">disable</a></td>
+            <td><a href="<c:url value="/connector/consumers/${cons.id}/disable"/>" class="btn bgm-black waves-effect">disable</a></td>
         </tr>
     </c:forEach>
 </table>

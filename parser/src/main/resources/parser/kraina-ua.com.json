@@ -4,84 +4,97 @@
   "path_provider": "css",
   "meta": {
     "topics": [
-      "tourism"
+      "travelling"
     ],
-    "types": [
-      "tourism",
-      "excursion"
+    "type": [
+      "excursion",
+      "bus_travel"
     ],
     "languages": [
-      "rus"
+      "ua"
     ]
   },
   "page": [
     {
       "type": "front_page",
-      "unique_visit": false,
-      "url": "http://kraina-ua.com",
+      "url": "http://kraina-ua.com/",
       "attrs": [
         {
-          "path": ".menu__li  a",
+          "path": "body > header > div > nav > ul > li.menu__li.menu__li_aux.menu__li_ic1 > span > a",
           "attr": "href",
-          "type": "group_page"
+          "type": "calendar"
         }
       ]
     },
     {
-      "type": "group_page",
-      "unique_visit": false,
+      "type": "calendar",
       "attrs": [
         {
-          "path": ".tour-types-i a",
+          "path": "body > div.container > div > div.layout__col-l > div > form > div.tours-cnt > div.listPagination > table > tbody > tr > td.next > a",
           "attr": "href",
-          "type": "excursion_list"
-        }
-      ]
-    },
-    {
-      "type": "excursion_list",
-      "unique_visit": false,
-      "attrs": [
-        {
-          "path": ".tours-lst__ac a",
-          "attr": "href",
-          "type": "excursion_page"
+          "type": "calendar"
         },
         {
-          "path": ".next a",
+          "path": ".tours-lst .tours-lst__col-2 .tours-lst__ac a",
           "attr": "href",
-          "type": "excursion_list"
+          "type": "article"
         }
       ]
     },
     {
-      "type": "excursion_page",
-      "unique_visit": true,
+      "type": "article",
+      "unique": true,
       "attrs": [
         {
-          "path": ".item-img img",
+          "path": ".item-img > img",
           "attr": "src",
-          "type": "excursion_page"
+          "type": "big-image",
+          "persist": true
         },
         {
-          "path": ".item-view p",
-          "attr": "text",
-          "type": "article-text"
+          "path": ".item-view .item-view__l",
+          "attr": "html",
+          "type": "short-details",
+          "persist": true
         },
         {
-          "path": ".page-header span",
+          "path": "#w-tab-1",
+          "attr": "html",
+          "type": "big-details",
+          "persist": true
+        },
+        {
+          "path": ".date-lst-lbl.date-lst-lbl-1",
           "attr": "text",
-          "type": "article-title"
+          "type": "trip-date",
+          "format": "MM.dd",
+          "persist": true
         },
         {
           "path": ".item-view__price",
           "attr": "text",
-          "type": "price"
-        },
-        {
-          "path": ".dectab-cnt .item-cnt",
-          "attr": "text",
-          "type": "article-promotion"
+          "type": "trip-price",
+          "persist": false,
+          "regexp": [
+            {
+              "type": "price",
+              "expression": "\\s?(\\d*)\\s(.*)",
+              "group": [
+                {
+                  "order": 1,
+                  "nature": "number",
+                  "type": "price",
+                  "persist": true
+                },
+                {
+                  "order": 2,
+                  "nature": "string",
+                  "type": "currency",
+                  "persist": true
+                }
+              ]
+            }
+          ]
         }
       ]
     }

@@ -1,4 +1,5 @@
-<form action="/connector/consumers/${rule.consumerId}/rule/${rule.id}/update" method="post">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<form action="<c:url value="/connector/consumers/${rule.consumerId}/rule/${rule.id}/update"/>" method="post">
     <table>
         <tr>
             <td>id</td>

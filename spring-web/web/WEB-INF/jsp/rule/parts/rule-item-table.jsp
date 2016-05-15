@@ -6,7 +6,7 @@
     <td>${rule.name}</td>
     <td>${rule.url}</td>
     <td>${rule.version}</td>
-    <td><a href="/rule/source/${rule.id}">open</a></td>
+    <td><a href="<c:url value="/rule/source/${rule.id}"/>">open</a></td>
 
 </tr>
 

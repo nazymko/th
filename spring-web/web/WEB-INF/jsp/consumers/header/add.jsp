@@ -1,6 +1,6 @@
 <h4>${consumer.domain}</h4>
 <br>
-<form action="/connector/consumers/${consumer.id}/headers/add" method="post">
+<form action="<c:url value="/connector/consumers/${consumer.id}/headers/add"/>" method="post">
     <label>header name
         <input type="text" name="header">
     </label>

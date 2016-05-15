@@ -2,7 +2,7 @@
     ${headers}
 </pre>
 
-<form action="/connector/consumers/${headers.consumerId}/headers/${headers.id}/update" method="post">
+<form action="<c:url value="/connector/consumers/${headers.consumerId}/headers/${headers.id}/update"/>" method="post">
     <table>
         <tr>
             <td>header</td>

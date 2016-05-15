@@ -1,5 +1,6 @@
 package org.nazymko.thehomeland.parser;
 
+import org.nazymko.th.parser.autodao.tables.pojos.ThAttributeData;
 import org.nazymko.th.parser.autodao.tables.records.ThAttributeDataRecord;
 import org.nazymko.th.parser.autodao.tables.records.ThPageRecord;
 import org.nazymko.th.parser.autodao.tables.records.ThSiteRecord;
@@ -31,12 +32,12 @@ public abstract class AbstractConverter implements Converter<ThPageRecord> {
     @Override
     public Map convert(ThPageRecord record) {
 
-        HashMap<String, ThAttributeDataRecord> revertedMap = new HashMap<>();
-        List<ThAttributeDataRecord> page = attributeDao.getByPage(record.getId());
+        HashMap<String, ThAttributeData> revertedMap = new HashMap<>();
+        List<ThAttributeData> page = attributeDao.getByPage(record.getId());
         HashMap<String, String> result = new HashMap<>();
 
 
-        for (ThAttributeDataRecord thAttributeDataRecord : page) {
+        for (ThAttributeData thAttributeDataRecord : page) {
             revertedMap.put(thAttributeDataRecord.getAttributeName(), thAttributeDataRecord);
         }
 
@@ -49,7 +50,7 @@ public abstract class AbstractConverter implements Converter<ThPageRecord> {
             } else if (entryValue.startsWith("%page_url")) {
                 result.put(entry.getKey(), record.getPageUrl());
             } else {
-                ThAttributeDataRecord dataRecord = revertedMap.get(entryValue);
+                ThAttributeData dataRecord = revertedMap.get(entryValue);
                 if (dataRecord != null) {
                     result.put(entryValue, dataRecord.getAttributeValue());
                 } else {
@@ -61,9 +62,9 @@ public abstract class AbstractConverter implements Converter<ThPageRecord> {
         return result;
     }
 
-    private void putHostRelatedUrl(HashMap<String, ThAttributeDataRecord> revertedMap, HashMap<String, String> result, String entryValue) {
+    private void putHostRelatedUrl(HashMap<String, ThAttributeData> revertedMap, HashMap<String, String> result, String entryValue) {
         String _key = entryValue.substring(1);
-        ThAttributeDataRecord attribute = revertedMap.get(_key);
+        ThAttributeData attribute = revertedMap.get(_key);
         if (attribute != null) {
             result.put(_key, merge(domain(attribute.getSiteId()), attribute.getAttributeValue()));
         }
@@ -76,9 +77,9 @@ public abstract class AbstractConverter implements Converter<ThPageRecord> {
         throw new IllegalArgumentException("domain = null!");
     }
 
-    private void putValue(HashMap<String, ThAttributeDataRecord> revertedMap, HashMap<String, String> result, Map.Entry<String, String> entry) {
+    private void putValue(HashMap<String, ThAttributeData> revertedMap, HashMap<String, String> result, Map.Entry<String, String> entry) {
         String _key = entry.getValue().substring(1);
-        ThAttributeDataRecord thAttributeDataRecord = revertedMap.get(_key);
+        ThAttributeData thAttributeDataRecord = revertedMap.get(_key);
         if (thAttributeDataRecord != null) {
             result.put(entry.getKey(), thAttributeDataRecord.getAttributeValue());
         }

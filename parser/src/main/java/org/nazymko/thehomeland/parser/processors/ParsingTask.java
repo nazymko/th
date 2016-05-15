@@ -38,6 +38,7 @@ import java.util.regex.Pattern;
  */
 @Log4j2
 public class ParsingTask implements Runnable, InfoSource {
+    public static final int STRING_DEBUG_LIMIT = 40;
     //Houston, we have a problem
     public static String userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36";
     @Setter
@@ -117,13 +118,14 @@ public class ParsingTask implements Runnable, InfoSource {
             }
 
             private void processCompositeAttr(String value) {
+                log.debug(value == null ? "content = null" : "Content: " + value.substring(0, Math.min(value.length(), STRING_DEBUG_LIMIT)));
                 for (RegexpItem regexpItem : attr.getRegexp()) {
                     log.info("Matching {} : {}", regexpItem.getType(), regexpItem.getExpression());
                     //can optimize it
                     //and refactor this
                     String expression = regexpItem.getExpression();
-                    expression = extend(expression);
-                    Pattern compile = Pattern.compile(expression);
+//                    expression = extend(expression);
+                    Pattern compile = Pattern.compile(expression, Pattern.MULTILINE);
                     Matcher matcher = compile.matcher(value);
                     if (matcher.find()) {
                         log.info("Matching found for {}", regexpItem.getType());
@@ -181,7 +183,7 @@ public class ParsingTask implements Runnable, InfoSource {
             private void processMainAttr(String value, boolean persist) {
                 String _attr = attr.getAttr();
 
-                ThAttributeDataRecord attribute = makeAttrFromConfig(value, null, _attr, attr.getType(), 0);
+                ThAttributeDataRecord attribute = makeAttrFromConfig(value, attr.getFormat(), _attr, attr.getType(), 0);
                 publish(attribute, persist);
             }
 
@@ -191,10 +193,6 @@ public class ParsingTask implements Runnable, InfoSource {
                         listener.process(attribute, sessionKey);
                     }
                 }
-            }
-
-            private String extend(String expression) {
-                return ".*" + expression + ".*";
             }
         };
     }

@@ -18,10 +18,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 /**
  * Created by nazymko.patronus@gmail.com.
  */
-@Log4j2(topic = THLParserRunner.THL_PARSER_MARKER)
+@Log4j2
 public class THLParserRunner {
     public static final String signature;
-    static final String THL_PARSER_MARKER = "THL_PARSER";
 
     static {
         signature = UUID.randomUUID().toString();

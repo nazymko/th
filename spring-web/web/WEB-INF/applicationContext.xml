@@ -24,14 +24,15 @@
     <context:component-scan
             base-package="org.nazymko,
             org.nazymko.thehomeland.parser,
-            org.nazymko.controller ,
+            org.nazymko.controller,
             org.nazymko.controller.test_"/>
 
-    <import resource="classpath*:/spring/datasource.xml"/>
+    <import resource="classpath*:/auto-dao/datasource.xml"/>
     <import resource="spring/jdbc.xml"/>
     <import resource="spring/beans.xml"/>
     <import resource="spring/scheduling/scheduling-beans.xml"/>
     <import resource="classpath*:spring/parser-dao-config.xml"/>
     <import resource="classpath*:spring/spring-connector-config.xml"/>
+    <import resource="classpath*:fly-way/spring-flyway-init-config.xml"/>
 
 </beans>

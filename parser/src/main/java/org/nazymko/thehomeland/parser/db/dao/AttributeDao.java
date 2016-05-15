@@ -1,6 +1,6 @@
 package org.nazymko.thehomeland.parser.db.dao;
 
-import org.jooq.Result;
+import org.nazymko.th.parser.autodao.tables.pojos.ThAttributeData;
 import org.nazymko.th.parser.autodao.tables.records.ThAttributeDataRecord;
 
 import java.util.List;
@@ -13,11 +13,11 @@ import static org.nazymko.th.parser.autodao.tables.ThAttributeData.TH_ATTRIBUTE_
  */
 public class AttributeDao extends AbstractDao<Integer, ThAttributeDataRecord> {
 
-    public List<ThAttributeDataRecord> getByPage(Integer key) {
-        Result<ThAttributeDataRecord> fetch = getDslContext().selectFrom(TH_ATTRIBUTE_DATA).where(TH_ATTRIBUTE_DATA.PAGE_ID.eq(key)).fetch();
-        return fetch;
+    public List<ThAttributeData> getByPage(Integer key) {
+        return getDslContext().selectFrom(TH_ATTRIBUTE_DATA).where(TH_ATTRIBUTE_DATA.PAGE_ID.eq(key)).fetchInto(ThAttributeData.class);
     }
- @Override
+
+    @Override
     public Integer save(ThAttributeDataRecord obj) {
         store(obj);
         return obj.getId();

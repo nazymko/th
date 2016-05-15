@@ -51,6 +51,10 @@ public abstract class AbstractDao<K, T > implements Dao<K, T> {
 
 
 
+
+
+
+
   /*  protected Table<? extends TableRecord> getRecord() {
 
     }*/

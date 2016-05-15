@@ -4,10 +4,16 @@
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </Console>
+        <File name="ErrorFileLog" fileName="${sys:catalina.home}/logs/app.log" immediateFlush="false" append="true">
+            <PatternLayout>
+                <Pattern>%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Pattern>
+            </PatternLayout>
+        </File>
     </Appenders>
     <Loggers>
-        <Root level="DEBUG">
+        <Root level="ALL">
             <AppenderRef ref="Console"/>
+            <AppenderRef ref="ErrorFileLog"/>
         </Root>
     </Loggers>
 </Configuration>

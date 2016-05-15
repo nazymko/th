@@ -33,13 +33,18 @@
             <scope>compile</scope>
 
         </dependency>
-        <!--For testing purposes-->
-<!--        <dependency>
+        <dependency>
             <groupId>org.nazymko</groupId>
-            <artifactId>web-mock</artifactId>
+            <artifactId>fly-way</artifactId>
             <version>1.0-SNAPSHOT</version>
-            &lt;!&ndash;<scope>compile</scope>&ndash;&gt;
-        </dependency>-->
+        </dependency>
+        <!--For testing purposes-->
+        <!--        <dependency>
+                    <groupId>org.nazymko</groupId>
+                    <artifactId>web-mock</artifactId>
+                    <version>1.0-SNAPSHOT</version>
+                    &lt;!&ndash;<scope>compile</scope>&ndash;&gt;
+                </dependency>-->
         <!-- Sending data  to consumer-->
         <dependency>
             <groupId>org.nazymko</groupId>

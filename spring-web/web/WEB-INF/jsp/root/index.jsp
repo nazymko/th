@@ -25,7 +25,7 @@
         <tr>
             <td>${str.id}</td>
             <td>${str.status}</td>
-            <td><a href="/site/${str.siteId}/info">${str.siteId}</a></td>
+            <td><a href="<c:url value="/site/${str.siteId}/info"/>">${str.siteId}</a></td>
             <td>${str.runType}</td>
         </tr>
     </c:forEach>

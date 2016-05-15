@@ -21,4 +21,7 @@ public class AttrsItem {
     private String attr;
     @JsonProperty("type")
     private String type;
+    @JsonProperty("format")
+    String format;
+
 }

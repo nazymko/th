@@ -5,7 +5,7 @@
     <jsp:param name="selector" value="pre code"/>
 </jsp:include>
 
-<a href="/connector/consumers/${consumerId}/mapping/add" class="btn bgm-blue">add</a>
+<a href="<c:url value="/connector/consumers/${consumerId}/mapping/add"/>" class="btn bgm-blue">add</a>
 <c:forEach items="${mapping}" varStatus="status" var="rule">
     <div>
         <div><b>#${status.index}</b></div>
@@ -14,11 +14,11 @@
         <div style="display: inline">
             <div style="display: inline">
                 <a style="display: inline" class="btn bgm-blue"
-                   href="/connector/consumers/${rule.consumerId}/rule/${rule.id}/edit">edit</a>
+                   href="<c:url value="/connector/consumers/${rule.consumerId}/rule/${rule.id}/edit"/>">edit</a>
             </div>
             <div style="display: inline">
                 <form style="display: inline" method="post"
-                      action="/connector/consumers/${rule.consumerId}/rule/${rule.id}/delete">
+                      action="<c:url value="/connector/consumers/${rule.consumerId}/rule/${rule.id}/delete"/>">
                     <button style="display: inline" type="submit" class="btn bgm-black">delete</button>
                 </form>
             </div>
