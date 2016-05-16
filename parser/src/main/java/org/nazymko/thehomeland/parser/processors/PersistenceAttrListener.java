@@ -26,7 +26,7 @@ public class PersistenceAttrListener implements AttrListener {
         return persist;
     }
 
-    SimpleDateFormat defaultFormatter = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
+    SimpleDateFormat defaultFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Override
     public void process(ThAttributeDataRecord attribute, Integer runId) {
@@ -36,7 +36,12 @@ public class PersistenceAttrListener implements AttrListener {
             try {
                 Date date = simpleDateFormat.parse(attribute.getAttributeValue());
                 Calendar calendar = Calendar.getInstance();
+                if (date.before(calendar.getTime())) {
+                    int year = calendar.get(Calendar.YEAR);
+                    date.setYear(year - 1900);
+                }
                 attribute.setAttributeValue(defaultFormatter.format(date));
+
             } catch (ParseException e) {
                 e.printStackTrace();//OK , ignore this shit
             }
