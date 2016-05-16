@@ -64,13 +64,6 @@ public class ConnectorsSendHeadersDao extends DAOImpl<ConnectorsSendHeadersRecor
 	}
 
 	/**
-	 * Fetch records that have <code>consumer_id IN (values)</code>
-	 */
-	public List<org.nazymko.th.parser.autodao.tables.pojos.ConnectorsSendHeaders> fetchByConsumerId(Integer... values) {
-		return fetch(ConnectorsSendHeaders.CONNECTORS_SEND_HEADERS.CONSUMER_ID, values);
-	}
-
-	/**
 	 * Fetch records that have <code>header IN (values)</code>
 	 */
 	public List<org.nazymko.th.parser.autodao.tables.pojos.ConnectorsSendHeaders> fetchByHeader(String... values) {
@@ -82,5 +75,12 @@ public class ConnectorsSendHeadersDao extends DAOImpl<ConnectorsSendHeadersRecor
 	 */
 	public List<org.nazymko.th.parser.autodao.tables.pojos.ConnectorsSendHeaders> fetchByValue(String... values) {
 		return fetch(ConnectorsSendHeaders.CONNECTORS_SEND_HEADERS.VALUE, values);
+	}
+
+	/**
+	 * Fetch records that have <code>consumer_id IN (values)</code>
+	 */
+	public List<org.nazymko.th.parser.autodao.tables.pojos.ConnectorsSendHeaders> fetchByConsumerId(Integer... values) {
+		return fetch(ConnectorsSendHeaders.CONNECTORS_SEND_HEADERS.CONSUMER_ID, values);
 	}
 }

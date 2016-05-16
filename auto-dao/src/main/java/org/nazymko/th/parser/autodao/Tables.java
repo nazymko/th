@@ -10,10 +10,10 @@ import org.nazymko.th.parser.autodao.tables.ConnectorConsumer;
 import org.nazymko.th.parser.autodao.tables.ConnectorRules;
 import org.nazymko.th.parser.autodao.tables.ConnectorSyncPageLog;
 import org.nazymko.th.parser.autodao.tables.ConnectorsSendHeaders;
+import org.nazymko.th.parser.autodao.tables.SchemaVersion;
 import org.nazymko.th.parser.autodao.tables.TaskRun;
 import org.nazymko.th.parser.autodao.tables.TaskSchedule;
 import org.nazymko.th.parser.autodao.tables.ThAttributeData;
-import org.nazymko.th.parser.autodao.tables.ThConfig;
 import org.nazymko.th.parser.autodao.tables.ThPage;
 import org.nazymko.th.parser.autodao.tables.ThRule;
 import org.nazymko.th.parser.autodao.tables.ThSite;
@@ -53,6 +53,11 @@ public class Tables {
 	public static final ConnectorSyncPageLog CONNECTOR_SYNC_PAGE_LOG = org.nazymko.th.parser.autodao.tables.ConnectorSyncPageLog.CONNECTOR_SYNC_PAGE_LOG;
 
 	/**
+	 * The table thehomeland.schema_version
+	 */
+	public static final SchemaVersion SCHEMA_VERSION = org.nazymko.th.parser.autodao.tables.SchemaVersion.SCHEMA_VERSION;
+
+	/**
 	 * The table thehomeland.task_run
 	 */
 	public static final TaskRun TASK_RUN = org.nazymko.th.parser.autodao.tables.TaskRun.TASK_RUN;
@@ -66,11 +71,6 @@ public class Tables {
 	 * The table thehomeland.th_attribute_data
 	 */
 	public static final ThAttributeData TH_ATTRIBUTE_DATA = org.nazymko.th.parser.autodao.tables.ThAttributeData.TH_ATTRIBUTE_DATA;
-
-	/**
-	 * The table thehomeland.th_config
-	 */
-	public static final ThConfig TH_CONFIG = org.nazymko.th.parser.autodao.tables.ThConfig.TH_CONFIG;
 
 	/**
 	 * The table thehomeland.th_page

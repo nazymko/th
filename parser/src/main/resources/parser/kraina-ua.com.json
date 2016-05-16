@@ -46,6 +46,12 @@
       "unique": true,
       "attrs": [
         {
+          "path": ".page-header",
+          "attr": "text",
+          "type": "title",
+          "persist": true
+        },
+        {
           "path": ".item-img > img",
           "attr": "src",
           "type": "big-image",

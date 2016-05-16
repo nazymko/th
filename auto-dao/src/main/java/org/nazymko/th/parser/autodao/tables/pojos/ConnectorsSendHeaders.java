@@ -30,32 +30,32 @@ import javax.validation.constraints.Size;
 @Table(name = "connectors_send_headers", schema = "thehomeland")
 public class ConnectorsSendHeaders implements Serializable {
 
-	private static final long serialVersionUID = 1444290424;
+	private static final long serialVersionUID = -617398190;
 
 	private Integer id;
-	private Integer consumerId;
 	private String  header;
 	private String  value;
+	private Integer consumerId;
 
 	public ConnectorsSendHeaders() {}
 
 	public ConnectorsSendHeaders(ConnectorsSendHeaders value) {
 		this.id = value.id;
-		this.consumerId = value.consumerId;
 		this.header = value.header;
 		this.value = value.value;
+		this.consumerId = value.consumerId;
 	}
 
 	public ConnectorsSendHeaders(
 		Integer id,
-		Integer consumerId,
 		String  header,
-		String  value
+		String  value,
+		Integer consumerId
 	) {
 		this.id = id;
-		this.consumerId = consumerId;
 		this.header = header;
 		this.value = value;
+		this.consumerId = consumerId;
 	}
 
 	@Id
@@ -69,18 +69,8 @@ public class ConnectorsSendHeaders implements Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "consumer_id", precision = 10)
-	public Integer getConsumerId() {
-		return this.consumerId;
-	}
-
-	public void setConsumerId(Integer consumerId) {
-		this.consumerId = consumerId;
-	}
-
-	@Column(name = "header", nullable = false, length = 512)
-	@NotNull
-	@Size(max = 512)
+	@Column(name = "header", length = 128)
+	@Size(max = 128)
 	public String getHeader() {
 		return this.header;
 	}
@@ -89,8 +79,7 @@ public class ConnectorsSendHeaders implements Serializable {
 		this.header = header;
 	}
 
-	@Column(name = "value", nullable = false, length = 1024)
-	@NotNull
+	@Column(name = "value", length = 1024)
 	@Size(max = 1024)
 	public String getValue() {
 		return this.value;
@@ -100,14 +89,23 @@ public class ConnectorsSendHeaders implements Serializable {
 		this.value = value;
 	}
 
+	@Column(name = "consumer_id", precision = 10)
+	public Integer getConsumerId() {
+		return this.consumerId;
+	}
+
+	public void setConsumerId(Integer consumerId) {
+		this.consumerId = consumerId;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder("ConnectorsSendHeaders (");
 
 		sb.append(id);
-		sb.append(", ").append(consumerId);
 		sb.append(", ").append(header);
 		sb.append(", ").append(value);
+		sb.append(", ").append(consumerId);
 
 		sb.append(")");
 		return sb.toString();

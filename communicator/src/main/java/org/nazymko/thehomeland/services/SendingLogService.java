@@ -15,8 +15,8 @@ public class SendingLogService {
     @Resource
     SyncPageLogDao logDao;
 
-    public void failedToSend(Integer pageId, Integer status, String consumer) {
-        logDao.save(pageId, status, consumer);
+    public void failedToSend(Integer pageId, Integer status, String consumer, String json) {
+        logDao.save(pageId, status, consumer,json);
     }
 
     public void afterSend(Message<String> message) {

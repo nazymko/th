@@ -34,7 +34,7 @@ import org.nazymko.th.parser.autodao.tables.records.ConnectorsSendHeadersRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ConnectorsSendHeaders extends TableImpl<ConnectorsSendHeadersRecord> {
 
-	private static final long serialVersionUID = -1420227741;
+	private static final long serialVersionUID = -472487139;
 
 	/**
 	 * The reference instance of <code>thehomeland.connectors_send_headers</code>
@@ -55,19 +55,19 @@ public class ConnectorsSendHeaders extends TableImpl<ConnectorsSendHeadersRecord
 	public final TableField<ConnectorsSendHeadersRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
 	/**
-	 * The column <code>thehomeland.connectors_send_headers.consumer_id</code>.
-	 */
-	public final TableField<ConnectorsSendHeadersRecord, Integer> CONSUMER_ID = createField("consumer_id", org.jooq.impl.SQLDataType.INTEGER, this, "");
-
-	/**
 	 * The column <code>thehomeland.connectors_send_headers.header</code>.
 	 */
-	public final TableField<ConnectorsSendHeadersRecord, String> HEADER = createField("header", org.jooq.impl.SQLDataType.VARCHAR.length(512).nullable(false), this, "");
+	public final TableField<ConnectorsSendHeadersRecord, String> HEADER = createField("header", org.jooq.impl.SQLDataType.VARCHAR.length(128), this, "");
 
 	/**
 	 * The column <code>thehomeland.connectors_send_headers.value</code>.
 	 */
-	public final TableField<ConnectorsSendHeadersRecord, String> VALUE = createField("value", org.jooq.impl.SQLDataType.VARCHAR.length(1024).nullable(false), this, "");
+	public final TableField<ConnectorsSendHeadersRecord, String> VALUE = createField("value", org.jooq.impl.SQLDataType.VARCHAR.length(1024), this, "");
+
+	/**
+	 * The column <code>thehomeland.connectors_send_headers.consumer_id</code>.
+	 */
+	public final TableField<ConnectorsSendHeadersRecord, Integer> CONSUMER_ID = createField("consumer_id", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
 	/**
 	 * Create a <code>thehomeland.connectors_send_headers</code> table reference
@@ -120,7 +120,7 @@ public class ConnectorsSendHeaders extends TableImpl<ConnectorsSendHeadersRecord
 	 */
 	@Override
 	public List<ForeignKey<ConnectorsSendHeadersRecord, ?>> getReferences() {
-		return Arrays.<ForeignKey<ConnectorsSendHeadersRecord, ?>>asList(Keys.CONNECTORS_SEND_HEADERS_CONNECTOR_CONSUMER__FK);
+		return Arrays.<ForeignKey<ConnectorsSendHeadersRecord, ?>>asList(Keys.CONNECTORS_SEND_HEADERS_CONNECTOR_CONSUMER_ID_FK);
 	}
 
 	/**

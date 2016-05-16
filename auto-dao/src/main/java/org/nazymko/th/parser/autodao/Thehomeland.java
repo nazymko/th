@@ -16,10 +16,10 @@ import org.nazymko.th.parser.autodao.tables.ConnectorConsumer;
 import org.nazymko.th.parser.autodao.tables.ConnectorRules;
 import org.nazymko.th.parser.autodao.tables.ConnectorSyncPageLog;
 import org.nazymko.th.parser.autodao.tables.ConnectorsSendHeaders;
+import org.nazymko.th.parser.autodao.tables.SchemaVersion;
 import org.nazymko.th.parser.autodao.tables.TaskRun;
 import org.nazymko.th.parser.autodao.tables.TaskSchedule;
 import org.nazymko.th.parser.autodao.tables.ThAttributeData;
-import org.nazymko.th.parser.autodao.tables.ThConfig;
 import org.nazymko.th.parser.autodao.tables.ThPage;
 import org.nazymko.th.parser.autodao.tables.ThRule;
 import org.nazymko.th.parser.autodao.tables.ThSite;
@@ -38,7 +38,7 @@ import org.nazymko.th.parser.autodao.tables.ThSite;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Thehomeland extends SchemaImpl {
 
-	private static final long serialVersionUID = -813855839;
+	private static final long serialVersionUID = 139775168;
 
 	/**
 	 * The reference instance of <code>thehomeland</code>
@@ -65,10 +65,10 @@ public class Thehomeland extends SchemaImpl {
 			ConnectorConsumer.CONNECTOR_CONSUMER,
 			ConnectorRules.CONNECTOR_RULES,
 			ConnectorSyncPageLog.CONNECTOR_SYNC_PAGE_LOG,
+			SchemaVersion.SCHEMA_VERSION,
 			TaskRun.TASK_RUN,
 			TaskSchedule.TASK_SCHEDULE,
 			ThAttributeData.TH_ATTRIBUTE_DATA,
-			ThConfig.TH_CONFIG,
 			ThPage.TH_PAGE,
 			ThRule.TH_RULE,
 			ThSite.TH_SITE);

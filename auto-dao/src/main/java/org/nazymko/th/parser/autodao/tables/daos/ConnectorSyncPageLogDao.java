@@ -105,4 +105,11 @@ public class ConnectorSyncPageLogDao extends DAOImpl<ConnectorSyncPageLogRecord,
 	public List<org.nazymko.th.parser.autodao.tables.pojos.ConnectorSyncPageLog> fetchByConsumerEndpoint(String... values) {
 		return fetch(ConnectorSyncPageLog.CONNECTOR_SYNC_PAGE_LOG.CONSUMER_ENDPOINT, values);
 	}
+
+	/**
+	 * Fetch records that have <code>message IN (values)</code>
+	 */
+	public List<org.nazymko.th.parser.autodao.tables.pojos.ConnectorSyncPageLog> fetchByMessage(String... values) {
+		return fetch(ConnectorSyncPageLog.CONNECTOR_SYNC_PAGE_LOG.MESSAGE, values);
+	}
 }

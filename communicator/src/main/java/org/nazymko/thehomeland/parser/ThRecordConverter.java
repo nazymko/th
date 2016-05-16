@@ -4,6 +4,7 @@ import org.nazymko.th.parser.autodao.tables.records.ThPageRecord;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Created by nazymko.patronus@gmail.com.
@@ -15,7 +16,7 @@ public class ThRecordConverter extends AbstractConverter {
         this.rulePull = rulePull;
     }
 
-    @Override public Map convert(ThPageRecord record) {
+    @Override public Optional<Map> convert(ThPageRecord record) {
         return super.convert(record);
     }
 

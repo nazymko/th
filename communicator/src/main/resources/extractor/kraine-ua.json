@@ -1,0 +1,17 @@
+{
+  "title": "#title",
+  "description": "#big-details",
+  "type": "ekskursii",
+  "price": "#price",
+  "targetCity": "Львів",
+  "departureCity": "Львів",
+  "dateStart": "#trip-date",
+  "dateEnd": "#trip-date",
+  "departureAddress": "Any",
+  "ticketsTotal": "50",
+  "image": "$big-image",
+  "firstName": "Kraine",
+  "lastName": "Ua",
+  "phones": "(044) 360-65-11",
+  "url": "%page_url"
+}

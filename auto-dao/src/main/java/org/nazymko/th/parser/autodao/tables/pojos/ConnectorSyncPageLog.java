@@ -31,7 +31,7 @@ import javax.validation.constraints.Size;
 @Table(name = "connector_sync_page_log", schema = "thehomeland")
 public class ConnectorSyncPageLog implements Serializable {
 
-	private static final long serialVersionUID = -1905724378;
+	private static final long serialVersionUID = 1670164992;
 
 	private Integer   id;
 	private Integer   pageId;
@@ -40,6 +40,7 @@ public class ConnectorSyncPageLog implements Serializable {
 	private String    responseText;
 	private Integer   responseCode;
 	private String    consumerEndpoint;
+	private String    message;
 
 	public ConnectorSyncPageLog() {}
 
@@ -51,6 +52,7 @@ public class ConnectorSyncPageLog implements Serializable {
 		this.responseText = value.responseText;
 		this.responseCode = value.responseCode;
 		this.consumerEndpoint = value.consumerEndpoint;
+		this.message = value.message;
 	}
 
 	public ConnectorSyncPageLog(
@@ -60,7 +62,8 @@ public class ConnectorSyncPageLog implements Serializable {
 		Timestamp time,
 		String    responseText,
 		Integer   responseCode,
-		String    consumerEndpoint
+		String    consumerEndpoint,
+		String    message
 	) {
 		this.id = id;
 		this.pageId = pageId;
@@ -69,6 +72,7 @@ public class ConnectorSyncPageLog implements Serializable {
 		this.responseText = responseText;
 		this.responseCode = responseCode;
 		this.consumerEndpoint = consumerEndpoint;
+		this.message = message;
 	}
 
 	@Id
@@ -131,14 +135,24 @@ public class ConnectorSyncPageLog implements Serializable {
 		this.responseCode = responseCode;
 	}
 
-	@Column(name = "consumer_endpoint", length = 128)
-	@Size(max = 128)
+	@Column(name = "consumer_endpoint", length = 512)
+	@Size(max = 512)
 	public String getConsumerEndpoint() {
 		return this.consumerEndpoint;
 	}
 
 	public void setConsumerEndpoint(String consumerEndpoint) {
 		this.consumerEndpoint = consumerEndpoint;
+	}
+
+	@Column(name = "message", length = 65535)
+	@Size(max = 65535)
+	public String getMessage() {
+		return this.message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 	@Override
@@ -152,6 +166,7 @@ public class ConnectorSyncPageLog implements Serializable {
 		sb.append(", ").append(responseText);
 		sb.append(", ").append(responseCode);
 		sb.append(", ").append(consumerEndpoint);
+		sb.append(", ").append(message);
 
 		sb.append(")");
 		return sb.toString();

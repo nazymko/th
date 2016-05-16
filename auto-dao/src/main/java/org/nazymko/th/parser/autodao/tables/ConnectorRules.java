@@ -34,7 +34,7 @@ import org.nazymko.th.parser.autodao.tables.records.ConnectorRulesRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ConnectorRules extends TableImpl<ConnectorRulesRecord> {
 
-	private static final long serialVersionUID = -1854567915;
+	private static final long serialVersionUID = -1991798166;
 
 	/**
 	 * The reference instance of <code>thehomeland.connector_rules</code>
@@ -120,7 +120,7 @@ public class ConnectorRules extends TableImpl<ConnectorRulesRecord> {
 	 */
 	@Override
 	public List<ForeignKey<ConnectorRulesRecord, ?>> getReferences() {
-		return Arrays.<ForeignKey<ConnectorRulesRecord, ?>>asList(Keys.CONNECTOR_RULES_CONNECTOR_CONSUMER__FK, Keys.CONNECTOR_RULES_TH_SITE__FK);
+		return Arrays.<ForeignKey<ConnectorRulesRecord, ?>>asList(Keys.CONNECTOR_RULES_IBFK_1, Keys.CONNECTOR_RULES_IBFK_2);
 	}
 
 	/**

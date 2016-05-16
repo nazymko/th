@@ -33,9 +33,9 @@ import org.nazymko.th.parser.autodao.tables.ConnectorsSendHeaders;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Entity
 @Table(name = "connectors_send_headers", schema = "thehomeland")
-public class ConnectorsSendHeadersRecord extends UpdatableRecordImpl<ConnectorsSendHeadersRecord> implements Record4<Integer, Integer, String, String> {
+public class ConnectorsSendHeadersRecord extends UpdatableRecordImpl<ConnectorsSendHeadersRecord> implements Record4<Integer, String, String, Integer> {
 
-	private static final long serialVersionUID = -1635490184;
+	private static final long serialVersionUID = 558452166;
 
 	/**
 	 * Setter for <code>thehomeland.connectors_send_headers.id</code>.
@@ -55,10 +55,42 @@ public class ConnectorsSendHeadersRecord extends UpdatableRecordImpl<ConnectorsS
 	}
 
 	/**
+	 * Setter for <code>thehomeland.connectors_send_headers.header</code>.
+	 */
+	public void setHeader(String value) {
+		setValue(1, value);
+	}
+
+	/**
+	 * Getter for <code>thehomeland.connectors_send_headers.header</code>.
+	 */
+	@Column(name = "header", length = 128)
+	@Size(max = 128)
+	public String getHeader() {
+		return (String) getValue(1);
+	}
+
+	/**
+	 * Setter for <code>thehomeland.connectors_send_headers.value</code>.
+	 */
+	public void setValue(String value) {
+		setValue(2, value);
+	}
+
+	/**
+	 * Getter for <code>thehomeland.connectors_send_headers.value</code>.
+	 */
+	@Column(name = "value", length = 1024)
+	@Size(max = 1024)
+	public String getValue() {
+		return (String) getValue(2);
+	}
+
+	/**
 	 * Setter for <code>thehomeland.connectors_send_headers.consumer_id</code>.
 	 */
 	public void setConsumerId(Integer value) {
-		setValue(1, value);
+		setValue(3, value);
 	}
 
 	/**
@@ -66,41 +98,7 @@ public class ConnectorsSendHeadersRecord extends UpdatableRecordImpl<ConnectorsS
 	 */
 	@Column(name = "consumer_id", precision = 10)
 	public Integer getConsumerId() {
-		return (Integer) getValue(1);
-	}
-
-	/**
-	 * Setter for <code>thehomeland.connectors_send_headers.header</code>.
-	 */
-	public void setHeader(String value) {
-		setValue(2, value);
-	}
-
-	/**
-	 * Getter for <code>thehomeland.connectors_send_headers.header</code>.
-	 */
-	@Column(name = "header", nullable = false, length = 512)
-	@NotNull
-	@Size(max = 512)
-	public String getHeader() {
-		return (String) getValue(2);
-	}
-
-	/**
-	 * Setter for <code>thehomeland.connectors_send_headers.value</code>.
-	 */
-	public void setValue(String value) {
-		setValue(3, value);
-	}
-
-	/**
-	 * Getter for <code>thehomeland.connectors_send_headers.value</code>.
-	 */
-	@Column(name = "value", nullable = false, length = 1024)
-	@NotNull
-	@Size(max = 1024)
-	public String getValue() {
-		return (String) getValue(3);
+		return (Integer) getValue(3);
 	}
 
 	// -------------------------------------------------------------------------
@@ -123,7 +121,7 @@ public class ConnectorsSendHeadersRecord extends UpdatableRecordImpl<ConnectorsS
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Row4<Integer, Integer, String, String> fieldsRow() {
+	public Row4<Integer, String, String, Integer> fieldsRow() {
 		return (Row4) super.fieldsRow();
 	}
 
@@ -131,7 +129,7 @@ public class ConnectorsSendHeadersRecord extends UpdatableRecordImpl<ConnectorsS
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Row4<Integer, Integer, String, String> valuesRow() {
+	public Row4<Integer, String, String, Integer> valuesRow() {
 		return (Row4) super.valuesRow();
 	}
 
@@ -147,15 +145,7 @@ public class ConnectorsSendHeadersRecord extends UpdatableRecordImpl<ConnectorsS
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Field<Integer> field2() {
-		return ConnectorsSendHeaders.CONNECTORS_SEND_HEADERS.CONSUMER_ID;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Field<String> field3() {
+	public Field<String> field2() {
 		return ConnectorsSendHeaders.CONNECTORS_SEND_HEADERS.HEADER;
 	}
 
@@ -163,8 +153,16 @@ public class ConnectorsSendHeadersRecord extends UpdatableRecordImpl<ConnectorsS
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Field<String> field4() {
+	public Field<String> field3() {
 		return ConnectorsSendHeaders.CONNECTORS_SEND_HEADERS.VALUE;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Field<Integer> field4() {
+		return ConnectorsSendHeaders.CONNECTORS_SEND_HEADERS.CONSUMER_ID;
 	}
 
 	/**
@@ -179,15 +177,7 @@ public class ConnectorsSendHeadersRecord extends UpdatableRecordImpl<ConnectorsS
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Integer value2() {
-		return getConsumerId();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String value3() {
+	public String value2() {
 		return getHeader();
 	}
 
@@ -195,8 +185,16 @@ public class ConnectorsSendHeadersRecord extends UpdatableRecordImpl<ConnectorsS
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String value4() {
+	public String value3() {
 		return getValue();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Integer value4() {
+		return getConsumerId();
 	}
 
 	/**
@@ -212,16 +210,7 @@ public class ConnectorsSendHeadersRecord extends UpdatableRecordImpl<ConnectorsS
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ConnectorsSendHeadersRecord value2(Integer value) {
-		setConsumerId(value);
-		return this;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public ConnectorsSendHeadersRecord value3(String value) {
+	public ConnectorsSendHeadersRecord value2(String value) {
 		setHeader(value);
 		return this;
 	}
@@ -230,7 +219,7 @@ public class ConnectorsSendHeadersRecord extends UpdatableRecordImpl<ConnectorsS
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ConnectorsSendHeadersRecord value4(String value) {
+	public ConnectorsSendHeadersRecord value3(String value) {
 		setValue(value);
 		return this;
 	}
@@ -239,7 +228,16 @@ public class ConnectorsSendHeadersRecord extends UpdatableRecordImpl<ConnectorsS
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ConnectorsSendHeadersRecord values(Integer value1, Integer value2, String value3, String value4) {
+	public ConnectorsSendHeadersRecord value4(Integer value) {
+		setConsumerId(value);
+		return this;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ConnectorsSendHeadersRecord values(Integer value1, String value2, String value3, Integer value4) {
 		value1(value1);
 		value2(value2);
 		value3(value3);
@@ -261,12 +259,12 @@ public class ConnectorsSendHeadersRecord extends UpdatableRecordImpl<ConnectorsS
 	/**
 	 * Create a detached, initialised ConnectorsSendHeadersRecord
 	 */
-	public ConnectorsSendHeadersRecord(Integer id, Integer consumerId, String header, String value) {
+	public ConnectorsSendHeadersRecord(Integer id, String header, String value, Integer consumerId) {
 		super(ConnectorsSendHeaders.CONNECTORS_SEND_HEADERS);
 
 		setValue(0, id);
-		setValue(1, consumerId);
-		setValue(2, header);
-		setValue(3, value);
+		setValue(1, header);
+		setValue(2, value);
+		setValue(3, consumerId);
 	}
 }

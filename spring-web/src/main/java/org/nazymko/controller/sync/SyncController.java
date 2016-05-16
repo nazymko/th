@@ -1,5 +1,6 @@
 package org.nazymko.controller.sync;
 
+import lombok.extern.log4j.Log4j2;
 import org.nazymko.controller.utils.MessagingUtils;
 import org.nazymko.th.parser.autodao.tables.pojos.ConnectorConsumer;
 import org.nazymko.th.parser.autodao.tables.pojos.ConnectorRules;
@@ -29,6 +30,7 @@ import static org.nazymko.controller.utils.MessagingUtils.UI.warn;
 /**
  * Created by nazymko.patronus@gmail.com
  */
+@Log4j2
 @Controller
 @RequestMapping("connector")
 public class SyncController {
@@ -230,7 +232,11 @@ public class SyncController {
             model.addAttribute("consumer", consumer);
 
 
-            connectorRuleDao.add(consumerId, Integer.valueOf(params.get("siteId")), params.get("rule"));
+            String rule = params.get("rule");
+            String siteId = params.get("siteId");
+
+            log.debug("Adding mapping rule: siteId={},rule=\n{}", siteId, rule);
+            connectorRuleDao.add(consumerId, Integer.valueOf(siteId), rule);
         } else {
             warn(model, "Cant find consumer with id %s", consumerId);
         }

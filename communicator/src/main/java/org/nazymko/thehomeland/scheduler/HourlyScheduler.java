@@ -25,6 +25,7 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Created by nazymko.patronus@gmail.com.
@@ -74,11 +75,16 @@ public class HourlyScheduler implements Scheduler {
             HashMap<String, Object> headers = getHeaders(consumerRecord.getId());
 
             log.info("New records for send : {}", latest.size());
+            String json = null;
             for (ThPageRecord thPageRecord : latest) {
-                Map convert = thRecordConverter.convert(thPageRecord);
-                String json = new String(GSON.toJson(convert).getBytes(Charset.forName("UTF-8")), "UTF-8");
+                Optional<Map> convert = thRecordConverter.convert(thPageRecord);
+                if (!convert.isPresent()) {
+                    continue;
+                }
+                json = new String(GSON.toJson(convert.get()).getBytes(Charset.forName("UTF-8")), "UTF-8");
                 System.out.println("json = " + json);
                 tryToSend(thPageRecord, json, headers, consumer);
+                json = null;
             }
             log.info("Finished");
         } catch (Exception ex) {
@@ -102,7 +108,7 @@ public class HourlyScheduler implements Scheduler {
             messageChannel.send(msg);
         } catch (HttpClientErrorException ex) {
             log.error("Failed to send. Record id = " + thPageRecord.getId(), ex);
-            logService.failedToSend(thPageRecord.getId(), ex.getStatusCode().value(), consumer);
+            logService.failedToSend(thPageRecord.getId(), ex.getStatusCode().value(), consumer,json);
         } catch (Exception ex) {
             log.error("Failed to send: thPageRecord = [" + thPageRecord.getId() + "], json = [" + json + "]", ex);
         }

@@ -1,7 +1,7 @@
 package org.nazymko.thehomeland.parser;
 
+import lombok.extern.log4j.Log4j2;
 import org.nazymko.th.parser.autodao.tables.pojos.ThAttributeData;
-import org.nazymko.th.parser.autodao.tables.records.ThAttributeDataRecord;
 import org.nazymko.th.parser.autodao.tables.records.ThPageRecord;
 import org.nazymko.th.parser.autodao.tables.records.ThSiteRecord;
 import org.nazymko.thehomeland.parser.db.dao.AttributeDao;
@@ -17,11 +17,15 @@ import java.util.Optional;
 /**
  * Created by nazymko.patronus@gmail.com
  */
+@Log4j2
 public abstract class AbstractConverter implements Converter<ThPageRecord> {
 
-    @Resource private AttributeDao attributeDao;
-    @Resource private SiteDao siteDao;
-    @Resource private PageDao pageDao;
+    @Resource
+    private AttributeDao attributeDao;
+    @Resource
+    private SiteDao siteDao;
+    @Resource
+    private PageDao pageDao;
     private HashMap<Integer, String> cache = new HashMap<>();
 
     /**
@@ -30,7 +34,7 @@ public abstract class AbstractConverter implements Converter<ThPageRecord> {
      * Used given property configuration <code>HashMap<String, String> rule</code>
      */
     @Override
-    public Map convert(ThPageRecord record) {
+    public Optional<Map> convert(ThPageRecord record) {
 
         HashMap<String, ThAttributeData> revertedMap = new HashMap<>();
         List<ThAttributeData> page = attributeDao.getByPage(record.getId());
@@ -40,13 +44,19 @@ public abstract class AbstractConverter implements Converter<ThPageRecord> {
         for (ThAttributeData thAttributeDataRecord : page) {
             revertedMap.put(thAttributeDataRecord.getAttributeName(), thAttributeDataRecord);
         }
+        log.debug("Converting");
+        log.debug(record);
 
-        for (Map.Entry<String, String> entry : getRule(record.getSiteId()).entrySet()) {
+        HashMap<String, String> rule = getRule(record.getSiteId());
+        if (rule == null) {
+            return Optional.empty();
+        }
+        for (Map.Entry<String, String> entry : rule.entrySet()) {
             String entryValue = entry.getValue();
             if (entryValue.startsWith("#")) {
                 putValue(revertedMap, result, entry);
             } else if (entryValue.startsWith("$")) {
-                putHostRelatedUrl(revertedMap, result, entryValue);
+                putHostRelatedUrl(revertedMap, result, entryValue,entry.getKey());
             } else if (entryValue.startsWith("%page_url")) {
                 result.put(entry.getKey(), record.getPageUrl());
             } else {
@@ -59,14 +69,14 @@ public abstract class AbstractConverter implements Converter<ThPageRecord> {
             }
         }
 
-        return result;
+        return Optional.of(result);
     }
 
-    private void putHostRelatedUrl(HashMap<String, ThAttributeData> revertedMap, HashMap<String, String> result, String entryValue) {
+    private void putHostRelatedUrl(HashMap<String, ThAttributeData> revertedMap, HashMap<String, String> result, String entryValue, String key) {
         String _key = entryValue.substring(1);
         ThAttributeData attribute = revertedMap.get(_key);
         if (attribute != null) {
-            result.put(_key, merge(domain(attribute.getSiteId()), attribute.getAttributeValue()));
+            result.put(key, merge(domain(attribute.getSiteId()), attribute.getAttributeValue()));
         }
     }
 

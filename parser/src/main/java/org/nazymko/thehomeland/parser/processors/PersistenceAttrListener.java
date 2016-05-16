@@ -7,6 +7,10 @@ import org.nazymko.thehomeland.parser.db.dao.AttributeDao;
 import org.nazymko.thehomeland.parser.db.model.Attribute;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by nazymko.patronus@gmail.com.
@@ -22,10 +26,21 @@ public class PersistenceAttrListener implements AttrListener {
         return persist;
     }
 
+    SimpleDateFormat defaultFormatter = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
+
     @Override
     public void process(ThAttributeDataRecord attribute, Integer runId) {
         log.debug("saving into db pageId = " + attribute.getPageId());
-
+        if (attribute.getAttributeFormat() != null) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(attribute.getAttributeFormat());
+            try {
+                Date date = simpleDateFormat.parse(attribute.getAttributeValue());
+                Calendar calendar = Calendar.getInstance();
+                attribute.setAttributeValue(defaultFormatter.format(date));
+            } catch (ParseException e) {
+                e.printStackTrace();//OK , ignore this shit
+            }
+        }
         attributeDao.save(attribute);
 
     }

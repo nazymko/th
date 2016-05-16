@@ -16,8 +16,8 @@ import javax.validation.constraints.Size;
 
 import org.jooq.Field;
 import org.jooq.Record1;
-import org.jooq.Record7;
-import org.jooq.Row7;
+import org.jooq.Record8;
+import org.jooq.Row8;
 import org.jooq.impl.UpdatableRecordImpl;
 import org.nazymko.th.parser.autodao.tables.ConnectorSyncPageLog;
 
@@ -35,9 +35,9 @@ import org.nazymko.th.parser.autodao.tables.ConnectorSyncPageLog;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Entity
 @Table(name = "connector_sync_page_log", schema = "thehomeland")
-public class ConnectorSyncPageLogRecord extends UpdatableRecordImpl<ConnectorSyncPageLogRecord> implements Record7<Integer, Integer, String, Timestamp, String, Integer, String> {
+public class ConnectorSyncPageLogRecord extends UpdatableRecordImpl<ConnectorSyncPageLogRecord> implements Record8<Integer, Integer, String, Timestamp, String, Integer, String, String> {
 
-	private static final long serialVersionUID = 615042977;
+	private static final long serialVersionUID = 835183715;
 
 	/**
 	 * Setter for <code>thehomeland.connector_sync_page_log.id</code>.
@@ -145,10 +145,26 @@ public class ConnectorSyncPageLogRecord extends UpdatableRecordImpl<ConnectorSyn
 	/**
 	 * Getter for <code>thehomeland.connector_sync_page_log.consumer_endpoint</code>.
 	 */
-	@Column(name = "consumer_endpoint", length = 128)
-	@Size(max = 128)
+	@Column(name = "consumer_endpoint", length = 512)
+	@Size(max = 512)
 	public String getConsumerEndpoint() {
 		return (String) getValue(6);
+	}
+
+	/**
+	 * Setter for <code>thehomeland.connector_sync_page_log.message</code>.
+	 */
+	public void setMessage(String value) {
+		setValue(7, value);
+	}
+
+	/**
+	 * Getter for <code>thehomeland.connector_sync_page_log.message</code>.
+	 */
+	@Column(name = "message", length = 65535)
+	@Size(max = 65535)
+	public String getMessage() {
+		return (String) getValue(7);
 	}
 
 	// -------------------------------------------------------------------------
@@ -164,23 +180,23 @@ public class ConnectorSyncPageLogRecord extends UpdatableRecordImpl<ConnectorSyn
 	}
 
 	// -------------------------------------------------------------------------
-	// Record7 type implementation
+	// Record8 type implementation
 	// -------------------------------------------------------------------------
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Row7<Integer, Integer, String, Timestamp, String, Integer, String> fieldsRow() {
-		return (Row7) super.fieldsRow();
+	public Row8<Integer, Integer, String, Timestamp, String, Integer, String, String> fieldsRow() {
+		return (Row8) super.fieldsRow();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Row7<Integer, Integer, String, Timestamp, String, Integer, String> valuesRow() {
-		return (Row7) super.valuesRow();
+	public Row8<Integer, Integer, String, Timestamp, String, Integer, String, String> valuesRow() {
+		return (Row8) super.valuesRow();
 	}
 
 	/**
@@ -243,6 +259,14 @@ public class ConnectorSyncPageLogRecord extends UpdatableRecordImpl<ConnectorSyn
 	 * {@inheritDoc}
 	 */
 	@Override
+	public Field<String> field8() {
+		return ConnectorSyncPageLog.CONNECTOR_SYNC_PAGE_LOG.MESSAGE;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public Integer value1() {
 		return getId();
 	}
@@ -293,6 +317,14 @@ public class ConnectorSyncPageLogRecord extends UpdatableRecordImpl<ConnectorSyn
 	@Override
 	public String value7() {
 		return getConsumerEndpoint();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String value8() {
+		return getMessage();
 	}
 
 	/**
@@ -362,7 +394,16 @@ public class ConnectorSyncPageLogRecord extends UpdatableRecordImpl<ConnectorSyn
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ConnectorSyncPageLogRecord values(Integer value1, Integer value2, String value3, Timestamp value4, String value5, Integer value6, String value7) {
+	public ConnectorSyncPageLogRecord value8(String value) {
+		setMessage(value);
+		return this;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ConnectorSyncPageLogRecord values(Integer value1, Integer value2, String value3, Timestamp value4, String value5, Integer value6, String value7, String value8) {
 		value1(value1);
 		value2(value2);
 		value3(value3);
@@ -370,6 +411,7 @@ public class ConnectorSyncPageLogRecord extends UpdatableRecordImpl<ConnectorSyn
 		value5(value5);
 		value6(value6);
 		value7(value7);
+		value8(value8);
 		return this;
 	}
 
@@ -387,7 +429,7 @@ public class ConnectorSyncPageLogRecord extends UpdatableRecordImpl<ConnectorSyn
 	/**
 	 * Create a detached, initialised ConnectorSyncPageLogRecord
 	 */
-	public ConnectorSyncPageLogRecord(Integer id, Integer pageId, String consumer, Timestamp time, String responseText, Integer responseCode, String consumerEndpoint) {
+	public ConnectorSyncPageLogRecord(Integer id, Integer pageId, String consumer, Timestamp time, String responseText, Integer responseCode, String consumerEndpoint, String message) {
 		super(ConnectorSyncPageLog.CONNECTOR_SYNC_PAGE_LOG);
 
 		setValue(0, id);
@@ -397,5 +439,6 @@ public class ConnectorSyncPageLogRecord extends UpdatableRecordImpl<ConnectorSyn
 		setValue(4, responseText);
 		setValue(5, responseCode);
 		setValue(6, consumerEndpoint);
+		setValue(7, message);
 	}
 }
