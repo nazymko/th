@@ -27,4 +27,9 @@
         <property name="configuration" ref="configuration"/>
     </bean>
 
+    <bean id="connectorSyncPageLogDao" class="org.nazymko.thehomeland.parser.db.dao.ConnectorSyncPageLogDao">
+        <property name="configuration" ref="configuration"/>
+    </bean>
+
+
 </beans>

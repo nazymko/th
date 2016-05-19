@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -42,20 +43,31 @@ public class THParserController {
 
     @RequestMapping("activity")
     public String info(Model model, @RequestParam HashMap<String, String> params) {
-
-        List<String> queUrls = parser.getStatusMessage();
         Integer size = Integer.valueOf(coalesce(params.get("size"), 15).toString());
         Integer page = Integer.valueOf(coalesce(params.get("page"), 0).toString());
+        String type = coalesce(params.get("type"), "all");
+
+        List<String> queUrls = parser.getStatusMessage();
         Integer count = pageDao.countAll();
 
         Result<TaskRunRecord> active = taskDao.getActive();
-        List<ThPageRecord> list = pageDao.getList(size, page);
+
         model.addAttribute("tasks", queUrls);
         model.addAttribute("count", count);
-        model.addAttribute("last", list);
         model.addAttribute("page", page);
         model.addAttribute("size", size);
         model.addAttribute("active", active);
+        model.addAttribute("type", type);
+        List<ThPageRecord> list = null;
+
+        if ("all".equals(type)) {
+            list = pageDao.getList(size, page);
+        } else {
+            list = pageDao.getByType(size, page, type);
+
+
+        }
+        model.addAttribute("last", list);
 
         return "task/activity";
     }

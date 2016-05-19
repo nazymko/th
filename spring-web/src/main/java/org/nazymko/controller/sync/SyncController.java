@@ -1,18 +1,17 @@
 package org.nazymko.controller.sync;
 
 import lombok.extern.log4j.Log4j2;
-import org.nazymko.controller.utils.MessagingUtils;
+import org.jooq.Result;
 import org.nazymko.th.parser.autodao.tables.pojos.ConnectorConsumer;
 import org.nazymko.th.parser.autodao.tables.pojos.ConnectorRules;
 import org.nazymko.th.parser.autodao.tables.pojos.ConnectorsSendHeaders;
+import org.nazymko.th.parser.autodao.tables.records.ConnectorSyncPageLogRecord;
+import org.nazymko.th.parser.autodao.tables.records.ThPageRecord;
 import org.nazymko.th.parser.autodao.tables.records.ThSiteRecord;
 import org.nazymko.thehomeland.dao.SyncConsumerDao;
-import org.nazymko.thehomeland.parser.db.dao.ConnectorConsumerDao;
-import org.nazymko.thehomeland.parser.db.dao.ConnectorRuleDao;
-import org.nazymko.thehomeland.parser.db.dao.ConnectorSendHeaderDao;
-import org.nazymko.thehomeland.parser.db.dao.SiteDao;
+import org.nazymko.thehomeland.parser.Repository;
+import org.nazymko.thehomeland.parser.db.dao.*;
 import org.nazymko.thehomeland.scheduler.HourlyScheduler;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -244,5 +243,27 @@ public class SyncController {
         return showAll(model);
     }
 
+    @RequestMapping(value = "consumers/{id}/manual", method = RequestMethod.GET)
+    public String manualStart(Model model, @PathVariable("id") Integer id) {
+        Result<ThPageRecord> latest = repository.latest(connectorConsumerDao.fetchOneById(id).getDomain());
+        model.addAttribute("latest", latest);
+        return "consumers/manual";
+    }
 
+
+    @RequestMapping(value = "consumers/{id}/history", method = RequestMethod.GET)
+    public String history(Model model, @PathVariable("id") Integer id) {
+
+        List<ConnectorSyncPageLogRecord> history = connectorSyncPageLogDao.fetchByConsumerIdWithoutMessage(id);
+
+        model.addAttribute("history", history);
+        return "consumers/history";
+    }
+
+    @Resource
+    @Qualifier("connectorSyncPageLogDao")
+    ConnectorSyncPageLogDao connectorSyncPageLogDao;
+
+    @Resource
+    Repository repository;
 }

@@ -11,6 +11,8 @@
         <th>#</th>
         <th>consumer</th>
         <th></th>
+        <th></th>
+        <th></th>
         <th>created at</th>
         <th></th>
         <th></th>
@@ -30,6 +32,15 @@
                         <input type="hidden" value="${cons.domain}" name="domain">
                     </form>
                 </div>
+            </td>
+
+            <td>
+                <a href="<c:url value="/connector/consumers/${cons.id}/manual"/>"
+                   class="btn bgm-green waves-effect">manual</a>
+            </td>
+            <td>
+                <a href="<c:url value="/connector/consumers/${cons.id}/history"/>"
+                   class="btn bgm-green waves-effect">history</a>
             </td>
             <td>
                     ${cons.time.toGMTString()}

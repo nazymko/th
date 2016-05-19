@@ -1,4 +1,5 @@
-INSERT INTO thehomeland.th_site (authority, name, default_url) VALUES ('kraina-ua.com', 'kraina-ua.com', 'http://kraina-ua.com/');
+INSERT INTO thehomeland.th_site (authority, name, default_url)
+VALUES ('kraina-ua.com', 'kraina-ua.com', 'http://kraina-ua.com/');
 INSERT INTO thehomeland.th_rule (rule, version, status, authority) VALUES ('{
   "meta": {
     "languages": [

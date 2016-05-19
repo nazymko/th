@@ -108,9 +108,10 @@ public class HourlyScheduler implements Scheduler {
             messageChannel.send(msg);
         } catch (HttpClientErrorException ex) {
             log.error("Failed to send. Record id = " + thPageRecord.getId(), ex);
-            logService.failedToSend(thPageRecord.getId(), ex.getStatusCode().value(), consumer,json);
+            logService.failedToSend(thPageRecord.getId(), ex.getStatusCode().value(), consumer, json);
         } catch (Exception ex) {
             log.error("Failed to send: thPageRecord = [" + thPageRecord.getId() + "], json = [" + json + "]", ex);
+            logService.failedToSend(thPageRecord.getId(), -1, consumer, json);
         }
     }
 

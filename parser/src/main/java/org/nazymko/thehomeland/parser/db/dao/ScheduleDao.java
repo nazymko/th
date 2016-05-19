@@ -58,7 +58,6 @@ public class ScheduleDao extends AbstractDao<Integer, TaskScheduleRecord> {
                 .selectFrom(TASK_RUN)
                 .where(TASK_RUN.FINISH_AT.isNull())
                 .and(TASK_RUN.STATUS.eq(NEW))
-                .groupBy(TASK_RUN.SCHEDULE_SOURCE_ID)
                 .fetch();
 
         Map<TaskScheduleRecord, TaskRunRecord> recordMap = new HashMap<>();

@@ -3,7 +3,10 @@ CREATE TABLE thehomeland.connectors_send_headers
   id     INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   header VARCHAR(128),
   value  VARCHAR(1024)
-);
+)
+  ENGINE = InnoDB
+  AUTO_INCREMENT = 10
+  DEFAULT CHARSET = utf8;
 
 CREATE UNIQUE INDEX connectors_send_headers_id_uindex ON thehomeland.connectors_send_headers (id);
 ALTER TABLE thehomeland.connectors_send_headers

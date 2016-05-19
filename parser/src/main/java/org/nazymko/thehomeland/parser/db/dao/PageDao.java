@@ -86,7 +86,10 @@ public class PageDao extends AbstractDao<Integer, ThPageRecord> {
         Result<ThPageRecord> fetch = getDslContext().selectFrom(TH_PAGE).orderBy(TH_PAGE.VISITED_AT.desc()).limit(pageNumber * pageSize, pageSize).fetch();
         return fetch;
     }
-
+    public Result<ThPageRecord> getByType(int pageSize, int pageNumber,String type) {
+        Result<ThPageRecord> fetch = getDslContext().selectFrom(TH_PAGE).where(TH_PAGE.TYPE.eq(type)).orderBy(TH_PAGE.VISITED_AT.desc()).limit(pageNumber * pageSize, pageSize).fetch();
+        return fetch;
+    }
     public List<Page> getLatestVersion(Integer siteId) {
         return getJdbcTemplate().query("SELECT  *,max(version), s.authority AS site_url  FROM th_page p JOIN th_site s WHERE s.id=p.site_id AND p.site_id=:siteId AND p.visited_at IS NOT NULL GROUP BY p.authority",
                 new MapSqlParameterSource("siteId", siteId),

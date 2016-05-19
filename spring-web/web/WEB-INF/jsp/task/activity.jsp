@@ -16,7 +16,7 @@
     <c:choose>
 
         <c:when test="${page!= 0}">
-            <a href="<c:url value="/task/activity?page=${page-1}&size=${size}"/>"
+            <a href="<c:url value="/task/activity?page=${page-1}&size=${size}&type=${type}"/>"
                class="btn btn-default btn-icon-text waves-effect"><i
                     class="zmdi zmdi-arrow-back"></i> back</a>
         </c:when>
@@ -29,7 +29,7 @@
     </c:choose>
     <c:choose>
         <c:when test="${page*size<count}">
-            <a href="<c:url value="/task/activity?page=${page+1}&size=${size}"/>" class="btn btn-default btn-icon-text waves-effect "><i
+            <a href="<c:url value="/task/activity?page=${page+1}&size=${size}&type=${type}"/>" class="btn btn-default btn-icon-text waves-effect "><i
                     class="zmdi zmdi-arrow-forward"></i>next</a>
         </c:when>
         <c:otherwise>
@@ -47,6 +47,7 @@
         <tr>
             <th>id</th>
             <th>page url</th>
+            <th>type</th>
             <th>visited at</th>
             <th>registered at</th>
             <th>page id</th>
@@ -58,6 +59,7 @@
             <tr>
                 <td>&nbsp;${row.id}</td>
                 <td>&nbsp;${row.pageUrl}</td>
+                <td>&nbsp;<a href="<c:url value="/task/activity?page=${page}&size=${size}&type=${row.type}"/>">${row.type}</a></td>
                 <td>&nbsp;<a href="<c:url value="/task/attrs/${row.id}"/>">${row.visitedAt}</a></td>
                 <td>&nbsp;${row.registeredAt.toGMTString()}</td>
                 <td>&nbsp;${row.sourcepage}</td>
