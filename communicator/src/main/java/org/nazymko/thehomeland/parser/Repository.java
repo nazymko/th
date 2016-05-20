@@ -33,6 +33,16 @@ public class Repository {
 
     }
 
+    public Result<ThPageRecord> dirty(String consumer, boolean dirty) {
+        Optional<ConnectorConsumerRecord> byDomain = consumerDao.getByConsumer(consumer);
+        if (!dirty) {
+            return latest(consumer, byDomain);
+        } else {
+            return pageDao.getByType(MAIN_PAGE_TYPE);
+
+        }
+    }
+
     public Result<ThPageRecord> latest(String consumer, Optional<ConnectorConsumerRecord> byDomain) {
         int latestId = pageLog.getLatestId(consumer);
 

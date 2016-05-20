@@ -247,9 +247,16 @@ public class SyncController {
     }
 
     @RequestMapping(value = "consumers/{id}/manual", method = RequestMethod.GET)
-    public String manualStart(Model model, @PathVariable("id") Integer id) {
-        Result<ThPageRecord> latest = repository.latest(connectorConsumerDao.fetchOneById(id).getDomain());
-        model.addAttribute("latest", latest);
+    public String manualStart(Model model, @PathVariable("id") Integer id, @RequestParam(value = "dirty", defaultValue = "false") Boolean dirty) {
+        ConnectorConsumer connectorConsumer = connectorConsumerDao.fetchOneById(id);
+        model.addAttribute("dirty", dirty);
+        model.addAttribute("current", id);
+        if (connectorConsumer != null) {
+            Result<ThPageRecord> latest = repository.dirty(connectorConsumer.getDomain(), dirty);
+            model.addAttribute("latest", latest);
+        } else {
+            warn(model, "Consumern with id %s not found", id);
+        }
         return "consumers/manual";
     }
 

@@ -49,7 +49,7 @@ public class ConnectorSyncPageLogDao extends org.nazymko.th.parser.autodao.table
                         .on(TH_PAGE.SITE_ID.eq(TH_SITE.ID)))
                 .where(CONNECTOR_SYNC_PAGE_LOG.CONSUMER.eq(context.select(CONNECTOR_CONSUMER.DOMAIN)
                         .from(CONNECTOR_CONSUMER).where(CONNECTOR_CONSUMER.ID.eq(id))));
-        log.debug(where.getSQL());
+//        log.debug(where.getSQL());
         Result<Record7<Integer, String, Integer, String, String, Timestamp, Integer>> fetch = where.fetch();
         return fetch;
     }

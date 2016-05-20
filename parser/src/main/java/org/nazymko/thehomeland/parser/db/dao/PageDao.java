@@ -110,6 +110,10 @@ public class PageDao extends AbstractDao<Integer, ThPageRecord> {
         return pageRecord;
     }
 
+    public Result<ThPageRecord> getByType(String type) {
+        return getDslContext().selectFrom(TH_PAGE).where(TH_PAGE.TYPE.eq(type)).fetch();
+    }
+
     public Result<ThPageRecord> getAfter(Integer lastPage, String type) {
         Result<ThPageRecord> records = getDslContext()
                 .selectFrom(TH_PAGE)
