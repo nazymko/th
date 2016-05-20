@@ -22,8 +22,10 @@ public class SyncConsumerDao extends AbstractDao<Integer, ConnectorConsumerRecor
         return Optional.ofNullable(getDslContext().selectFrom(CONNECTOR_CONSUMER).where(CONNECTOR_CONSUMER.ID.eq(key)).fetchOne());
     }
 
-    public Optional<ConnectorConsumerRecord> getByDomain(String domain) {
-        return Optional.ofNullable(getDslContext().selectFrom(CONNECTOR_CONSUMER).where(CONNECTOR_CONSUMER.DOMAIN.eq(domain)).fetchOne());
+    public Optional<ConnectorConsumerRecord> getByConsumer(String domain) {
+        return Optional.ofNullable(getDslContext().selectFrom(CONNECTOR_CONSUMER)
+                .where(CONNECTOR_CONSUMER.DOMAIN.eq(domain))
+                .fetchOne());
     }
 
     public List<ConnectorConsumer> findAll() {

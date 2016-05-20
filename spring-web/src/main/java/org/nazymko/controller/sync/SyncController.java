@@ -1,6 +1,8 @@
 package org.nazymko.controller.sync;
 
 import lombok.extern.log4j.Log4j2;
+import org.jooq.Record5;
+import org.jooq.Record7;
 import org.jooq.Result;
 import org.nazymko.th.parser.autodao.tables.pojos.ConnectorConsumer;
 import org.nazymko.th.parser.autodao.tables.pojos.ConnectorRules;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 
@@ -254,7 +257,7 @@ public class SyncController {
     @RequestMapping(value = "consumers/{id}/history", method = RequestMethod.GET)
     public String history(Model model, @PathVariable("id") Integer id) {
 
-        List<ConnectorSyncPageLogRecord> history = connectorSyncPageLogDao.fetchByConsumerIdWithoutMessage(id);
+        Result<Record7<Integer, String, Integer, String, String, Timestamp, Integer>> history = connectorSyncPageLogDao.fetchByConsumerIdJoinUrl(id);
 
         model.addAttribute("history", history);
         return "consumers/history";

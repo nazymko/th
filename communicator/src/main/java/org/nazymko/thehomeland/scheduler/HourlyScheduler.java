@@ -14,7 +14,6 @@ import org.nazymko.thehomeland.parser.Repository;
 import org.nazymko.thehomeland.parser.ThRecordConverter;
 import org.nazymko.thehomeland.services.SendingLogService;
 import org.nazymko.thehomeland.utils.RuleConverter;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.web.client.HttpClientErrorException;
@@ -68,7 +67,7 @@ public class HourlyScheduler implements Scheduler {
             log.info("Started");
             HashMap<Integer, HashMap<String, String>> rules = prepare(syncRuleDao.all());
             thRecordConverter.setRulePull(rules);
-            ConnectorConsumerRecord consumerRecord = consumerDao.getByDomain(consumer).get();
+            ConnectorConsumerRecord consumerRecord = consumerDao.getByConsumer(consumer).get();
             Result<ThPageRecord> latest = repository.latest(consumer);
 
 

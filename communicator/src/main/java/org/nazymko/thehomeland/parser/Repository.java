@@ -6,7 +6,6 @@ import org.nazymko.th.parser.autodao.tables.records.ThPageRecord;
 import org.nazymko.thehomeland.dao.SyncConsumerDao;
 import org.nazymko.thehomeland.dao.SyncPageLogDao;
 import org.nazymko.thehomeland.parser.db.dao.PageDao;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Resource;
 import java.util.Optional;
@@ -29,7 +28,7 @@ public class Repository {
 
 
     public Result<ThPageRecord> latest(String consumer) {
-        Optional<ConnectorConsumerRecord> byDomain = consumerDao.getByDomain(consumer);
+        Optional<ConnectorConsumerRecord> byDomain = consumerDao.getByConsumer(consumer);
         return latest(consumer, byDomain);
 
     }
