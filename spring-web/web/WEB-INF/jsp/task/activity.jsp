@@ -3,6 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+<script>
+
+</script>
+
 <jsp:include page="header.jsp"/>
 <h4>Parser activities</h4>
 <ul>
@@ -47,7 +51,19 @@
         <tr>
             <th>id</th>
             <th>page url</th>
-            <th>type</th>
+            <th>
+                <div>
+                    <label>type<select onchange="window.location.href='<c:url
+                            value="/task/activity"/>?page=0&size=${size}&type='+this.value;" class="form-control">
+                        <c:forEach items="${types}" var="_type">
+                            <option
+                                    <c:if test="${_type.equals(type)}">selected</c:if>
+                                    value="${_type}">${_type}</option>
+                        </c:forEach>
+                    </select>
+                    </label>
+                </div>
+            </th>
             <th>visited at</th>
             <th>registered at</th>
             <th>page id</th>

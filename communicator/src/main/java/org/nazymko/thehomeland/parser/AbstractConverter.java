@@ -1,5 +1,7 @@
 package org.nazymko.thehomeland.parser;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
 import org.nazymko.th.parser.autodao.tables.pojos.ThAttributeData;
 import org.nazymko.th.parser.autodao.tables.records.ThPageRecord;
@@ -9,10 +11,7 @@ import org.nazymko.thehomeland.parser.db.dao.PageDao;
 import org.nazymko.thehomeland.parser.db.dao.SiteDao;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created by nazymko.patronus@gmail.com
@@ -36,47 +35,106 @@ public abstract class AbstractConverter implements Converter<ThPageRecord> {
     @Override
     public Optional<Map> convert(ThPageRecord record) {
 
-        HashMap<String, ThAttributeData> revertedMap = new HashMap<>();
+        HashMap<String, List<ThAttributeData>> mapping = new HashMap<>();
         List<ThAttributeData> page = attributeDao.getByPage(record.getId());
-        HashMap<String, String> result = new HashMap<>();
+        HashMap<String, Object> result = new HashMap<>();
 
 
         for (ThAttributeData thAttributeDataRecord : page) {
-            revertedMap.put(thAttributeDataRecord.getAttributeName(), thAttributeDataRecord);
+            String name = thAttributeDataRecord.getAttributeName();
+            List<ThAttributeData> data = mapping.get(name);
+            if (data == null) {
+                data = new ArrayList<>();
+                mapping.put(name, data);
+            }
+            data.add(thAttributeDataRecord);
         }
-        log.debug("Converting");
+        log.debug("Start converting");
         log.debug(record);
 
         HashMap<String, String> rule = getRule(record.getSiteId());
         if (rule == null) {
             return Optional.empty();
         }
+        for (Map.Entry<String, String> keyPair : rule.entrySet()) {
+            String value = keyPair.getValue();
+            if (value.startsWith("#")
+                    || value.startsWith("$")
+                    || value.startsWith("%")) {
+                continue;
+            } else {
+                List<ThAttributeData> thAttributeDatas = mapping.get(keyPair.getKey());
+                if (thAttributeDatas == null) {
+                    thAttributeDatas = new ArrayList<>();
+                    mapping.put(keyPair.getKey(), thAttributeDatas);
+                }
+                //TODO:fucking dirty code;
+                ThAttributeData attr = new ThAttributeData();
+                attr.setAttributeName(keyPair.getKey());
+                attr.setAttributeValue(keyPair.getValue());
+                thAttributeDatas.add(attr);
+            }
+
+        }
         for (Map.Entry<String, String> entry : rule.entrySet()) {
             String entryValue = entry.getValue();
+
             if (entryValue.startsWith("#")) {
-                putValue(revertedMap, result, entry);
+                if ("phones".equals(entry.getKey())) {
+                    result.put("phones", valuesAsList(mapping.get(entry.getValue().substring(1))));
+                } else {
+                    putValue(mapping, result, entry);
+                }
             } else if (entryValue.startsWith("$")) {
-                putHostRelatedUrl(revertedMap, result, entryValue,entry.getKey());
+                putHostRelatedUrl(mapping, result, entryValue, entry.getKey());
+
             } else if (entryValue.startsWith("%page_url")) {
                 result.put(entry.getKey(), record.getPageUrl());
+
             } else {
-                ThAttributeData dataRecord = revertedMap.get(entryValue);
-                if (dataRecord != null) {
-                    result.put(entryValue, dataRecord.getAttributeValue());
+                List<ThAttributeData> dataRecord = mapping.get(entry.getKey());
+
+                if (dataRecord != null && dataRecord.size() > 0) {
+                    if ("phones".equals(entry.getKey())) {
+                        result.put("phones", valuesAsList(dataRecord));
+                    } else {
+                        result.put(entry.getKey(), dataRecord.get(0).getAttributeValue());
+                    }
                 } else {
                     result.put(entry.getKey(), entryValue);
                 }
             }
         }
 
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            String json = mapper.writeValueAsString(result);
+            log.debug("Message:{}", json);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        log.debug("Finish converting");
         return Optional.of(result);
     }
 
-    private void putHostRelatedUrl(HashMap<String, ThAttributeData> revertedMap, HashMap<String, String> result, String entryValue, String key) {
+    private Object valuesAsList(List<ThAttributeData> dataRecords) {
+        ArrayList<Object> list = new ArrayList<>();
+        for (ThAttributeData attribute : dataRecords) {
+            list.add(attribute.getAttributeValue().trim());
+        }
+        return list;
+    }
+
+
+    private void putHostRelatedUrl(HashMap<String, List<ThAttributeData>> revertedMap,
+                                   HashMap<String, Object> result,
+                                   String entryValue,
+                                   String key) {
         String _key = entryValue.substring(1);
-        ThAttributeData attribute = revertedMap.get(_key);
-        if (attribute != null) {
-            result.put(key, merge(domain(attribute.getSiteId()), attribute.getAttributeValue()));
+        List<ThAttributeData> attributes = revertedMap.get(_key);
+
+        if (attributes != null && attributes.size() > 0) {
+            result.put(key, merge(domain(attributes.get(0).getSiteId()), attributes.get(0).getAttributeValue()));
         }
     }
 
@@ -87,11 +145,16 @@ public abstract class AbstractConverter implements Converter<ThPageRecord> {
         throw new IllegalArgumentException("domain = null!");
     }
 
-    private void putValue(HashMap<String, ThAttributeData> revertedMap, HashMap<String, String> result, Map.Entry<String, String> entry) {
+    private void putValue(HashMap<String, List<ThAttributeData>> mapping, HashMap<String, Object> result, Map.Entry<String, String> entry) {
         String _key = entry.getValue().substring(1);
-        ThAttributeData thAttributeDataRecord = revertedMap.get(_key);
-        if (thAttributeDataRecord != null) {
-            result.put(entry.getKey(), thAttributeDataRecord.getAttributeValue());
+
+        List<ThAttributeData> attributes = mapping.get(_key);
+
+        if (attributes != null && attributes.size() > 0) {
+            result.put(entry.getKey(), attributes.get(0).getAttributeValue());
+        } else {
+            result.put(entry.getKey(), String.format("Attribute '%s' Not Found", _key));
+            return;
         }
     }
 

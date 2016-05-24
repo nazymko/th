@@ -8,7 +8,7 @@
 <a href="<c:url value="/connector/consumers/${consumerId}/mapping/add"/>" class="btn bgm-blue">add</a>
 <c:forEach items="${mapping}" varStatus="status" var="rule">
     <div>
-        <div><b>#${status.index}</b></div>
+        <div><b>consumer:${rule.consumerId}, site id:${rule.siteId}</b></div>
         <pre><code>${rule.rule}</code></pre>
 
         <div style="display: inline">

@@ -1,4 +1,4 @@
-<table>
+<table border="1px">
     <thead>
     <tr>
         <th>id</th>

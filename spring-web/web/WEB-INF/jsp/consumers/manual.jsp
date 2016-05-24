@@ -32,8 +32,7 @@
                 <pre>TODO:start</pre>
             </td>
             <td>
-                <pre>TODO:preview</pre>
-
+                <a class="btn bgm-bluegray" href="/connector/consumers/manual/page/${itemToSend.id}/preview">preview</a>
             </td>
         </tr>
     </c:forEach>

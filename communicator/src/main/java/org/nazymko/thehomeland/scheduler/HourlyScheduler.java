@@ -33,15 +33,14 @@ import java.util.Optional;
 public class HourlyScheduler implements Scheduler {
 
 
-    private Gson GSON = new Gson();
     @Resource
     PostMessageChannel messageChannel;
-
+    private Gson GSON = new Gson();
     @Resource
     private SyncRuleDao syncRuleDao;
 
     @Resource
-    private ThRecordConverter thRecordConverter;
+    private ThRecordConverter converter;
 
     @Resource
     private Repository repository;
@@ -54,19 +53,17 @@ public class HourlyScheduler implements Scheduler {
     private SendingLogService logService;
 
 
-    //@Scheduled(cron = "0 */1 * * *") - every hour
-//    @Scheduled(cron = "0 */1 * * * *") //every minute
-
     @Override
     public void doIt() {
-
+        //TODO: Throw exception
     }
 
     public void doIt(String consumer) {
         try {
             log.info("Started");
-            HashMap<Integer, HashMap<String, String>> rules = prepare(syncRuleDao.all());
-            thRecordConverter.setRulePull(rules);
+
+            converter.init(syncRuleDao.all());
+
             ConnectorConsumerRecord consumerRecord = consumerDao.getByConsumer(consumer).get();
             Result<ThPageRecord> latest = repository.latest(consumer);
 
@@ -76,7 +73,7 @@ public class HourlyScheduler implements Scheduler {
             log.info("New records for send : {}", latest.size());
             String json = null;
             for (ThPageRecord thPageRecord : latest) {
-                Optional<Map> convert = thRecordConverter.convert(thPageRecord);
+                Optional<Map> convert = converter.convert(thPageRecord);
                 if (!convert.isPresent()) {
                     continue;
                 }
@@ -112,14 +109,6 @@ public class HourlyScheduler implements Scheduler {
             log.error("Failed to send: thPageRecord = [" + thPageRecord.getId() + "], json = [" + json + "]", ex);
             logService.failedToSend(thPageRecord.getId(), -1, consumer, json);
         }
-    }
-
-    private HashMap<Integer, HashMap<String, String>> prepare(List<ConnectorRulesRecord> all) {
-        HashMap<Integer, HashMap<String, String>> rules = new HashMap<>();
-        for (ConnectorRulesRecord connectorRulesRecord : all) {
-            rules.put(connectorRulesRecord.getSiteId(), RuleConverter.makeMap(connectorRulesRecord.getRule()));
-        }
-        return rules;
     }
 
 

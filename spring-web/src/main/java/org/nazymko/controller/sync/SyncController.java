@@ -1,17 +1,20 @@
 package org.nazymko.controller.sync;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.extern.log4j.Log4j2;
-import org.jooq.Record5;
 import org.jooq.Record7;
 import org.jooq.Result;
 import org.nazymko.th.parser.autodao.tables.pojos.ConnectorConsumer;
 import org.nazymko.th.parser.autodao.tables.pojos.ConnectorRules;
 import org.nazymko.th.parser.autodao.tables.pojos.ConnectorsSendHeaders;
-import org.nazymko.th.parser.autodao.tables.records.ConnectorSyncPageLogRecord;
 import org.nazymko.th.parser.autodao.tables.records.ThPageRecord;
 import org.nazymko.th.parser.autodao.tables.records.ThSiteRecord;
 import org.nazymko.thehomeland.dao.SyncConsumerDao;
+import org.nazymko.thehomeland.dao.SyncRuleDao;
 import org.nazymko.thehomeland.parser.Repository;
+import org.nazymko.thehomeland.parser.ThRecordConverter;
 import org.nazymko.thehomeland.parser.db.dao.*;
 import org.nazymko.thehomeland.scheduler.HourlyScheduler;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,10 +25,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import static org.nazymko.controller.utils.MessagingUtils.UI.warn;
 
@@ -39,17 +45,24 @@ public class SyncController {
     @Resource
     SyncConsumerDao syncConsumerDao;
     @Resource
-    private HourlyScheduler scheduler;
-    @Resource
     ConnectorConsumerDao connectorConsumerDao;
     @Resource
     ConnectorSendHeaderDao connectorSendHeaderDao;
-
     @Resource
     ConnectorRuleDao connectorRuleDao;
     @Resource
+    @Qualifier("connectorSyncPageLogDao")
+    ConnectorSyncPageLogDao connectorSyncPageLogDao;
+    @Resource
+    Repository repository;
+    @Resource
+    ObjectMapper mapper;
+    @Resource
+    private HourlyScheduler scheduler;
+    @Resource
     private SiteDao siteDao;
-
+    @Resource
+    private ThRecordConverter converter;
 
     @RequestMapping(value = "consumers/add", method = RequestMethod.POST)
     public String add(@RequestParam HashMap<String, String> params, Model model) {
@@ -65,12 +78,14 @@ public class SyncController {
         return "consumers/all";
     }
 
+    @Resource
+    private SyncRuleDao syncRuleDao;
+
     @RequestMapping(value = "consumers/start", method = RequestMethod.POST)
     public String commandPanelStart(@RequestParam HashMap<String, String> params) {
         scheduler.doIt(params.get("domain"));
         return "consumers/all";
     }
-
 
     @RequestMapping(value = "consumers/{consumerId}/headers/view", method = RequestMethod.GET)
     public String showHeaders(@PathVariable("consumerId") Integer consumerId,
@@ -83,7 +98,6 @@ public class SyncController {
 
         return "consumers/headers";
     }
-
 
     @RequestMapping(value = "consumers/{consumerId}/mapping/view", method = RequestMethod.GET)
     public String showMapping(@PathVariable("consumerId") Integer consumerId,
@@ -125,7 +139,6 @@ public class SyncController {
 
         return showHeaders(consumerId, model);
     }
-
 
     @RequestMapping(value = "consumers/headers/{headerId}/edit", method = RequestMethod.GET)
     public String editHeaderPage(Model model,
@@ -180,7 +193,6 @@ public class SyncController {
         }
         return "consumers/rule/edit";
     }
-
 
     @RequestMapping(value = "/consumers/{consumerId}/rule/{ruleId}/update", method = RequestMethod.POST)
     public String updateRule(Model model,
@@ -247,7 +259,12 @@ public class SyncController {
     }
 
     @RequestMapping(value = "consumers/{id}/manual", method = RequestMethod.GET)
-    public String manualStart(Model model, @PathVariable("id") Integer id, @RequestParam(value = "dirty", defaultValue = "false") Boolean dirty) {
+    public String manualStart(Model model
+            , @PathVariable("id") Integer id
+            , @RequestParam(value = "dirty", defaultValue = "false") Boolean dirty
+            , @RequestParam(value = "source", defaultValue = "all") Boolean source
+
+    ) {
         ConnectorConsumer connectorConsumer = connectorConsumerDao.fetchOneById(id);
         model.addAttribute("dirty", dirty);
         model.addAttribute("current", id);
@@ -260,7 +277,6 @@ public class SyncController {
         return "consumers/manual";
     }
 
-
     @RequestMapping(value = "consumers/{id}/history", method = RequestMethod.GET)
     public String history(Model model, @PathVariable("id") Integer id) {
 
@@ -270,10 +286,28 @@ public class SyncController {
         return "consumers/history";
     }
 
-    @Resource
-    @Qualifier("connectorSyncPageLogDao")
-    ConnectorSyncPageLogDao connectorSyncPageLogDao;
+    @PostConstruct
+    public void postConstruct() {
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    }
 
-    @Resource
-    Repository repository;
+    @RequestMapping(value = "consumers/manual/page/{pageId}/preview", method = RequestMethod.GET)
+    public String manualStart(Model model,
+                              @RequestParam(value = "dirty", defaultValue = "false") Boolean dirty,
+                              @PathVariable("pageId") Integer pageId) throws JsonProcessingException {
+
+        converter.init(syncRuleDao.all());
+
+        Optional<Map> convert = converter.convert(pageId);
+
+        if (convert.isPresent()) {
+            model.addAttribute("preview", mapper.writeValueAsString(convert.get()));
+        } else {
+            warn(model, "Could not find page with id = %s", pageId);
+        }
+
+
+        return "consumers/preview";
+    }
+
 }

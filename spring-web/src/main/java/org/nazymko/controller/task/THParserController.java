@@ -6,11 +6,9 @@ import org.nazymko.th.parser.autodao.tables.records.ThPageRecord;
 import org.nazymko.thehomeland.parser.THLParserRunner;
 import org.nazymko.thehomeland.parser.db.dao.PageDao;
 import org.nazymko.thehomeland.parser.db.dao.TaskDao;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -50,6 +48,9 @@ public class THParserController {
         List<String> queUrls = parser.getStatusMessage();
         Integer count = pageDao.countAll();
 
+        List<String> types = pageDao.allTypes();
+        types.add("all");//default filter
+
         Result<TaskRunRecord> active = taskDao.getActive();
 
         model.addAttribute("tasks", queUrls);
@@ -58,6 +59,7 @@ public class THParserController {
         model.addAttribute("size", size);
         model.addAttribute("active", active);
         model.addAttribute("type", type);
+        model.addAttribute("types", types);
         List<ThPageRecord> list = null;
 
         if ("all".equals(type)) {

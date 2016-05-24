@@ -2,14 +2,10 @@ package org.nazymko.thehomeland.parser.db.dao;
 
 import lombok.extern.log4j.Log4j2;
 import org.jooq.DSLContext;
+import org.jooq.Record1;
 import org.jooq.Result;
-import org.jooq.impl.DSL;
 import org.nazymko.th.parser.autodao.tables.records.ThPageRecord;
 import org.nazymko.thehomeland.parser.db.model.Page;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
@@ -17,6 +13,7 @@ import javax.annotation.Resource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -128,5 +125,17 @@ public class PageDao extends AbstractDao<Integer, ThPageRecord> {
         DSLContext dslContext = getDslContext();
         int total = dslContext.fetchCount(dslContext.selectFrom(TH_PAGE));
         return total;
+    }
+
+    public List<String> allTypes() {
+        DSLContext dslContext = getDslContext();
+        Result<Record1<String>> fetch = dslContext.select(TH_PAGE.TYPE).from(TH_PAGE).groupBy(TH_PAGE.TYPE).fetch();
+        ArrayList<String> list = new ArrayList<>();
+        for (Record1<String> stringRecord1 : fetch) {
+            list.add(stringRecord1.value1());
+        }
+
+
+        return list;
     }
 }
