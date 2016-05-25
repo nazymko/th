@@ -1,0 +1,94 @@
+{
+  "url": "http://ukrainiantour.com",
+  "name": "Ukrainian Tour",
+  "selector": "css",
+  "meta": {
+    "type": [
+      "excursion",
+      "bus_travel"
+    ],
+    "languages": [
+      "rus"
+    ]
+  },
+  "page": [
+    {
+      "type": "front_page",
+      "url": "http://ukrainiantour.com",
+      "unique": false,
+      "attrs": [
+        {
+          "path": "#navBar .nav .tours a",
+          "attr": "href",
+          "type": "category_list"
+        }
+      ]
+    },
+    {
+      "type": "category_list",
+      "unique": false,
+      "attrs": [
+        {
+          "path": ".item h2 a",
+          "attr": "href",
+          "type": "article"
+        }
+      ]
+    },
+    {
+      "type": "article",
+      "attrs": [
+        {
+          "path": "div.tourName > h1",
+          "attr": "text",
+          "type": "title",
+          "persist": true
+        },
+        {
+          "path": ".body.details",
+          "attr": "html",
+          "type": "body",
+          "persist": true
+        },
+        {
+          "path": ".galery a img",
+          "attr": "src",
+          "type": "image",
+          "persist": true
+        },
+        {
+          "path": ".breadcrumbs.crumbs div:last-child a span",
+          "attr": "text",
+          "type": "targetCity",
+          "persist": true
+        },
+        {
+          "path": "div.tourName > div",
+          "attr": "text",
+          "type": "price-container",
+          "persist": false,
+          "regexp": [
+            {
+              "type": "trip-price",
+              "expression": "(\\d+)\\s?(.+)",
+              "group": [
+                {
+                  "order": 1,
+                  "nature": "number",
+                  "type": "price",
+                  "persist": true
+                },
+                {
+                  "order": 2,
+                  "nature": "enum",
+                  "type": "currency",
+                  "persist": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

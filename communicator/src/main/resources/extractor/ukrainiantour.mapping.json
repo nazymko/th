@@ -1,0 +1,17 @@
+{
+  "title": "#title",
+  "description": "#body",
+  "type": "Екскурсії",
+  "price": "#price",
+  "targetCity": "#targetCity",
+  "departureCity": "Київ",
+  "dateStart": "2016-01-01 00:01:01",
+  "dateEnd": "2017-01-01 00:01:01",
+  "departureAddress": "Any",
+  "ticketsTotal": "50",
+  "image": "$image",
+  "firstName": "Ukrainian",
+  "lastName": "Tour",
+  "phones": "380443605737",
+  "url": "%page_url"
+}

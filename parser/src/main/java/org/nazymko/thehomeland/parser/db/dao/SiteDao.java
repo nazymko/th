@@ -1,5 +1,6 @@
 package org.nazymko.thehomeland.parser.db.dao;
 
+import org.jooq.Result;
 import org.nazymko.th.parser.autodao.tables.records.ThSiteRecord;
 
 import java.util.List;
@@ -23,6 +24,12 @@ public class SiteDao extends AbstractDao<Integer, ThSiteRecord> {
         ThSiteRecord siteRecord = getDslContext().selectFrom(TH_SITE).where(TH_SITE.ID.eq(key)).fetchOne();
         return Optional.of(siteRecord);
     }
+
+    public Result<ThSiteRecord> getById(Integer... ids) {
+        Result<ThSiteRecord> records = getDslContext().selectFrom(TH_SITE).where(TH_SITE.ID.in(ids)).fetch();
+        return records;
+    }
+
 
     public Integer getIdByUrl(String authority) {
         ThSiteRecord siteRecord = getDslContext().selectFrom(TH_SITE).where(TH_SITE.AUTHORITY.eq(authority)).fetchOne();

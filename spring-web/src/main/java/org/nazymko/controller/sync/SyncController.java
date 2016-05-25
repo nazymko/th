@@ -102,9 +102,29 @@ public class SyncController {
     @RequestMapping(value = "consumers/{consumerId}/mapping/view", method = RequestMethod.GET)
     public String showMapping(@PathVariable("consumerId") Integer consumerId,
                               Model model) {
-        model.addAttribute("mapping", connectorRuleDao.fetchByConsumerId(consumerId));
+        List<ConnectorRules> attributeValue = connectorRuleDao.fetchByConsumerId(consumerId);
+        HashMap<Integer, ThSiteRecord> sites = fetchSites(attributeValue);
+
+        model.addAttribute("mapping", attributeValue);
         model.addAttribute("consumerId", consumerId);
+        model.addAttribute("sites", sites);
         return "consumers/mapping";
+    }
+
+    private HashMap<Integer, ThSiteRecord> fetchSites(List<ConnectorRules> attributeValue) {
+        Integer[] sites = new Integer[attributeValue.size()];
+
+        for (int i = 0; i < attributeValue.size(); i++) {
+            sites[i] = attributeValue.get(i).getSiteId();
+        }
+
+        Result<ThSiteRecord> byId = siteDao.getById(sites);
+        HashMap<Integer, ThSiteRecord> recors = new HashMap<>();
+        for (ThSiteRecord record : byId) {
+            recors.put(record.getId(), record);
+        }
+
+        return recors;
     }
 
     @RequestMapping(value = "consumers/{consumerId}/mapping/test/page/{pageId}", method = RequestMethod.GET)
@@ -262,7 +282,7 @@ public class SyncController {
     public String manualStart(Model model
             , @PathVariable("id") Integer id
             , @RequestParam(value = "dirty", defaultValue = "false") Boolean dirty
-            , @RequestParam(value = "source", defaultValue = "all") Boolean source
+            , @RequestParam(value = "source", defaultValue = "all") String source
 
     ) {
         ConnectorConsumer connectorConsumer = connectorConsumerDao.fetchOneById(id);

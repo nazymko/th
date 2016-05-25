@@ -4,11 +4,11 @@
 <jsp:include page="../components/code-highlite-script.jsp">
     <jsp:param name="selector" value="pre code"/>
 </jsp:include>
-
+<%--@elvariable id="items" type="java.util.HashMap<java.lang.Integer,org.nazymko.th.parser.autodao.tables.records.ThSiteRecord>"--%>
 <a href="<c:url value="/connector/consumers/${consumerId}/mapping/add"/>" class="btn bgm-blue">add</a>
 <c:forEach items="${mapping}" varStatus="status" var="rule">
     <div>
-        <div><b>consumer:${rule.consumerId}, site id:${rule.siteId}</b></div>
+        <div><h3>${sites[rule.siteId].authority}</h3></div>
         <pre><code>${rule.rule}</code></pre>
 
         <div style="display: inline">

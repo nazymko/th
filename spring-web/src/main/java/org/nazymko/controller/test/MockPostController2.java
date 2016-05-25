@@ -1,5 +1,6 @@
-package org.nazymko.thehomeland.mock;
+package org.nazymko.controller.test;
 
+import org.nazymko.controller.test.dto.TripDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -10,14 +11,14 @@ import java.util.HashMap;
 /**
  * Created by nazymko.patronus@gmail.com
  */
-@Controller
-@RequestMapping("mock")
-public class MockPostController {
+@Controller("someNewMock")
+@RequestMapping("mock2")
+public class MockPostController2 {
     @ResponseBody
     @ResponseStatus(code = HttpStatus.OK)
     @RequestMapping(value = "post", method = RequestMethod.POST)
-    public String mockPost(@RequestBody HashMap<String, String> object, @RequestHeader HttpHeaders allHeaders) {
-        System.out.println("object = [" + object + "], \nallHeaders = [" + allHeaders + "]");
+    public String mockPost(@RequestBody TripDto object, @RequestHeader HttpHeaders allHeaders) {
+        System.out.println("Mock consumer = [" + object + "], \nallHeaders = [" + allHeaders + "]");
         return "success";
     }
 

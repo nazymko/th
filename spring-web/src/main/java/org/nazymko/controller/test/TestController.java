@@ -1,4 +1,4 @@
-package org.nazymko.controller.test_;
+package org.nazymko.controller.test;
 
 import lombok.extern.log4j.Log4j2;
 import org.nazymko.thehomeland.dao.SyncPageLogDao;
