@@ -63,6 +63,8 @@ public class SyncController {
     private SiteDao siteDao;
     @Resource
     private ThRecordConverter converter;
+    @Resource
+    private SyncRuleDao syncRuleDao;
 
     @RequestMapping(value = "consumers/add", method = RequestMethod.POST)
     public String add(@RequestParam HashMap<String, String> params, Model model) {
@@ -77,9 +79,6 @@ public class SyncController {
         model.addAttribute("items", all);
         return "consumers/all";
     }
-
-    @Resource
-    private SyncRuleDao syncRuleDao;
 
     @RequestMapping(value = "consumers/start", method = RequestMethod.POST)
     public String commandPanelStart(@RequestParam HashMap<String, String> params) {

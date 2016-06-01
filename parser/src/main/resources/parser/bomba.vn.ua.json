@@ -1,0 +1,89 @@
+{
+  "url": "http://bomba.vn.ua",
+  "name": "TK Bomba",
+  "selector": "css",
+  "meta": {
+    "type": [
+      "excursion",
+      "bus_travel"
+    ],
+    "languages": [
+      "ua"
+    ]
+  },
+  "page": [
+    {
+      "type": "front_page",
+      "url": "http://bomba.vn.ua",
+      "unique": false,
+      "attrs": [
+        {
+          "path": "#block-menu-menu-main-menu a[href^=/tour]",
+          "attr": "href",
+          "type": "category_list"
+        }
+      ]
+    },
+    {
+      "type": "category_list",
+      "unique": false,
+      "attrs": [
+        {
+          "path": ".field-content a",
+          "attr": "href",
+          "type": "article"
+        }
+      ]
+    },
+    {
+      "type": "article",
+      "unique": true,
+      "attrs": [
+        {
+          "path": ".tour-title",
+          "attr": "text",
+          "type": "title",
+          "persist": true
+        },
+        {
+          "path": ".body",
+          "attr": "html",
+          "type": "body",
+          "persist": true
+        },
+        {
+          "path": ".field-slideshow-image",
+          "attr": "src",
+          "type": "img",
+          "persist": true
+        },
+        {
+          "path": ".tour-sidebar-inner .price",
+          "attr": "text",
+          "type": "price-block",
+          "persist": false,
+          "regexp": [
+            {
+              "type": "price",
+              "expression": "(\\d+)\\s(.*)",
+              "group": [
+                {
+                  "order": 1,
+                  "nature": "number",
+                  "type": "price",
+                  "persist": true
+                },
+                {
+                  "order": 2,
+                  "nature": "string",
+                  "type": "currency",
+                  "persist": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

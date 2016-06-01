@@ -15,7 +15,6 @@
     <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
 
 
-
     <bean id="configuration" class="org.jooq.impl.DefaultConfiguration">
         <property name="dataSource" ref="dataSource"/>
         <property name="SQLDialect" value="MYSQL"/>
@@ -32,6 +31,10 @@
     </bean>
 
     <bean id="connectorSyncPageLogDao" class="org.nazymko.thehomeland.parser.db.dao.ConnectorSyncPageLogDao">
+        <property name="configuration" ref="configuration"/>
+    </bean>
+    <bean id="thPageDao" class="org.nazymko.thehomeland.parser.db.dao.ThPageDao">
+        <qualifier value="thPageDao"/>
         <property name="configuration" ref="configuration"/>
     </bean>
 

@@ -124,7 +124,6 @@ public class ParsingTask implements Runnable, InfoSource {
                     //can optimize it
                     //and refactor this
                     String expression = regexpItem.getExpression();
-//                    expression = extend(expression);
                     Pattern compile = Pattern.compile(expression, Pattern.MULTILINE);
                     Matcher matcher = compile.matcher(value);
                     if (matcher.find()) {
@@ -291,7 +290,7 @@ public class ParsingTask implements Runnable, InfoSource {
     @Data
     class Config {
         int timeout = 10_000;
-        private Integer siteId, pageId, ruleId;
         boolean uniqueVisit;
+        private Integer siteId, pageId, ruleId;
     }
 }

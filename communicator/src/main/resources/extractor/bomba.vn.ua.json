@@ -1,0 +1,17 @@
+{
+  "title": "#title",
+  "description": "#body",
+  "type": "Автобусні",
+  "price": "#price",
+  "targetCity": "Потрібно вказати",
+  "departureCity": "Київ",
+  "dateStart": "2016-06-01 00:01:01",
+  "dateEnd": "2017-09-01 00:01:01",
+  "departureAddress": "Вінниця",
+  "ticketsTotal": "50",
+  "image": "$img",
+  "firstName": "Турклуб",
+  "lastName": "Бомба",
+  "phones": "380979080279",
+  "url": "%page_url"
+}

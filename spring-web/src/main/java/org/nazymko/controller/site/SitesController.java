@@ -1,9 +1,11 @@
 package org.nazymko.controller.site;
 
+import org.nazymko.th.parser.autodao.tables.pojos.ThPage;
 import org.nazymko.th.parser.autodao.tables.records.ThSiteRecord;
 import org.nazymko.thehomeland.parser.db.dao.PageDao;
 import org.nazymko.thehomeland.parser.db.dao.SiteDao;
-import org.nazymko.thehomeland.parser.db.model.Page;
+import org.nazymko.thehomeland.parser.db.dao.ThPageDao;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +25,9 @@ public class SitesController {
 
     @Resource
     PageDao pageDao;
+    @Resource
+    @Qualifier("thPageDao")
+    ThPageDao thPageDao;
     @Resource
     private SiteDao siteDao;
 
@@ -52,7 +57,7 @@ public class SitesController {
         Optional<ThSiteRecord> siteOptional = siteDao.getById(id);
         if (siteOptional.isPresent()) {
             model.addAttribute("site", siteOptional.get());
-            List<Page> latestVersion = pageDao.getLatestVersion(id);
+            List<ThPage> latestVersion = thPageDao.getVisited(id);
             model.addAttribute("pages", latestVersion);
         }
 

@@ -34,7 +34,21 @@
         <property name="supportedAttrs" ref="supportedTypes"/>
     </bean>
 
+    <bean id="enchantImagesPath" class="org.nazymko.thehomeland.parser.processors.EnchanceImagesPath"/>
     <bean id="persistenceAttrListener" class="org.nazymko.thehomeland.parser.processors.PersistenceAttrListener"/>
+
+
+    <bean id="data" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetObject" ref="persistenceAttrListener"/>
+        <property name="targetMethod" value="addPreprocessor"/>
+        <property name="arguments">
+            <list>
+                <value>1</value>
+                <ref bean="enchantImagesPath"/>
+            </list>
+        </property>
+    </bean>
+
     <bean id="logAttrListener" class="org.nazymko.thehomeland.parser.processors.LogAttrListener"/>
 
     <util:list id="thl.listeners">

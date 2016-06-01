@@ -3,7 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <pre>${site}</pre>
-<%--@elvariable id="pages" type="java.util.List<org.nazymko.thehomeland.parser.db.model.Page>"--%>
+<%--@elvariable id="pages" type="java.util.List<org.nazymko.th.parser.autodao.tables.pojos.ThPage>"--%>
 <c:if test="${!empty pages}">
     <h3>Latest</h3>
     <table border="1px" cellspacing="3px">
@@ -18,9 +18,10 @@
         <c:forEach items="${pages}" var="page">
             <tr>
                 <td style="padding-left:10px;padding-right: 10px">${page.id}</td>
-                <td style="padding-left:10px;padding-right: 10px">${page.page}</td>
-                <td style="padding-left:10px;padding-right: 10px">${page.sourcePage}</td>
-                <td style="padding-left:10px;padding-right: 10px"><a href="<c:url value="/task/attrs/${page.id}"/>">${page.visited}</a>
+                <td style="padding-left:10px;padding-right: 10px">${page.pageUrl}</td>
+                <td style="padding-left:10px;padding-right: 10px">${page.sourcepage}</td>
+                <td style="padding-left:10px;padding-right: 10px"><a
+                        href="<c:url value="/task/attrs/${page.id}"/>">${page.visitedAt}</a>
                 </td>
             </tr>
         </c:forEach>

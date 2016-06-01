@@ -14,8 +14,10 @@
 <table border="1px">
     <thead>
     <tr>
+        <th>id</th>
         <th>url</th>
         <th>type</th>
+        <th>visited at></th>
         <th></th>
         <th></th>
     </tr>
@@ -23,10 +25,16 @@
     <c:forEach items="${latest}" var="itemToSend">
         <tr>
             <td>
+                <div>${itemToSend.id}</div>
+            </td>
+            <td>
                 <div>${itemToSend.pageUrl}</div>
             </td>
             <td>
                 <div>${itemToSend.type}</div>
+            </td>
+            <td>
+                <div>${itemToSend.visitedAt}</div>
             </td>
             <td>
                 <pre>TODO:start</pre>

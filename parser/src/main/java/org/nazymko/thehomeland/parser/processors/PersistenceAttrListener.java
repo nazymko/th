@@ -9,28 +9,34 @@ import org.nazymko.thehomeland.parser.db.model.Attribute;
 import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 /**
  * Created by nazymko.patronus@gmail.com.
  */
 @Log4j2
 public class PersistenceAttrListener implements AttrListener {
+    SimpleDateFormat defaultFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     @Setter
     @Resource
     private AttributeDao attributeDao;
+    public HashMap<Integer, AttrListener> preprocessors = new HashMap<>();
 
     @Override
     public boolean support(ThAttributeDataRecord attribute, Integer runId, boolean persist) {
         return persist;
     }
 
-    SimpleDateFormat defaultFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
     @Override
     public void process(ThAttributeDataRecord attribute, Integer runId) {
         log.debug("saving into db pageId = " + attribute.getPageId());
+
+        preprocessors.keySet()
+                .stream()
+                .sorted()
+                .forEachOrdered(x -> preprocessors.get(x).process(attribute, runId));
+
+
         if (attribute.getAttributeFormat() != null) {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(attribute.getAttributeFormat());
             try {
@@ -48,5 +54,10 @@ public class PersistenceAttrListener implements AttrListener {
         }
         attributeDao.save(attribute);
 
+    }
+
+    @Override
+    public void addPreprocessor(Integer order, AttrListener listener) {
+        preprocessors.put(order, listener);
     }
 }
