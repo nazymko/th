@@ -3,6 +3,7 @@ package org.nazymko.thehomeland.parser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.validator.routines.UrlValidator;
 import org.nazymko.th.parser.autodao.tables.pojos.ThAttributeData;
 import org.nazymko.th.parser.autodao.tables.records.ThPageRecord;
 import org.nazymko.th.parser.autodao.tables.records.ThSiteRecord;
@@ -11,6 +12,7 @@ import org.nazymko.thehomeland.parser.db.dao.PageDao;
 import org.nazymko.thehomeland.parser.db.dao.SiteDao;
 
 import javax.annotation.Resource;
+import java.net.URL;
 import java.util.*;
 
 /**
@@ -139,10 +141,12 @@ public abstract class AbstractConverter implements Converter<ThPageRecord> {
     }
 
     private String merge(String domain, String attributeValue) {
-        if (domain != null) {
+        if (!(attributeValue.startsWith("http") || attributeValue.startsWith("www.")) && domain != null) {
             return domain + "/" + attributeValue;
+        } else if (domain == null) {
+            throw new IllegalArgumentException("domain = null!");
         }
-        throw new IllegalArgumentException("domain = null!");
+        return attributeValue;
     }
 
     private void putValue(HashMap<String, List<ThAttributeData>> mapping, HashMap<String, Object> result, Map.Entry<String, String> entry) {

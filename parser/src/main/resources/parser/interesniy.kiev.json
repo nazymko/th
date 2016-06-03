@@ -64,7 +64,7 @@
           "persist": true
         },
         {
-          "path": ".regularTourItem a[href^=http://www.interesniy.kiev.ua/guide]",
+            "path": ".regularTourItem a[href~=/guide/]",
           "attr": "text",
           "type": "guide-name-full",
           "persist": false,
