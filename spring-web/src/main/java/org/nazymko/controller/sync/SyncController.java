@@ -322,7 +322,7 @@ public class SyncController {
         if (convert.isPresent()) {
             model.addAttribute("preview", mapper.writeValueAsString(convert.get()));
         } else {
-            warn(model, "Could not find page with id = %s", pageId);
+            warn(model, "Could not find converter for page id = %s", pageId);
         }
 
 

@@ -89,15 +89,8 @@ public class Keys {
 
 	public static final ForeignKey<ConnectorsSendHeadersRecord, ConnectorConsumerRecord> CONNECTORS_SEND_HEADERS_CONNECTOR_CONSUMER_ID_FK = ForeignKeys0.CONNECTORS_SEND_HEADERS_CONNECTOR_CONSUMER_ID_FK;
 	public static final ForeignKey<ConnectorRulesRecord, ConnectorConsumerRecord> CONNECTOR_RULES_IBFK_1 = ForeignKeys0.CONNECTOR_RULES_IBFK_1;
-	public static final ForeignKey<ConnectorRulesRecord, ThSiteRecord> CONNECTOR_RULES_IBFK_2 = ForeignKeys0.CONNECTOR_RULES_IBFK_2;
 	public static final ForeignKey<ConnectorSyncPageLogRecord, ThPageRecord> CONNECTOR_SYNC_PAGE_LOG_IBFK_1 = ForeignKeys0.CONNECTOR_SYNC_PAGE_LOG_IBFK_1;
-	public static final ForeignKey<TaskRunRecord, TaskScheduleRecord> TASK_RUN_IBFK_1 = ForeignKeys0.TASK_RUN_IBFK_1;
-	public static final ForeignKey<TaskRunRecord, ThSiteRecord> TASK_RUN_IBFK_2 = ForeignKeys0.TASK_RUN_IBFK_2;
-	public static final ForeignKey<TaskScheduleRecord, ThSiteRecord> TASK_SCHEDULE_IBFK_1 = ForeignKeys0.TASK_SCHEDULE_IBFK_1;
-	public static final ForeignKey<ThAttributeDataRecord, ThSiteRecord> TH_ATTRIBUTE_DATA_IBFK_2 = ForeignKeys0.TH_ATTRIBUTE_DATA_IBFK_2;
 	public static final ForeignKey<ThAttributeDataRecord, ThPageRecord> TH_ATTRIBUTE_DATA_IBFK_3 = ForeignKeys0.TH_ATTRIBUTE_DATA_IBFK_3;
-	public static final ForeignKey<ThAttributeDataRecord, ThRuleRecord> TH_ATTRIBUTE_DATA_IBFK_1 = ForeignKeys0.TH_ATTRIBUTE_DATA_IBFK_1;
-	public static final ForeignKey<ThPageRecord, ThSiteRecord> TH_PAGE_IBFK_1 = ForeignKeys0.TH_PAGE_IBFK_1;
 	public static final ForeignKey<ThPageRecord, TaskRunRecord> TH_PAGE_IBFK_2 = ForeignKeys0.TH_PAGE_IBFK_2;
 
 	// -------------------------------------------------------------------------
@@ -138,15 +131,8 @@ public class Keys {
 	private static class ForeignKeys0 extends AbstractKeys {
 		public static final ForeignKey<ConnectorsSendHeadersRecord, ConnectorConsumerRecord> CONNECTORS_SEND_HEADERS_CONNECTOR_CONSUMER_ID_FK = createForeignKey(org.nazymko.th.parser.autodao.Keys.KEY_CONNECTOR_CONSUMER_PRIMARY, ConnectorsSendHeaders.CONNECTORS_SEND_HEADERS, ConnectorsSendHeaders.CONNECTORS_SEND_HEADERS.CONSUMER_ID);
 		public static final ForeignKey<ConnectorRulesRecord, ConnectorConsumerRecord> CONNECTOR_RULES_IBFK_1 = createForeignKey(org.nazymko.th.parser.autodao.Keys.KEY_CONNECTOR_CONSUMER_PRIMARY, ConnectorRules.CONNECTOR_RULES, ConnectorRules.CONNECTOR_RULES.CONSUMER_ID);
-		public static final ForeignKey<ConnectorRulesRecord, ThSiteRecord> CONNECTOR_RULES_IBFK_2 = createForeignKey(org.nazymko.th.parser.autodao.Keys.KEY_TH_SITE_PRIMARY, ConnectorRules.CONNECTOR_RULES, ConnectorRules.CONNECTOR_RULES.SITE_ID);
 		public static final ForeignKey<ConnectorSyncPageLogRecord, ThPageRecord> CONNECTOR_SYNC_PAGE_LOG_IBFK_1 = createForeignKey(org.nazymko.th.parser.autodao.Keys.KEY_TH_PAGE_PRIMARY, ConnectorSyncPageLog.CONNECTOR_SYNC_PAGE_LOG, ConnectorSyncPageLog.CONNECTOR_SYNC_PAGE_LOG.PAGE_ID);
-		public static final ForeignKey<TaskRunRecord, TaskScheduleRecord> TASK_RUN_IBFK_1 = createForeignKey(org.nazymko.th.parser.autodao.Keys.KEY_TASK_SCHEDULE_PRIMARY, TaskRun.TASK_RUN, TaskRun.TASK_RUN.SCHEDULE_SOURCE_ID);
-		public static final ForeignKey<TaskRunRecord, ThSiteRecord> TASK_RUN_IBFK_2 = createForeignKey(org.nazymko.th.parser.autodao.Keys.KEY_TH_SITE_PRIMARY, TaskRun.TASK_RUN, TaskRun.TASK_RUN.SITE_ID);
-		public static final ForeignKey<TaskScheduleRecord, ThSiteRecord> TASK_SCHEDULE_IBFK_1 = createForeignKey(org.nazymko.th.parser.autodao.Keys.KEY_TH_SITE_PRIMARY, TaskSchedule.TASK_SCHEDULE, TaskSchedule.TASK_SCHEDULE.SITE_ID);
-		public static final ForeignKey<ThAttributeDataRecord, ThSiteRecord> TH_ATTRIBUTE_DATA_IBFK_2 = createForeignKey(org.nazymko.th.parser.autodao.Keys.KEY_TH_SITE_PRIMARY, ThAttributeData.TH_ATTRIBUTE_DATA, ThAttributeData.TH_ATTRIBUTE_DATA.SITE_ID);
 		public static final ForeignKey<ThAttributeDataRecord, ThPageRecord> TH_ATTRIBUTE_DATA_IBFK_3 = createForeignKey(org.nazymko.th.parser.autodao.Keys.KEY_TH_PAGE_PRIMARY, ThAttributeData.TH_ATTRIBUTE_DATA, ThAttributeData.TH_ATTRIBUTE_DATA.PAGE_ID);
-		public static final ForeignKey<ThAttributeDataRecord, ThRuleRecord> TH_ATTRIBUTE_DATA_IBFK_1 = createForeignKey(org.nazymko.th.parser.autodao.Keys.KEY_TH_RULE_PRIMARY, ThAttributeData.TH_ATTRIBUTE_DATA, ThAttributeData.TH_ATTRIBUTE_DATA.RULE_ID);
-		public static final ForeignKey<ThPageRecord, ThSiteRecord> TH_PAGE_IBFK_1 = createForeignKey(org.nazymko.th.parser.autodao.Keys.KEY_TH_SITE_PRIMARY, ThPage.TH_PAGE, ThPage.TH_PAGE.SITE_ID);
 		public static final ForeignKey<ThPageRecord, TaskRunRecord> TH_PAGE_IBFK_2 = createForeignKey(org.nazymko.th.parser.autodao.Keys.KEY_TASK_RUN_PRIMARY, ThPage.TH_PAGE, ThPage.TH_PAGE.TASK_RUN_ID);
 	}
 }

@@ -11,7 +11,6 @@ import java.util.List;
 import javax.annotation.Generated;
 
 import org.jooq.Field;
-import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -40,7 +39,7 @@ import utils.support.task.TaskStatusConverter;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TaskRun extends TableImpl<TaskRunRecord> {
 
-	private static final long serialVersionUID = -484429167;
+	private static final long serialVersionUID = 1865551439;
 
 	/**
 	 * The reference instance of <code>thehomeland.task_run</code>
@@ -144,14 +143,6 @@ public class TaskRun extends TableImpl<TaskRunRecord> {
 	@Override
 	public List<UniqueKey<TaskRunRecord>> getKeys() {
 		return Arrays.<UniqueKey<TaskRunRecord>>asList(Keys.KEY_TASK_RUN_PRIMARY);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public List<ForeignKey<TaskRunRecord, ?>> getReferences() {
-		return Arrays.<ForeignKey<TaskRunRecord, ?>>asList(Keys.TASK_RUN_IBFK_1, Keys.TASK_RUN_IBFK_2);
 	}
 
 	/**

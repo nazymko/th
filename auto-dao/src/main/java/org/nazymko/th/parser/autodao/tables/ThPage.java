@@ -35,7 +35,7 @@ import org.nazymko.th.parser.autodao.tables.records.ThPageRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ThPage extends TableImpl<ThPageRecord> {
 
-	private static final long serialVersionUID = -738805753;
+	private static final long serialVersionUID = 1051491196;
 
 	/**
 	 * The reference instance of <code>thehomeland.th_page</code>
@@ -151,7 +151,7 @@ public class ThPage extends TableImpl<ThPageRecord> {
 	 */
 	@Override
 	public List<ForeignKey<ThPageRecord, ?>> getReferences() {
-		return Arrays.<ForeignKey<ThPageRecord, ?>>asList(Keys.TH_PAGE_IBFK_1, Keys.TH_PAGE_IBFK_2);
+		return Arrays.<ForeignKey<ThPageRecord, ?>>asList(Keys.TH_PAGE_IBFK_2);
 	}
 
 	/**

@@ -1,0 +1,121 @@
+{
+  "url": "http://interesniy.kiev.ua",
+  "name": "Interesniy Kiev",
+  "selector": "css",
+  "meta": {
+    "type": [
+      "excursion",
+      "bus_travel"
+    ],
+    "languages": [
+      "eng"
+    ]
+  },
+  "page": [
+    {
+      "type": "front_page",
+      "url": "http://interesniy.kiev.ua",
+      "attrs": [
+        {
+          "path": "a.excursions_calendar",
+          "attr": "href",
+          "type": "excursion_list"
+        }
+      ]
+    },
+    {
+      "type": "excursion_list",
+      "unique": false,
+      "attrs": [
+        {
+          "path": "a.cal_item_link",
+          "attr": "href",
+          "type": "article"
+        }
+      ]
+    },
+    {
+      "type": "article",
+      "unique": true,
+      "attrs": [
+        {
+          "path": ".singleTourPost h1",
+          "attr": "text",
+          "type": "article-title",
+          "persist": true
+        },
+        {
+          "path": ".placeGallery img",
+          "attr": "src",
+          "type": "article-img",
+          "persist": true
+        },
+        {
+          "path": ".singleTourBox",
+          "attr": "html",
+          "type": "body",
+          "persist": true
+        },
+        {
+          "path": "span.active",
+          "attr": "date",
+          "type": "date",
+          "format":"yyyy-MM-dd",
+          "persist": true
+        },
+        {
+          "path": ".regularTourItem a[href^=http://www.interesniy.kiev.ua/guide]",
+          "attr": "text",
+          "type": "guide-name-full",
+          "persist": false,
+          "regexp": [
+            {
+              "type": "name",
+              "expression": "(.*)\\s(.*)",
+              "group": [
+                {
+                  "order": 1,
+                  "nature": "string",
+                  "type": "first-name",
+                  "persist": true
+                },
+                {
+                  "order": 2,
+                  "nature": "string",
+                  "type": "last-name",
+                  "persist": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": ".regularTourPrice",
+          "attr": "text",
+          "type": "price-block",
+          "persist": false,
+          "regexp": [
+            {
+              "type": "contact-phone",
+              "expression": "(\\d+)\\s(.*)/.*",
+              "group": [
+                {
+                  "order": 1,
+                  "nature": "string",
+                  "type": "price",
+                  "persist": true
+                },
+                {
+                  "order": 2,
+                  "nature": "string",
+                  "type": "currency",
+                  "persist": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

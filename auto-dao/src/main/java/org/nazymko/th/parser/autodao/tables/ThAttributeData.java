@@ -34,7 +34,7 @@ import org.nazymko.th.parser.autodao.tables.records.ThAttributeDataRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ThAttributeData extends TableImpl<ThAttributeDataRecord> {
 
-	private static final long serialVersionUID = -411048139;
+	private static final long serialVersionUID = 1981649522;
 
 	/**
 	 * The reference instance of <code>thehomeland.th_attribute_data</code>
@@ -145,7 +145,7 @@ public class ThAttributeData extends TableImpl<ThAttributeDataRecord> {
 	 */
 	@Override
 	public List<ForeignKey<ThAttributeDataRecord, ?>> getReferences() {
-		return Arrays.<ForeignKey<ThAttributeDataRecord, ?>>asList(Keys.TH_ATTRIBUTE_DATA_IBFK_2, Keys.TH_ATTRIBUTE_DATA_IBFK_3, Keys.TH_ATTRIBUTE_DATA_IBFK_1);
+		return Arrays.<ForeignKey<ThAttributeDataRecord, ?>>asList(Keys.TH_ATTRIBUTE_DATA_IBFK_3);
 	}
 
 	/**

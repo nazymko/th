@@ -11,7 +11,6 @@ import java.util.List;
 import javax.annotation.Generated;
 
 import org.jooq.Field;
-import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -35,7 +34,7 @@ import org.nazymko.th.parser.autodao.tables.records.TaskScheduleRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TaskSchedule extends TableImpl<TaskScheduleRecord> {
 
-	private static final long serialVersionUID = -1598590663;
+	private static final long serialVersionUID = 2070555674;
 
 	/**
 	 * The reference instance of <code>thehomeland.task_schedule</code>
@@ -129,14 +128,6 @@ public class TaskSchedule extends TableImpl<TaskScheduleRecord> {
 	@Override
 	public List<UniqueKey<TaskScheduleRecord>> getKeys() {
 		return Arrays.<UniqueKey<TaskScheduleRecord>>asList(Keys.KEY_TASK_SCHEDULE_PRIMARY);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public List<ForeignKey<TaskScheduleRecord, ?>> getReferences() {
-		return Arrays.<ForeignKey<TaskScheduleRecord, ?>>asList(Keys.TASK_SCHEDULE_IBFK_1);
 	}
 
 	/**
