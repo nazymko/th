@@ -1,19 +1,17 @@
-INSERT INTO thehomeland.th_site (authority, name, default_url)
-VALUES ('ukrainiantour.com', 'Ukrainian Tour', 'http://ukrainiantour.com');
+INSERT INTO thehomeland.th_site (authority, name, default_url) VALUES ('bomba.vn.ua', 'TK Bomba', 'http://bomba.vn.ua');
 
 
-INSERT INTO thehomeland.th_rule (rule, version, status, authority)
-VALUES ('{
+INSERT INTO thehomeland.th_rule (rule, version, status, authority) VALUES ('{
   "meta": {
     "languages": [
-      "rus"
+      "ua"
     ],
     "type": [
       "excursion",
       "bus_travel"
     ]
   },
-  "name": "Ukrainian Tour",
+  "name": "TK Bomba",
   "selector": "css",
   "page": [
     {
@@ -21,7 +19,7 @@ VALUES ('{
       "type": "front_page",
       "attrs": [
         {
-          "path": "#navBar .nav .tours a",
+          "path": "#block-menu-menu-main-menu a[href^\\u003d/tour]",
           "persist": false,
           "attr": "href",
           "type": "category_list"
@@ -33,7 +31,7 @@ VALUES ('{
       "type": "category_list",
       "attrs": [
         {
-          "path": ".item h2 a",
+          "path": ".field-content a",
           "persist": false,
           "attr": "href",
           "type": "article"
@@ -41,39 +39,33 @@ VALUES ('{
       ]
     },
     {
-      "unique": false,
+      "unique": true,
       "type": "article",
       "attrs": [
         {
-          "path": "div.tourName \\u003e h1",
+          "path": ".tour-title",
           "persist": true,
           "attr": "text",
           "type": "title"
         },
         {
-          "path": ".body.details",
+          "path": ".body",
           "persist": true,
           "attr": "html",
           "type": "body"
         },
         {
-          "path": ".galery a img",
+          "path": ".field-slideshow-image",
           "persist": true,
           "attr": "src",
-          "type": "image"
+          "type": "img"
         },
         {
-          "path": ".breadcrumbs.crumbs div:last-child a span",
-          "persist": true,
-          "attr": "text",
-          "type": "targetCity"
-        },
-        {
-          "path": "div.tourName \\u003e div",
+          "path": ".tour-sidebar-inner .price",
           "regexp": [
             {
-              "expression": "(\\\\d+)\\\\s?(.+)",
-              "type": "trip-price",
+              "expression": "(\\\\d+)\\\\s(.*)",
+              "type": "price",
               "group": [
                 {
                   "nature": "number",
@@ -82,7 +74,7 @@ VALUES ('{
                   "order": 1
                 },
                 {
-                  "nature": "enum",
+                  "nature": "string",
                   "persist": true,
                   "type": "currency",
                   "order": 2
@@ -93,34 +85,33 @@ VALUES ('{
           ],
           "persist": false,
           "attr": "text",
-          "type": "price-container"
+          "type": "price-block"
         }
       ]
     }
   ],
-  "url": "http://ukrainiantour.com"
-}', 1, 0, 'ukrainiantour.com');
-
+  "url": "http://bomba.vn.ua"
+}', 1, 0, 'bomba.vn.ua');
 
 INSERT INTO thehomeland.connector_rules (rule, consumer_id, site_id) VALUES ('{
   "title": "#title",
   "description": "#body",
-  "type": "Екскурсії",
+  "type": "Автобусні",
   "price": "#price",
   "targetCity": "#targetCity",
   "departureCity": "Київ",
-  "dateStart": "2016-01-01 00:01:01",
-  "dateEnd": "2017-01-01 00:01:01",
-  "departureAddress": "Any",
+  "dateStart": "2016-06-01 00:01:01",
+  "dateEnd": "2016-09-01 00:01:01",
+  "departureAddress": "Вінниця",
   "ticketsTotal": "50",
-  "image": "$image",
-  "firstName": "Ukrainian",
-  "lastName": "Tour",
-  "phones": "380443605737",
+  "image": "$img",
+  "firstName": "Турклуб",
+  "lastName": "Бомба",
+  "phones": "380979080279",
   "url": "%page_url"
 }', (SELECT id
      FROM connector_consumer
      WHERE domain =
            'http://thehomeland.com.ua'), (SELECT id
-                                           FROM th_site
-                                           WHERE authority = 'ukrainiantour.com'));
+                                          FROM th_site
+                                          WHERE authority = 'bomba.vn.ua'));
